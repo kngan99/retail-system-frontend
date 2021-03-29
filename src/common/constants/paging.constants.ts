@@ -1,1 +1,1 @@
-export const pageSizeOptions = ['5', '15', '20', '50'];
+export const pageSizeOptions = ['10', '5', '15', '20', '50'];

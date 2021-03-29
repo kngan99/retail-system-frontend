@@ -33,5 +33,6 @@ export enum I18N {
     MESSAGES_VERIFY_SUCCESS = 'Verified successfully',
     MESSAGES_UPDATE_SUCCESS = 'Updated successfully',
     MESSAGES_CREATED_SUCCESS = 'Created successfully',
+    MESSAGES_CONFIRM_DELETE = 'Are you sure want to delete this item?',
     ADMIN_MENU_LOG_OUT = 'Log out',
 }

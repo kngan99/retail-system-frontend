@@ -14,6 +14,7 @@ class AdminStore {
         let data: any = [];
         data = await adminService.getAccounts(skip, take);
         this.accounts = data[0];
+        console.log(this.accounts);
         this.totalCount = data[1];
     }
 
@@ -21,13 +22,13 @@ class AdminStore {
     async getAccountById(id: number) {
         const result = await adminService.getAccountById(id);
         if (result) {
-        this.setAdminForm(result);
+        this.setAdminAccountForm(result);
         }
         return true;
     }
 
     @action
-    async setAdminForm(data: any) {
+    async setAdminAccountForm(data: any) {
         this.adminForm.fName = data.FName;
         this.adminForm.lName = data.LName;
         this.adminForm.email = data.Email;
@@ -36,7 +37,7 @@ class AdminStore {
     }
 
     @action
-    async resetAdminForm() {
+    async resetAdminAccountForm() {
         this.adminForm = newAdminFormInit;
     }
 
@@ -55,7 +56,8 @@ class AdminStore {
     @action
     async deleteAccount(id: number) {
         const result = await adminService.deleteAccount(id);
-        return result.data?.result;
+        console.log(result.data);
+        return result.data;
     }
   }
   
