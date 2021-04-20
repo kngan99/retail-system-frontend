@@ -1,0 +1,2 @@
+(this["webpackJsonpretail-system"]=this["webpackJsonpretail-system"]||[]).push([[4],{36:function(e,t,s){"use strict";s.r(t);var a=s(33),c=s(37),n=s(1);t.default=Object(a.a)((function(){return Object(n.jsx)(n.Fragment,{children:Object(n.jsx)(c.a,{children:"Home Page"})})}))}}]);
+//# sourceMappingURL=4.145ca1b3.chunk.js.map
