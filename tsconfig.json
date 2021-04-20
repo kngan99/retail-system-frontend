@@ -1,4 +1,5 @@
 {
+  "noImplicitAny": false,
   "compilerOptions": {
     "experimentalDecorators": true,
     "target": "es5",
