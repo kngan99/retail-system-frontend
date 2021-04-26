@@ -146,12 +146,12 @@ const DeletedAccountGridAdmin = (props: ComponentProps) => {
                           {item.FName} {item.LName}
                         </td>
                         <td>{item.Email}</td>
-                        <td>{item.Homephone}</td>
+                        <td>{item.HomePhone}</td>
                         <td>{item.Type}</td>
                         <td className="col-actions">
                         <Button
                           variant="primary"
-                          onClick={() => handleRestore(item.id)}
+                          onClick={() => handleRestore(item.Id)}
                           className="btn-icon"
                           size="lg"
                         >
