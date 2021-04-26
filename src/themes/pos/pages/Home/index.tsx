@@ -7,6 +7,9 @@ import "antd/dist/antd.css";
 import '../../assets/style.css';
 import Clock from 'react-live-clock';
 import { CommonStoreContext } from '../../../../common/common.store';
+import { AuthenticationStoreContext } from '../../../../modules/authenticate/authentication.store';
+import { DEFAULT_ROUTERS } from '../../../../modules/account/router.enum';
+import { useHistory } from 'react-router-dom';
 const { Header, Content, Footer } = Layout;
 const { Panel } = Collapse;
 
@@ -14,6 +17,8 @@ const { Panel } = Collapse;
 
 
 const HomePage = () => {
+    const history = useHistory();
+    const authenticationStore = React.useContext(AuthenticationStoreContext);
     const commonStore = React.useContext(CommonStoreContext);
     const cartStore = React.useContext(CartStoreContext);
     React.useEffect(() => {
@@ -26,6 +31,10 @@ const HomePage = () => {
     const handleStartSessionClick = async () => {
         await cartStore.startSession();
     }
+    const handleLogout = () => {
+        authenticationStore.logout(history, DEFAULT_ROUTERS.LOGIN);
+    };
+
 
     return (
         <>
@@ -44,7 +53,7 @@ const HomePage = () => {
                         cartStore.session && <Button key="4" loading={cartStore.loading} onClick={async () => await handleEndSessionClick()} type="primary" danger>
                             End Session
                         </Button>,
-                        <Button key="5" type="primary">
+                        <Button key="5" type="primary" onClick={() => handleLogout()}>
                             Log out
                         </Button>,
                     ]}

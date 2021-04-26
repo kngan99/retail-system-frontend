@@ -2,7 +2,6 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { useHistory } from 'react-router-dom';
 import { Nav } from 'react-bootstrap';
-//import { AuthenticationStoreContext } from '@/modules/account/authentication.store';
 import { useMediaQuery } from 'react-responsive';
 import logoSvg from '../../../../../src/logo.svg';
 import { I18N } from '../../../../i18n.enum';
@@ -10,6 +9,8 @@ import { MenuDto } from '../../../theme/theme.dto';
 import { LogoDto } from '../../../../common/dto/Logo.dto';
 import { adminMenu } from '../../../theme/theme.constrants';
 import { CommonStoreContext } from '../../../../common/common.store';
+import { AuthenticationStoreContext } from '../../../authenticate/authentication.store';
+import { DEFAULT_ROUTERS } from '../../../account/router.enum';
 
 /*
  * Props of Component
@@ -23,7 +24,7 @@ interface ComponentProps {
 
 const AdminMenu = (props: ComponentProps) => {
   const history = useHistory();
-  //const authenticationStore = React.useContext(AuthenticationStoreContext);
+  const authenticationStore = React.useContext(AuthenticationStoreContext);
   const commonStore = React.useContext(CommonStoreContext);
 
   /*
@@ -48,8 +49,7 @@ const AdminMenu = (props: ComponentProps) => {
    * @return: void
    */
   const handleLogout = () => {
-    //authenticationStore.logout(history, ADMIN_USER_ROUTERS.ADMIN_LOGIN);
-    window.alert('need authStore');
+    authenticationStore.logout(history, DEFAULT_ROUTERS.LOGIN);
   };
 
   /*
@@ -91,9 +91,8 @@ const AdminMenu = (props: ComponentProps) => {
           </div>
         )}
         <div
-          className={`flex-column main-menu ${className ? className : ''} ${
-            isMobile ? 'menu-mobile' : 'menu-desktop'
-          } ${showMenu ? 'show' : ''}`}
+          className={`flex-column main-menu ${className ? className : ''} ${isMobile ? 'menu-mobile' : 'menu-desktop'
+            } ${showMenu ? 'show' : ''}`}
         >
           {logo && (
             <div
@@ -112,9 +111,8 @@ const AdminMenu = (props: ComponentProps) => {
           <Nav className="menu-items" style={style}>
             {adminMenu.map((item: MenuDto, index) => (
               <Nav.Link
-                className={`item ${
-                  commonStore.activeMenu === item.url ? 'active' : ''
-                }`}
+                className={`item ${commonStore.activeMenu === item.url ? 'active' : ''
+                  }`}
                 eventKey={item.url}
                 onClick={() => handleToUrl(item.url)}
                 key={`menu-${index}`}
