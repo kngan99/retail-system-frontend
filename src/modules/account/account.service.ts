@@ -1,5 +1,6 @@
 import http from "../../common/sevices";
 import { removeConfirmationFields } from "../../common/utils/apis.util";
+import { prepareGetQuery } from "../../common/utils/routes.util";
 import { CreateUserDto} from "./account.dto";
 import { DEFAULT_API } from "./router.enum";
 
@@ -55,6 +56,18 @@ class AccountService {
 
   public async updateAccount(model: any, id: number) {
     const result = await http.put(`${this.accountPrefix}/${id}`, model);
+    return result.data;
+  }
+
+  public async restoreAccountByIdByAdmin(id: number) {
+    const result = await http.post(`${this.accountPrefix}/${id}/restore`);
+    return result.data;
+  }
+
+  public async getDeletedAccountByAdmin(criteria: any) {
+    const result = await http.get(
+      `${this.accountPrefix}/deleted${prepareGetQuery({ ...criteria })}`
+    );
     return result.data;
   }
 }

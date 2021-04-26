@@ -13,9 +13,6 @@ import ActionBar from "../../../theme/components/ActionBar";
 
 const ManageAccountAdminPage = () => {
   const history = useHistory();
-  /*
-   * Translation
-   */
   const {
     ADMIN_MANAGE_ACCOUNT,
     BUTTONS_ADD_NEW,
@@ -50,7 +47,7 @@ const ManageAccountAdminPage = () => {
   ]);
 
   const handleRestore = () => {
-    history.push("/");
+    history.push("/account/deleted");
   };
 
   const [criteriaDto, setCriteriaDto] = React.useState<any>({

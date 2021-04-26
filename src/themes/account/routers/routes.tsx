@@ -86,4 +86,16 @@ export const accountsRoutes = [
     isLayout: false,
     isGuarded: false,
   },
+  {
+    path: '/account/deleted',
+    name: 'Restore Accounts',
+    title: 'Restore Accounts',
+    exact: true,
+    permission: '',
+    component: React.lazy(
+      () => import('../../../modules/admin-account/pages/ManageDeleted')
+    ),
+    isLayout: false,
+    isGuarded: false,
+  },
 ];

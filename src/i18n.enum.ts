@@ -44,7 +44,9 @@ export enum I18N {
     MESSAGES_VERIFY_SUCCESS = 'Verified successfully',
     MESSAGES_UPDATE_SUCCESS = 'Updated successfully',
     MESSAGES_CREATED_SUCCESS = 'Created successfully',
+    MESSAGES_CONFIRM_RESTORE = 'Are you sure to restore this account?',
     ADMIN_MENU_LOG_OUT = 'Log out',
     TOPMENU_WELCOME = 'Welcome',
-    MENU_ACCOUNT_SETUP = 'Account setup'
+    MENU_ACCOUNT_SETUP = 'Account setup',
+    MANAGE_RESTORE_TITLE = 'Restore Account',
 }

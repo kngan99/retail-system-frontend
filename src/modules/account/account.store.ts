@@ -1,7 +1,7 @@
 import React from 'react';
 import { observable, action, makeObservable } from 'mobx';
 import accountService from './account.service';
-import { CreateUserDto } from './account.dto';
+import { AdminFilterDto, CreateUserDto } from './account.dto';
 
 class AccountStore {
   @observable accounts: Account[] = [];
@@ -13,6 +13,8 @@ class AccountStore {
   };
   @observable accountForm: any = {};
   @observable currentUserDetail: any = null;
+  @observable deletedAccounts: any[] = [];
+  @observable totalDeletedAccounts: number = 0;
 
   @action
   async getAccounts(skip: number, take: number) {
@@ -69,6 +71,21 @@ class AccountStore {
   @action
   async deleteAccountFile(id: number, type: number) {
     const data = await accountService.deleteFiles(id, type);
+    return data;
+  }
+
+  @action
+  async restoreAccountByIdByAdmin(id: number) {
+    const data = await accountService.restoreAccountByIdByAdmin(id);
+    return data;
+  }
+
+  @action
+  async getDeletedAccountByAdmin(filter: any) {
+    const data = await accountService.getDeletedAccountByAdmin(filter);
+    const [accounts, count] = data;
+    this.deletedAccounts = accounts;
+    this.totalDeletedAccounts = count;
     return data;
   }
 
