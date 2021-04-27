@@ -113,6 +113,10 @@ const ManageAccountAdminPage = () => {
     });
   };
 
+  React.useEffect(() => {
+    adminStore.getAccounts(criteriaDto.skip, criteriaDto.take);
+  }, [criteriaDto, adminStore]);
+
   return (
     <>
       <AdminWrapper pageTitle={ADMIN_MANAGE_ACCOUNT}>

@@ -73,15 +73,21 @@ const AdminAccountGrid = (props: ComponentProps) => {
     handleChangePageItem(page);
   };
 
+  // React.useEffect(() => {
+  //   const getAccounts = async () => {
+  //     await adminStore.getAccounts(0, 10);
+  //     setItems(adminStore.accounts);
+  //     setTotals(adminStore.totalCount);
+  //     setTotalPage(Math.ceil(totals / +pageSizeOptions[0]));
+  //   };
+  //   getAccounts();
+  // }, [adminStore, totals]);
+
   React.useEffect(() => {
-    const getAccounts = async () => {
-      await adminStore.getAccounts(0, 10);
-      setItems(adminStore.accounts);
-      setTotals(adminStore.totalCount);
-      setTotalPage(Math.ceil(totals / +pageSizeOptions[0]));
-    };
-    getAccounts();
-  }, [adminStore, totals]);
+    setItems(adminStore.accounts);
+    setTotals(adminStore.totalCount);
+    setTotalPage(Math.ceil(totals / +pageSizeOptions[0]));
+  }, [adminStore.accounts, adminStore.totalCount, totals]);
 
   /*Confirm modal*/
   const handleOk = async () => {
