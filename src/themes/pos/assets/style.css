@@ -94,7 +94,7 @@ a:hover {
 }
 
 @media print {
-    button {
+    button, .menu-wrapper {
         visibility: hidden;
     }
 }

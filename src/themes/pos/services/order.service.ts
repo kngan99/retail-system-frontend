@@ -21,7 +21,7 @@ interface CartProduct {
 }
 
 class OrderService {
-    orderPrefix: string = "localhost:4000/api/orders";
+    orderPrefix: string = "http://localhost:4000/api/orders";
 
     public async confirmOrder(SalescleckId: number, SessionId: string, cartproducts: CartProduct[]) {
         const result = await http.post(`${this.orderPrefix}`, {

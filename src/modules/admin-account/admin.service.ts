@@ -1,10 +1,9 @@
 import http from "../../common/sevices";
 
 class AdminService {
-  accountPrefix: string = "localhost:4000/api/accounts";
+  accountPrefix: string = "http://localhost:4000/api/accounts";
 
   public async getAccounts(skip: number, take: number) {
-    console.log("debug");
     const result = await http.get(`${this.accountPrefix}/`, {
       params: {
         skip: skip,
@@ -16,6 +15,7 @@ class AdminService {
 
   public async getAccountById(id: number) {
     const result = await http.get(`${this.accountPrefix}/${id}`);
+    console.log(result.data);
     return result.data;
   }
 
@@ -26,7 +26,7 @@ class AdminService {
 
   public async updateAccount(id: number, model: any) {
     return await http.put(`${this.accountPrefix}/${id}`, model);
-  }
+  }  
 
   public async deleteAccount(id: number) {
     return await http.delete(`${this.accountPrefix}/${id}`);

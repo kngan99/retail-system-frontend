@@ -7,7 +7,7 @@ interface CashierInfo {
 }
 
 class CartService {
-  sessionPrefix: string = "localhost:4000/api/sessions";
+  sessionPrefix: string = "http://localhost:4000/api/sessions";
 
   public async startNewSession() {
     const result = await http.post(`${this.sessionPrefix}`, {
