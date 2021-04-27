@@ -2,7 +2,6 @@
     "name": "retail-system",
     "version": "0.1.0",
     "private": true,
-    "proxy": "https://warehouse-retail.herokuapp.com/api/",
     "dependencies": {
         "@babel/plugin-proposal-class-properties": "^7.13.0",
         "@babel/plugin-proposal-decorators": "^7.13.5",
