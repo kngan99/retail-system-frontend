@@ -25,7 +25,7 @@ ReactDOM.render(
             path="/account"
             render={(props: any) => <AccountLayout {...props} exact />}
           />
-          <Route path="/" render={(props: any) => <AccountLayout {...props} exact />} />
+          <Route path="/" render={(props: any) => <App/>} />
         </Switch>
       </Suspense>
       <ToastContainer
