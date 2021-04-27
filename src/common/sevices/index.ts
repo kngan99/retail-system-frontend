@@ -39,11 +39,11 @@ axiosInstance.interceptors.response.use(
     let messageDetail = '';
     let messageCode = '';
 
-    if (error.response.status === 403) {
-      removeFromStorage('token');
-      if (!window.location.pathname.includes('login'))
-        window.location.replace('/');
-    }
+    // if (error.response.status === 403) {
+    //   removeFromStorage('token');
+    //   if (!window.location.pathname.includes('login'))
+    //     window.location.replace('/');
+    // }
 
     if (detailError) {
       if (Array.isArray(detailError.message)) {
@@ -65,7 +65,7 @@ axiosInstance.interceptors.response.use(
     } else {
       toast.error(messageDetail);
     }
-    
+
     if (error.response.status === 400) {
       return data;
     }
