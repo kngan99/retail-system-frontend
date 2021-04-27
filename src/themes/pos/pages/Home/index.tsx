@@ -10,6 +10,7 @@ import { CommonStoreContext } from '../../../../common/common.store';
 import { AuthenticationStoreContext } from '../../../../modules/authenticate/authentication.store';
 import { DEFAULT_ROUTERS } from '../../../../modules/account/router.enum';
 import { useHistory } from 'react-router-dom';
+import AdminWrapper from "../../../../modules/admin-account/components/AdminWrapper";
 const { Header, Content, Footer } = Layout;
 const { Panel } = Collapse;
 
@@ -38,7 +39,9 @@ const HomePage = () => {
 
     return (
         <>
-            <div style={{ background: "linear-gradient(90deg, #fab91a 0, #ffd424 100%)" }} className="site-page-header-ghost-wrapper">
+            
+            <AdminWrapper>   
+                <div style={{ background: "linear-gradient(90deg, #fab91a 0, #ffd424 100%)" }} className="site-page-header-ghost-wrapper">            
                 <PageHeader
                     ghost={false}
                     // onBack={() => window.history.back()}
@@ -74,14 +77,19 @@ const HomePage = () => {
                         </Panel>
                     </Collapse>
                 </PageHeader>
+            
             </div >
             {cartStore.session && <Layout style={{ background: "linear-gradient(90deg, #fab91a 0, #ffd424 100%)" }} className="layout">
-                <Content style={{ padding: '0 24px' }}>
+                <Content style={{ padding: '0 1px' }}>
 
                     <div className="site-layout-content"><PosPage></PosPage></div>
                 </Content>
-                <Footer style={{ textAlign: 'center', background: "linear-gradient(90deg, #fab91a 0, #ffd424 100%)" }}>Point of Sale ©2021 Created by Tu and Ngan</Footer>
+                <Footer style={{ textAlign: 'center', background: "linear-gradient(90deg, #fab91a 0, #ffd424 100%)" }}></Footer>
             </Layout>}
+            <br />
+            <br />
+            <br />
+            </AdminWrapper>
         </>
     );
 };

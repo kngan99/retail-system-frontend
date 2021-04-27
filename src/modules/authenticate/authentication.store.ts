@@ -34,11 +34,12 @@ export default class AuthenticationStore {
       this._setCurrentInfo(data);
       const redirectUrl = (this.loggedUser.EmailVerified) ? url : urlNotVerified;
       console.log(data);
+      console.log(this.loggedUser.Type);
       if (data.Type == "Salescleck") {
         this._redirectAfterLogin(history, "/pos");
       }
       else if (data.Type == "StoreManager") {
-        this._redirectAfterLogin(history, "/pos");
+        this._redirectAfterLogin(history, "/account/manage");
       }
       else {
         this._redirectAfterLogin(history, redirectUrl);

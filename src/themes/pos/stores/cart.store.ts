@@ -155,11 +155,11 @@ class CartStore {
         this.loading = true;
         const result = await cartService.getCashierInfo();
         console.log(result);
-        if (result.Salesclerk) {
+        if (result && result.Salesclerk) {
             this.salescleckFullName = result.Salesclerk.FName + " " + result.Salesclerk.LName;
             this.salescleckId = result.Salesclerk.Id;
         }
-        if (result.Session) {
+        if (result && result.Session) {
             this.session = result.Session.SessionId;
             this.sessionStart = result.Session.Start;
         }

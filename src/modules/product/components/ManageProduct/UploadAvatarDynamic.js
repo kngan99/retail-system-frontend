@@ -56,6 +56,7 @@ const UploadAvatarDynamic = (record) => {
 
     return (<ImgCrop beforeCrop={beforeUpload} rotate>
         <Upload action={"http://127.0.0.1:4000/" + "api/products/avatar/" + record.record.Id}
+        headers={{'Authorization':'Bearer ' + localStorage.getItem('token')}}
             fileList={fileList}
             onChange={onChange}
             onPreview={onPreview} > {

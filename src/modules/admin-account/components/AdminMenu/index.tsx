@@ -57,6 +57,8 @@ const AdminMenu = (props: ComponentProps) => {
    */
   const [showMenu, setShowMenu] = React.useState<boolean>(false);
 
+  const [isDisplayIconArray, setIsDisplayIconArray] = React.useState<any[]>([true, true, true]);
+
   const handleMediaQueryChange = (matches: boolean) => {
     if (matches === false) setShowMenu(matches);
   };
@@ -77,6 +79,15 @@ const AdminMenu = (props: ComponentProps) => {
     history.push(url);
     commonStore.setActiveMenu(url);
   };
+
+  React.useEffect(() => {
+    if(authenticationStore.loggedUser && authenticationStore.loggedUser.Type==='StoreManager'){
+      setIsDisplayIconArray([true,true,true]);
+    }
+    else{
+    setIsDisplayIconArray([false,false,true]);
+    }
+  },[]);
 
   return (
     <>
@@ -111,6 +122,7 @@ const AdminMenu = (props: ComponentProps) => {
           )}
           <Nav className="menu-items" style={style}>
             {adminMenu.map((item: MenuDto, index) => (
+              ( isDisplayIconArray[index] &&
               <Nav.Link
                 className={`item ${
                   commonStore.activeMenu === item.url ? 'active' : ''
@@ -122,6 +134,7 @@ const AdminMenu = (props: ComponentProps) => {
                 {item.icon && <i className={`ico ${item.icon}`}></i>}
                 <span>{(item.label)}</span>
               </Nav.Link>
+              )
             ))}
             <Nav.Link className="item" onClick={() => handleLogout()}>
               <i className="ico ico-logout"></i>

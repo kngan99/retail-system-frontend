@@ -7,7 +7,7 @@ interface CashierInfo {
 }
 
 class CartService {
-  sessionPrefix: string = "https://warehouse-retail.herokuapp.com/api/sessions";
+  sessionPrefix: string = "localhost:4000/api/sessions";
 
   public async startNewSession() {
     const result = await http.post(`${this.sessionPrefix}`, {

@@ -2,6 +2,7 @@ export interface AdminMenuDto {
   url: string;
   label: string;
   icon?: string;
+  isShow?: boolean;
 }
 
 export interface MenuDto {

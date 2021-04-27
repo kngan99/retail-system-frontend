@@ -99,6 +99,13 @@ a:hover {
     }
 }
 
+.ant-layout-footer{
+    padding: 1px;
+}
+
+.site-page-header-ghost-wrapper{
+    padding: 1px;
+}
 
 /* .ant-input,
 .ant-input:hover,

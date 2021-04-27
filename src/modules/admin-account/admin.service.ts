@@ -1,7 +1,7 @@
 import http from "../../common/sevices";
 
 class AdminService {
-  accountPrefix: string = "https://warehouse-retail.herokuapp.com/api/products";
+  accountPrefix: string = "localhost:4000/api/accounts";
 
   public async getAccounts(skip: number, take: number) {
     console.log("debug");
