@@ -20,8 +20,9 @@ class AdminService {
   }
 
   public async addAccount(model: any) {
+    console.log(model);
     const result = await http.post(`${this.accountPrefix}/`, model);
-    return result.data?.result;
+    return result.data;
   }
 
   public async updateAccount(id: number, model: any) {

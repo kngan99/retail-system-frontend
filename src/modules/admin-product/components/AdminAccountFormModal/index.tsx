@@ -56,7 +56,7 @@ const AdminAccountFormModal = (props: ComponentProps) => {
     BUTTONS_UPDATE,
   } = I18N;
 
-  const [initialValues, setInitValues] = React.useState<NewAccountDto>(
+  const [initialValues, setInitValues] = React.useState<any>(
     newAdminFormInit
   );
   /*
@@ -182,7 +182,7 @@ const AdminAccountFormModal = (props: ComponentProps) => {
                 </Form.Label>
                 <Form.Control
                   type="text"
-                  value={values.homePhone}
+                  value={values.homephone}
                   onChange={handleChange}
                   isInvalid={!!errors.homePhone}
                 />

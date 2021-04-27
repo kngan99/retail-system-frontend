@@ -7,7 +7,7 @@ import { newAdminFormInit } from './admin.constants';
 class AdminStore {
     @observable accounts: Account[] = [];
     @observable totalCount: number = 0;
-    @observable adminForm: NewAccountDto = newAdminFormInit;
+    @observable adminForm: any = newAdminFormInit;
   
     @action
     async getAccounts(skip: number, take: number) {
@@ -28,11 +28,7 @@ class AdminStore {
 
     @action
     async setAdminForm(data: any) {
-        this.adminForm.fName = data.FName;
-        this.adminForm.lName = data.LName;
-        this.adminForm.email = data.Email;
-        this.adminForm.homePhone = data.HomePhone;
-        this.adminForm.type = data.Type;
+        this.adminForm = data;
     }
 
     @action

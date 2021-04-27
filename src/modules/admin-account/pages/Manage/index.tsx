@@ -86,6 +86,8 @@ const ManageAccountAdminPage = () => {
         setShowPopup(false);
       }
     }
+    toast.success(MESSAGES_CREATED_SUCCESS);
+        setShowPopup(false);
   };
 
   const handleEdit = async (id: number) => {
