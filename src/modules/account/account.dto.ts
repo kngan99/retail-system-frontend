@@ -83,3 +83,12 @@ export interface NewAccountDto {
   homePhone: string;
   type: any;
 }
+
+export interface AdminFilterDto {
+  skip?: number;
+  take?: number;
+  orderBy?: string;
+  orderDirection?: 'ASC' | 'DESC';
+  searchBy?: string;
+  searchKeyword?: string;
+}

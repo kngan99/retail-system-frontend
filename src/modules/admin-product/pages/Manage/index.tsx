@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom';
 import { AdminStoreContext } from '../../admin.store';
 import { pageSizeOptions } from '../../../../common/constants/paging.constants';
 import { I18N } from '../../../../i18n.enum';
-import AdminWrapper from '../../components/AdminWrapper';
+import AdminWrapper from '../../../admin-account/components/AdminWrapper';
 import { ActionBarDto } from '../../../theme/theme.dto';
 import AdminAccountFormModal from '../../components/AdminAccountFormModal';
 import AdminAccountGrid from '../../components/AccountGrid';

@@ -36,7 +36,7 @@ ReactDOM.render(
             path="/pos"
             render={(props: any) => <POSLayout {...props} exact />}
           />
-          <Route path="/" render={(props: any) => <App {...props} exact />} />
+          <Route path="/" render={(props: any) => <App />} />
         </Switch>
       </Suspense>
       <ToastContainer
