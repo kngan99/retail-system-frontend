@@ -1,0 +1,166 @@
+$xs: 0;
+$sm: 576px;
+$md: 768px;
+$lg: 992px;
+$xl: 1200px;
+$xxl: 1600px;
+$xlg: 1440px;
+
+.footer {
+  background-color: #fffbef;
+  margin-left: 155px;
+  margin-top: 5vh;
+  height: 3.5vw;
+  padding: 2.25vh 0;
+}
+
+.footer:after {
+  content: '';
+  display: table;
+  clear: both;
+}
+
+.logo-box {
+  float: left;
+  width: 25%;
+
+  .footer-info {
+    margin-left: 50px;
+
+    img {
+      float: left;
+      width: auto;
+      height: 2.5rem;
+      max-height: 36px;
+    }
+  }
+
+  .footer-info:after {
+    content: '';
+    display: table;
+    clear: both;
+  }
+
+  .info-text {
+    float: left;
+    margin: 10px;
+
+    a {
+      color: black;
+    }
+  }
+}
+
+@media (min-width: $xlg) and (max-width: ($xxl - 1)) {
+    .footer {
+        height: 4.5vw;
+        padding: 1.25vw 0;
+      }
+}
+@media (min-width: $xl) and (max-width: ($xlg - 1)) {
+    .footer {
+        height: 4.25vw;
+    }
+}
+@media (min-width: $lg) and (max-width: ($xl - 1)) {
+    .footer {
+        height: 6.5vw;
+        padding: 2vw 0;
+    }
+    .logo-box {
+        .footer-info {
+          margin-left: calc(18px + 0.1vw);
+    
+          img {
+            height: calc(28px + 0.1vw);
+            max-width: 32px;
+          }
+        }
+      }
+    
+      .info-text {
+        font-size: calc(13px + 0.1vw);
+        margin: 5px 8px !important;
+      }
+}
+@media (min-width: $sm) and (max-width: ($lg - 1)) {
+    .footer {
+        margin-left: 0;
+        padding-top: 0;
+        height: 7.2vw;
+      }
+    
+      .logo-box {
+        margin-top: 2vh;
+        .footer-info {
+          margin-left: 2vw;
+    
+          img {
+            margin-top: 1vh;
+            height: 2rem;
+            width: auto;
+            max-height: 35px;
+          }
+        }
+      }
+    
+      .info-text {
+        margin: 15px 5px !important;
+      }
+
+      @media screen and (max-width: 800px) {
+        .logo-box {
+          .footer-info {
+            margin-left: 8vw;
+    
+            img {
+              width: 2rem;
+            }
+          }
+    
+          .info-text {
+            display: none;
+          }
+        }
+      }
+}
+
+@media (min-width: $sm) and (max-width: ($md - 1)) {
+    .footer {
+        height: 9.5vw;
+      }
+}
+
+@media (max-width: ($sm - 1)) {
+    .footer {
+        height: 12.4vw;
+        margin-left: 0;
+      }
+    
+      .logo-box {
+        .footer-info {
+          margin-left: 8vw;
+    
+          img {
+            width: 2rem;
+          }
+        }
+    
+        .info-text {
+          display: none;
+        }
+      }
+}
+
+
+.modal-dialog {
+  .modal-content {
+    .modal-body {
+      position: relative;
+      img {
+        width: 100%;
+        height: auto;
+      }
+    }
+  }
+}
