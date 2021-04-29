@@ -41,6 +41,9 @@ export default class AuthenticationStore {
       else if (data.Type == "StoreManager") {
         this._redirectAfterLogin(history, "/account/manage");
       }
+      else if (data.Type == "StoreWarehouseManager") {
+        this._redirectAfterLogin(history, "/warehouse/new-request-goods-note");
+      }
       else {
         this._redirectAfterLogin(history, redirectUrl);
       }

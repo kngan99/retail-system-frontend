@@ -10,6 +10,7 @@ import POSLayout from "./themes/pos/layout"
 import "./themes/style.scss";
 import { cssTransition, ToastContainer } from "react-toastify";
 import { Spin } from 'antd';
+import WarehouseLayout from "./themes/warehouse/layout";
 
 const Zoom = cssTransition({
   enter: 'zoomIn',
@@ -35,6 +36,10 @@ ReactDOM.render(
           <Route
             path="/pos"
             render={(props: any) => <POSLayout {...props} exact />}
+          />
+          <Route
+            path="/warehouse"
+            render={(props: any) => <WarehouseLayout {...props} exact />}
           />
           <Route path="/" render={(props: any) => <App />} />
         </Switch>
