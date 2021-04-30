@@ -38,7 +38,7 @@ interface ComponentProps {
 
 const CustomerAccountForm = (props: ComponentProps) => {
   const authStore = React.useContext(AuthenticationStoreContext);
-  
+
   /*
    * Props of Component
    */
@@ -106,7 +106,7 @@ const CustomerAccountForm = (props: ComponentProps) => {
             <Form.Row className="company-info">
               <Container fluid>
                 <Row>
-                <Form.Group
+                  <Form.Group
                     as={Col}
                     xs={12}
                     lg={7}
@@ -127,10 +127,10 @@ const CustomerAccountForm = (props: ComponentProps) => {
                     <Form.Control.Feedback type="invalid">
                       {errors.email}
                     </Form.Control.Feedback>
-                    </Form.Group>
+                  </Form.Group>
                 </Row>
                 <Row>
-                <Form.Group
+                  <Form.Group
                     as={Col}
                     xs={12}
                     lg={5}
@@ -150,7 +150,7 @@ const CustomerAccountForm = (props: ComponentProps) => {
                       {errors.FName}
                     </Form.Control.Feedback>
                   </Form.Group>
-                <Form.Group
+                  <Form.Group
                     as={Col}
                     xs={12}
                     lg={5}
@@ -177,7 +177,7 @@ const CustomerAccountForm = (props: ComponentProps) => {
                     className="form-group-verifiedStatus"
                   >
                     <Form.Label className="form-label">
-                    Account Status
+                      Account Status
                     </Form.Label>
                     <div className={authStore.loggedUser.EmailVerified ? 'account-status account-status-verified' : 'account-status account-status-unverified'}>
                       {authStore.loggedUser.EmailVerified ? 'Verified' : 'Not Verified'}
@@ -198,7 +198,7 @@ const CustomerAccountForm = (props: ComponentProps) => {
                   </Form.Group>
                 </Row>
                 <Row>
-                <Form.Group
+                  <Form.Group
                     as={Col}
                     xs={12}
                     lg={5}
@@ -206,7 +206,7 @@ const CustomerAccountForm = (props: ComponentProps) => {
                     className="form-group-firstName"
                   >
                     <Form.Label className="form-label">
-                    Title
+                      Title
                     </Form.Label>
                     <Form.Control
                       type="text"
@@ -218,7 +218,7 @@ const CustomerAccountForm = (props: ComponentProps) => {
                       {errors.FName}
                     </Form.Control.Feedback>
                   </Form.Group>
-                <Form.Group
+                  <Form.Group
                     as={Col}
                     xs={12}
                     lg={5}
@@ -226,7 +226,7 @@ const CustomerAccountForm = (props: ComponentProps) => {
                     className="form-group-firstName"
                   >
                     <Form.Label className="form-label">
-                    Title Of Courtesy
+                      Title Of Courtesy
                     </Form.Label>
                     <Form.Control
                       type="text"
@@ -238,15 +238,17 @@ const CustomerAccountForm = (props: ComponentProps) => {
                       {errors.LName}
                     </Form.Control.Feedback>
                   </Form.Group>
+                </Row>
+                <Row>
                   <Form.Group
                     as={Col}
                     xs={12}
-                    lg={2}
+                    lg={5}
                     controlId="Type"
                     className="form-group-firstName"
                   >
                     <Form.Label className="form-label">
-                    Type
+                      Type
                     </Form.Label>
                     <Form.Control
                       type="text"
@@ -258,9 +260,31 @@ const CustomerAccountForm = (props: ComponentProps) => {
                       {errors.LName}
                     </Form.Control.Feedback>
                   </Form.Group>
+                  <Form.Group
+                    as={Col}
+                    xs={12}
+                    lg={5}
+                    controlId="HomePhone"
+                    className="form-group-firstName"
+                  >
+                    <Form.Label className="form-label">
+                      Phone Number
+                    </Form.Label>
+                    <Form.Control
+                      type="text"
+                      value={values.HomePhone ?? ""}
+                      onChange={handleChange}
+                      isInvalid={!!errors.LName}
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      {errors.LName}
+                    </Form.Control.Feedback>
+                  </Form.Group>
+
+
                 </Row>
                 <Row>
-                <Form.Group
+                  <Form.Group
                     as={Col}
                     xs={12}
                     lg={5}
@@ -268,7 +292,7 @@ const CustomerAccountForm = (props: ComponentProps) => {
                     className="form-group-firstName"
                   >
                     <Form.Label className="form-label">
-                    Password
+                      Password
                     </Form.Label>
                     <Form.Control
                       type="text"
@@ -282,7 +306,7 @@ const CustomerAccountForm = (props: ComponentProps) => {
                   </Form.Group>
                 </Row>
                 <Row>
-                <Form.Group
+                  <Form.Group
                     as={Col}
                     xs={12}
                     lg={5}
@@ -290,7 +314,7 @@ const CustomerAccountForm = (props: ComponentProps) => {
                     className="form-group-firstName"
                   >
                     <Form.Label className="form-label">
-                    Birthday
+                      Birthday
                     </Form.Label>
                     <Form.Control
                       type="text"
@@ -302,7 +326,7 @@ const CustomerAccountForm = (props: ComponentProps) => {
                       {errors.LName}
                     </Form.Control.Feedback>
                   </Form.Group>
-                <Form.Group
+                  <Form.Group
                     as={Col}
                     xs={12}
                     lg={5}
@@ -310,7 +334,7 @@ const CustomerAccountForm = (props: ComponentProps) => {
                     className="form-group-firstName"
                   >
                     <Form.Label className="form-label">
-                    Hire Date
+                      Hire Date
                     </Form.Label>
                     <Form.Control
                       type="text"
@@ -322,29 +346,9 @@ const CustomerAccountForm = (props: ComponentProps) => {
                       {errors.FName}
                     </Form.Control.Feedback>
                   </Form.Group>
-                <Form.Group
-                    as={Col}
-                    xs={12}
-                    lg={2}
-                    controlId="HomePhone"
-                    className="form-group-firstName"
-                  >
-                    <Form.Label className="form-label">
-                    Phone Number
-                    </Form.Label>
-                    <Form.Control
-                      type="text"
-                      value={values.HomePhone ?? ""}
-                      onChange={handleChange}
-                      isInvalid={!!errors.LName}
-                    />
-                    <Form.Control.Feedback type="invalid">
-                      {errors.LName}
-                    </Form.Control.Feedback>
-                  </Form.Group>
                 </Row>
                 <Row>
-                <Form.Group
+                  <Form.Group
                     as={Col}
                     xs={12}
                     lg={5}
@@ -352,7 +356,7 @@ const CustomerAccountForm = (props: ComponentProps) => {
                     className="form-group-firstName"
                   >
                     <Form.Label className="form-label">
-                    Country
+                      Country
                     </Form.Label>
                     <Form.Control
                       type="text"
@@ -364,7 +368,7 @@ const CustomerAccountForm = (props: ComponentProps) => {
                       {errors.FName}
                     </Form.Control.Feedback>
                   </Form.Group>
-                <Form.Group
+                  <Form.Group
                     as={Col}
                     xs={12}
                     lg={5}
@@ -372,7 +376,7 @@ const CustomerAccountForm = (props: ComponentProps) => {
                     className="form-group-firstName"
                   >
                     <Form.Label className="form-label">
-                    PostalCode
+                      PostalCode
                     </Form.Label>
                     <Form.Control
                       type="text"
@@ -386,7 +390,7 @@ const CustomerAccountForm = (props: ComponentProps) => {
                   </Form.Group>
                 </Row>
                 <Row>
-                <Form.Group
+                  <Form.Group
                     as={Col}
                     xs={12}
                     lg={5}
@@ -394,7 +398,7 @@ const CustomerAccountForm = (props: ComponentProps) => {
                     className="form-group-firstName"
                   >
                     <Form.Label className="form-label">
-                    City
+                      City
                     </Form.Label>
                     <Form.Control
                       type="text"
@@ -406,7 +410,7 @@ const CustomerAccountForm = (props: ComponentProps) => {
                       {errors.FName}
                     </Form.Control.Feedback>
                   </Form.Group>
-                <Form.Group
+                  <Form.Group
                     as={Col}
                     xs={12}
                     lg={5}
@@ -414,7 +418,7 @@ const CustomerAccountForm = (props: ComponentProps) => {
                     className="form-group-firstName"
                   >
                     <Form.Label className="form-label">
-                    Region
+                      Region
                     </Form.Label>
                     <Form.Control
                       type="text"
@@ -428,7 +432,7 @@ const CustomerAccountForm = (props: ComponentProps) => {
                   </Form.Group>
                 </Row>
                 <Row>
-                <Form.Group
+                  <Form.Group
                     as={Col}
                     xs={12}
                     lg={12}
@@ -436,7 +440,7 @@ const CustomerAccountForm = (props: ComponentProps) => {
                     className="form-group-firstName"
                   >
                     <Form.Label className="form-label">
-                    Address
+                      Address
                     </Form.Label>
                     <Form.Control
                       type="text"
@@ -450,7 +454,7 @@ const CustomerAccountForm = (props: ComponentProps) => {
                   </Form.Group>
                 </Row>
                 <Row>
-                <Form.Group
+                  <Form.Group
                     as={Col}
                     xs={12}
                     lg={12}
@@ -458,7 +462,7 @@ const CustomerAccountForm = (props: ComponentProps) => {
                     className="form-group-firstName"
                   >
                     <Form.Label className="form-label">
-                    Notes
+                      Notes
                     </Form.Label>
                     <Form.Control
                       type="text"
@@ -483,7 +487,7 @@ const CustomerAccountForm = (props: ComponentProps) => {
                       <Form.Label className="form-label">
                         Upload Profile Avatar
                         <span className="image-size">
-                        {"Image size < 3MB"}
+                          {"Image size < 3MB"}
                         </span>
                       </Form.Label>
                       {avatar && (

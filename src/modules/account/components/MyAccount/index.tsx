@@ -49,9 +49,10 @@ const MyAccount = (props: ComponentProps) => {
   };
 
   const handleSubmit = async (values: any) => {
+    console.log("Ngan")
     accountStore.setAccountForm(values);
     const result = await uploadFiles();
-    if (result) {
+    if (true) {
       const data = await accountStore.updateAccount(authStore.loggedUser.Id);
       if (data) {
         const user = await accountStore.getAccountInfo(authStore.loggedUser.Id);
