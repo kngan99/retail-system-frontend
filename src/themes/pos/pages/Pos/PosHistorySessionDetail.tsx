@@ -1,8 +1,8 @@
 import { observer } from "mobx-react";
 import React from "react";
 import { ProductStoreContext } from "../../../../modules/product/product.store";
-import { CartStoreContext } from "../../stores/cart.store";
-import { Modal, Button, Pagination, Table, Tag, Radio, Space, Tabs, Card, Skeleton, Avatar, List, Spin, Divider, Form, Input, Select, message } from 'antd';
+
+import { Modal, Button, Pagination, Table, Tag, Radio, Space, Tabs, Card, Skeleton, Avatar, List, Spin, Divider, Form, Input, Select, message, PageHeader } from 'antd';
 import { ExclamationCircleOutlined, ShoppingCartOutlined, DatabaseOutlined } from "@ant-design/icons";
 import { ColumnsType } from "antd/es/table";
 import UpdateProductModal from "../../../../modules/product/components/ManageProduct/UpdateProductModal";
@@ -16,15 +16,18 @@ import { CommonStoreContext } from '../../../../common/common.store';
 import { HistoryStoreContext } from "../../stores/history.store";
 import { string } from "yup/lib/locale";
 import { useHistory } from 'react-router-dom';
-
+import { AuthenticationStoreContext } from '../../../../modules/authenticate/authentication.store';
+import { DEFAULT_ROUTERS } from '../../../../modules/account/router.enum';
 const { confirm } = Modal;
 
 
 
 const PosHistoryPage = (props) => {
   const history = useHistory();
+  const authenticationStore = React.useContext(AuthenticationStoreContext);
   const commonStore = React.useContext(CommonStoreContext);
   const historyStore = React.useContext(HistoryStoreContext);
+
   React.useEffect(() => {
     historyStore.getCurrentSessionDetail(props.props.match.params.sessionId);
   }, []);
@@ -88,6 +91,10 @@ const PosHistoryPage = (props) => {
     },
   ];
 
+  const handleLogout = () => {
+    authenticationStore.logout(history, DEFAULT_ROUTERS.LOGIN);
+  };
+
   const { TabPane } = Tabs;
   const { Meta } = Card;
   const gridStyle = {
@@ -101,6 +108,10 @@ const PosHistoryPage = (props) => {
         background: "white", width: "97%",
         margin: "auto", padding: "10px",
       }}>
+
+        <Breadcrumb style={{ backgroundColor: '#ffe58f' }} className="mb-0 pb-0">
+          <h5>Orders</h5>
+        </Breadcrumb>
         <Spin spinning={historyStore.loading}>
           <Table columns={columns} dataSource={historyStore.orders} rowKey={(record) => record.Id} pagination={false} /><br /><br />
           <Pagination

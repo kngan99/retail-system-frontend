@@ -22,18 +22,55 @@ const { Panel } = Collapse;
 
 const HistoryPage = (props) => {
     const history = useHistory();
+    const cartStore = React.useContext(CartStoreContext);
     const authenticationStore = React.useContext(AuthenticationStoreContext);
     const commonStore = React.useContext(CommonStoreContext);
+    const historyStore = React.useContext(HistoryStoreContext);
     const handleLogout = () => {
         authenticationStore.logout(history, DEFAULT_ROUTERS.LOGIN);
     };
+    React.useEffect(() => {
+        historyStore.getCurrentSessionDetail(props.match.params.sessionId);
+        cartStore.getCashierInfo();
+        console.log(historyStore.currentDetailSession);
+    }, []);
 
 
     return (
         <>
             <AdminWrapper>
                 <div style={{ background: "linear-gradient(90deg, #fab91a 0, #ffd424 100%)" }} className="site-page-header-ghost-wrapper">
-
+                    <PageHeader
+                        ghost={false}
+                        // onBack={() => window.history.back()}
+                        title={<h5 style={{ 'color': '#8c8c8c' }}>Salesclerk:</h5>}
+                        subTitle={<h5 style={{ 'color': '#ffc53d' }}>{cartStore.salescleckFullName}</h5>}
+                        extra={[
+                            <Button key="3">Help?</Button>,
+                            <Button onClick={() => { history.push('/pos') }} key="2">Return to sale page</Button>,
+                            <Button key="5" type="primary" onClick={() => handleLogout()}>
+                                Log out
+                        </Button>,
+                        ]}
+                    >
+                        {historyStore.currentDetailSession && <Collapse defaultActiveKey={['1']}>
+                            <Panel header={<strong style={{ color: '#8c8c8c' }}>Detail info</strong>} key="1">
+                                <Descriptions size="small" column={3}>
+                                    <Descriptions.Item label="Store Manager:">Lili Qu</Descriptions.Item>
+                                    <Descriptions.Item label="Session Id:">
+                                        <a>{historyStore.currentDetailSession.data.SessionId}</a>
+                                    </Descriptions.Item>
+                                    <Descriptions.Item label="Session start:">{new Date(historyStore.currentDetailSession.data.Start).toLocaleString()}</Descriptions.Item>
+                                    <Descriptions.Item label="Session end:">{new Date(historyStore.currentDetailSession.data.End).toLocaleString()}</Descriptions.Item>
+                                    <Descriptions.Item label="Total:">{historyStore.currentDetailSession.total[0].total}</Descriptions.Item>
+                                    <Descriptions.Item label="Current time:"><Clock format={commonStore.hourMinusFormat} ticking={true} /></Descriptions.Item>
+                                    <Descriptions.Item label="Store:">
+                                        TN Store, A123 St., W.10, D.1, Abc City
+                                </Descriptions.Item>
+                                </Descriptions>
+                            </Panel>
+                        </Collapse>}
+                    </PageHeader>
                 </div >
                 <Layout style={{ background: "linear-gradient(90deg, #fab91a 0, #ffd424 100%)" }} className="layout">
                     <Content style={{ padding: '0 1px' }}>
