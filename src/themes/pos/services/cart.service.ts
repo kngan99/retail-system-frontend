@@ -27,6 +27,22 @@ class CartService {
     return result.data;
   }
 
+  public async getPastSessions(skip: number, take: number) {
+    const result = await http.get(`${this.sessionPrefix}/past`, {
+      params: {
+        page: skip,
+        limit: take,
+      },
+    });
+    return result.data;
+  }
+
+  public async getSessionDetail(id: string) {
+    const result = await http.get(`${this.sessionPrefix}/${id}`, {
+    });
+    return result.data;
+  }
+
 }
 
 export default new CartService();

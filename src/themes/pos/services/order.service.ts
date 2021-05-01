@@ -35,6 +35,27 @@ class OrderService {
         return result.data;
     }
 
+    public async getPastSessions(skip: number, take: number, key: string) {
+        const result = await http.get(`${this.orderPrefix}/paginateOrdersBySession`, {
+            params: {
+                page: skip,
+                limit: take,
+                key: key,
+            },
+        });
+        return result.data;
+    }
+
+    public async getPastOrders(skip: number, take: number) {
+        const result = await http.get(`${this.orderPrefix}/paginateOrders`, {
+            params: {
+                page: skip,
+                limit: take,
+            },
+        });
+        return result.data;
+    }
+
 }
 
 export default new OrderService();
