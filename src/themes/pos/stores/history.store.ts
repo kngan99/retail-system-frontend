@@ -17,10 +17,13 @@ class HistoryStore {
     async getPastSessions() {
         this.loading = true;
         let data: any = [];
+        let ordersdata: any = [];
         this.pageNum = 1;
         this.pageSize = 10;
         this.totalCount = 0;
         data = await cartService.getPastSessions(this.pageNum, this.pageSize);
+        ordersdata = await orderService.getPastOrders(this.pageNum, this.pageSize);
+        this.orders = ordersdata.items;
         this.sessions = data.items;
         this.totalCount = data.meta.totalItems;
         this.loading = false;

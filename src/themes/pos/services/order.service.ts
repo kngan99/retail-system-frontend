@@ -56,6 +56,12 @@ class OrderService {
         return result.data;
     }
 
+    public async getOrderDetail(id: number) {
+        const result = await http.get(`${this.orderPrefix}/id/${id}`, {
+        });
+        return result.data;
+    }
+
 }
 
 export default new OrderService();

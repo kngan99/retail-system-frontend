@@ -5,6 +5,9 @@ import cartService from '../services/cart.service';
 
 class OrderStore {
     @observable orders: any[] = [];
+    @observable currentDetailOrder: any;
+    @observable order: any;
+    @observable products: any[] = [];
     @observable totalCount: number = 0;
     @observable pageNum: number = 1;
     @observable pageSize: number = 10;
@@ -33,6 +36,17 @@ class OrderStore {
         data = await orderService.getPastOrders(this.pageNum, this.pageSize);
         this.orders = data.items;
         this.totalCount = data.meta.totalItems;
+        this.loading = false;
+    }
+
+    @action.bound
+    async getCurrentOrderDetail(id: number) {
+        this.loading = true;
+        const data = await orderService.getOrderDetail(id);
+        this.currentDetailOrder = data;
+        this.order = this.currentDetailOrder.existedOrder;
+        this.products = this.currentDetailOrder.existedProductOrder[0];
+        console.log(this.products);
         this.loading = false;
     }
 

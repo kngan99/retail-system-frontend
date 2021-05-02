@@ -14,6 +14,8 @@ import { DEFAULT_ROUTERS } from '../../../../modules/account/router.enum';
 import { useHistory } from 'react-router-dom';
 import AdminWrapper from "../../../../modules/admin-account/components/AdminWrapper";
 import PosHistorySessionDetail from "../Pos/PosHistorySessionDetail";
+import PosHistoryOrderDetail from "../Pos/PosHistoryOrderDetail";
+import { OrderStoreContext } from "../../stores/order.store";
 const { Header, Content, Footer } = Layout;
 const { Panel } = Collapse;
 
@@ -24,14 +26,14 @@ const HistoryPage = (props) => {
     const history = useHistory();
     const cartStore = React.useContext(CartStoreContext);
     const authenticationStore = React.useContext(AuthenticationStoreContext);
+    const orderStore = React.useContext(OrderStoreContext);
     const commonStore = React.useContext(CommonStoreContext);
     const historyStore = React.useContext(HistoryStoreContext);
     const handleLogout = () => {
         authenticationStore.logout(history, DEFAULT_ROUTERS.LOGIN);
     };
     React.useEffect(() => {
-        historyStore.getCurrentSessionDetail(props.match.params.sessionId);
-        console.log(historyStore.currentDetailSession);
+        orderStore.getCurrentOrderDetail(props.match.params.orderId);
     }, []);
 
 
@@ -50,29 +52,40 @@ const HistoryPage = (props) => {
                         </Button>,
                         ]}
                     >
-                        {historyStore.currentDetailSession && <Collapse defaultActiveKey={['1']}>
+                        {orderStore.order && <Collapse defaultActiveKey={['1']}>
                             <Panel header={<strong style={{ color: '#8c8c8c' }}>Detail info</strong>} key="1">
                                 <Descriptions size="small" column={2}>
-                                    <Descriptions.Item label="Store Manager:">Lili Qu</Descriptions.Item>
-                                    <Descriptions.Item label="Session Id:">
-                                        <a>{historyStore.currentDetailSession.data.SessionId}</a>
+                                    <Descriptions.Item label="Store Manager">Lili Qu</Descriptions.Item>
+                                    <Descriptions.Item label="Session Id">
+                                        <a>{orderStore.order.SessionId}</a>
                                     </Descriptions.Item>
-                                    <Descriptions.Item label="Session start:">{new Date(historyStore.currentDetailSession.data.Start).toLocaleString()}</Descriptions.Item>
-                                    <Descriptions.Item label="Session end:">{new Date(historyStore.currentDetailSession.data.End).toLocaleString()}</Descriptions.Item>
-                                    <Descriptions.Item label="Total:">{historyStore.currentDetailSession.total[0].total}</Descriptions.Item>
-                                    <Descriptions.Item label="Current time:"><Clock format={commonStore.hourMinusFormat} ticking={true} /></Descriptions.Item>
-                                    <Descriptions.Item label="Store:">
+                                    <Descriptions.Item label="Order Date">{new Date(orderStore.order.OrderDate).toLocaleString()}</Descriptions.Item>
+                                    <Descriptions.Item label="Saleslerk">{orderStore.order.Account.FName + " " + orderStore.order.Account.LName}</Descriptions.Item>
+                                    <Descriptions.Item label="Current time"><Clock format={commonStore.hourMinusFormat} ticking={true} /></Descriptions.Item>
+                                    <Descriptions.Item label="Store">
                                         TN Store, A123 St., W.10, D.1, Abc City
                                 </Descriptions.Item>
                                 </Descriptions>
                             </Panel>
                         </Collapse>}
+                        {orderStore.order && orderStore.order.Customer &&
+                            <Collapse defaultActiveKey={['2']}>
+                                <Panel header={<strong style={{ color: '#8c8c8c' }}>Customer's info</strong>} key="1">
+                                    <Descriptions size="small" column={2}>
+                                        <Descriptions.Item label="Customer">{orderStore.order.Customer.ContactTitle + ". " + orderStore.order.Customer.ContactName}</Descriptions.Item>
+                                        <Descriptions.Item label="Customer's Address">{orderStore.order.Customer.Address + ", " + orderStore.order.Customer.City + ", " + orderStore.order.Customer.Region + ", " + orderStore.order.Customer.Country}</Descriptions.Item>
+                                        <Descriptions.Item label="Customer's Address Postal Code">{orderStore.order.Customer.PostalCode}</Descriptions.Item>
+                                        <Descriptions.Item label="Customer's Phone">{orderStore.order.Customer.Phone}</Descriptions.Item>
+                                        <Descriptions.Item label="Customer's Fax">{orderStore.order.Customer.Fax}</Descriptions.Item>
+                                    </Descriptions>
+                                </Panel>
+                            </Collapse>}
                     </PageHeader>
                 </div >
                 <Layout style={{ background: "linear-gradient(90deg, #fab91a 0, #ffd424 100%)" }} className="layout">
                     <Content style={{ padding: '0 1px' }}>
 
-                        <div className="site-layout-content"><PosHistorySessionDetail props={props} /></div>
+                        <div className="site-layout-content"><PosHistoryOrderDetail props={props} /></div>
                     </Content>
                     <Footer style={{ textAlign: 'center', background: "linear-gradient(90deg, #fab91a 0, #ffd424 100%)" }}></Footer>
                 </Layout>

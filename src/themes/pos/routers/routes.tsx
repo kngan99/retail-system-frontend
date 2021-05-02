@@ -31,4 +31,14 @@ export const posRoutes = [
     isLayout: false,
     isGuarded: false,
   },
+  {
+    path: '/pos/order/:orderId',
+    name: 'pospast',
+    title: 'History',
+    exact: true,
+    permission: '',
+    component: React.lazy(() => import('../pages/OrderDetail')),
+    isLayout: false,
+    isGuarded: false,
+  },
 ];
