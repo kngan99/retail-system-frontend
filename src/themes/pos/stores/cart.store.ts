@@ -3,6 +3,7 @@ import { observable, action, computed, reaction, makeObservable, autorun } from 
 import productService from '../../../modules/product/product.service';
 import cartService from '../services/cart.service'
 import orderService from '../services/order.service'
+import customerService from '../services/customer.service'
 import { message } from 'antd';
 // import { Product } from '../../../modules/product/product.dto';
 
@@ -40,6 +41,8 @@ interface Session {
 class CartStore {
     @observable productsInCart: CartProduct[] = [];
     @observable loading: boolean = true;
+    @observable customers: any[] = [];
+    @observable currentCustomer: any = { Phone: "", Address: "" };
     @observable session: string = '';
     @observable sessionStart: string = '';
     @observable salescleckId: number = 0;
@@ -163,6 +166,21 @@ class CartStore {
             this.session = result.Session.SessionId;
             this.sessionStart = result.Session.Start;
         }
+        this.loading = false;
+    }
+    @action.bound
+    getCustomers = async (key: string) => {
+        this.loading = true;
+        const result = await customerService.searchCustomers(key);
+        this.customers = result;
+        this.loading = false;
+    }
+    @action.bound
+    changeCustomer = async (id: number) => {
+        this.loading = true;
+        const result = this.customers.filter(a => a.Id == id);
+        console.log(result[0]);
+        this.currentCustomer = result[0];
         this.loading = false;
     }
     @action.bound

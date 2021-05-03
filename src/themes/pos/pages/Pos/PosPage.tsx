@@ -28,7 +28,7 @@ interface Product {
 
 const { confirm } = Modal;
 
-
+const { Option } = Select;
 
 const PosPage = () => {
   const commonStore = React.useContext(CommonStoreContext);
@@ -126,6 +126,8 @@ const PosPage = () => {
     console.log(key);
   }
 
+
+
   const { TabPane } = Tabs;
   const { Meta } = Card;
   const gridStyle = {
@@ -150,6 +152,16 @@ const PosPage = () => {
   }
 
   const { Search } = Input;
+
+  const onSearch = (val: string) => {
+    cartStore.getCustomers(val);
+  }
+
+
+
+  const onCustomerChange = (value: number) => {
+    cartStore.changeCustomer(value);
+  };
 
   return (
     <>
@@ -249,10 +261,20 @@ const PosPage = () => {
               layout="horizontal"
             >
               <Form.Item label="Customer">
-                <Input />
+                <Select
+                  showSearch
+                  placeholder="Select a person"
+                  optionFilterProp="children"
+                  onSearch={onSearch}
+                  onChange={onCustomerChange}
+                >
+                  {cartStore.customers.map(function (item) {
+                    return (<Option value={item['Id']}>{item['ContactName']}</Option>)
+                  })}
+                </Select>
               </Form.Item>
               <Form.Item label="Phone">
-                <Input />
+                <Input value={cartStore.currentCustomer.Phone} />
               </Form.Item>
               <Form.Item label="Address">
                 <Input />
