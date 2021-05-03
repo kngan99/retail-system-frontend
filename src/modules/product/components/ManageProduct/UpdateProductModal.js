@@ -42,7 +42,9 @@ const formItemLayout = {
     },
 };
 
-const CollectionCreateForm = ({ visible, onCreate, onCancel, record }) => {
+const { Option } = Select;
+
+const CollectionCreateForm = ({ visible, onCreate, onCancel, record, categories }) => {
     const [form] = Form.useForm();
     const [switchState, setSwitchState] = React.useState(record.Discontinued);
     const onFinish = (values) => {
@@ -121,16 +123,18 @@ const CollectionCreateForm = ({ visible, onCreate, onCancel, record }) => {
 
                 <Form.Item
                     name="CategoryId"
-                    label="Category Id"
+                    label="Category"
                     rules={[
                         {
                             required: true,
-                            message: 'Please input the category id!',
                         },
                     ]}
-                    hasFeedback
                 >
-                    <InputNumber />
+                    <Select>
+                        {categories.map(function (item) {
+                            return (<Option value={item['Id']}>{item['CategoryName']}</Option>)
+                        })}
+                    </Select>
                 </Form.Item>
 
                 <Form.Item
@@ -233,6 +237,7 @@ const UpdateProductModal = (pros) => {
                         setVisible(false);
                     }}
                     record={pros.record}
+                    categories={productStore.categories}
                 />
             </LazyLoad>
         </div>

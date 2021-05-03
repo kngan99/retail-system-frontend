@@ -5,6 +5,7 @@ import { Product } from './product.dto';
 
 class ProductStore {
     @observable products: Product[] = [];
+    @observable categories: any[] = [];
     @observable totalCount: number = 0;
     @observable pageNum: number = 1;
     @observable pageSize: number = 10;
@@ -87,6 +88,8 @@ class ProductStore {
         this.loading = true;
         let data: any = [];
         data = await productService.searchProductsPagination(this.pageNum, this.pageSize, this.searchKey.trim());
+        this.categories = await productService.getAllCategories();
+        console.log(this.categories);
         this.products = data.items;
         this.totalCount = data.meta.totalItems;
         this.loading = false;

@@ -21,6 +21,13 @@ class ProductService {
     return result.data;
   }
 
+  public async getAllCategories() {
+    const result = await http.get(`${this.productPrefix}/categories`, {
+
+    });
+    return result.data;
+  }
+
   public async createProduct(product: Product) {
     console.log("Value before sending")
     console.log(product);

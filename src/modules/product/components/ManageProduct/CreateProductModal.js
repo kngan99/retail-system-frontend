@@ -62,7 +62,7 @@ const formItemLayout = {
     },
 };
 
-const CollectionCreateForm = ({ visible, onCreate, onCancel }) => {
+const CollectionCreateForm = ({ visible, onCreate, onCancel, categories }) => {
     const [form] = Form.useForm();
     const onFinish = (values) => {
         console.log("Received values of form: ", values);
@@ -126,16 +126,18 @@ const CollectionCreateForm = ({ visible, onCreate, onCancel }) => {
 
                 <Form.Item
                     name="CategoryId"
-                    label="Category Id"
+                    label="Category"
                     rules={[
                         {
                             required: true,
-                            message: 'Please input the category id!',
                         },
                     ]}
-                    hasFeedback
                 >
-                    <InputNumber />
+                    <Select defaultValue="1">
+                        {categories.map(function (item) {
+                            return (<Option value={item['Id']}>{item['CategoryName']}</Option>)
+                        })}
+                    </Select>
                 </Form.Item>
 
                 <Form.Item
@@ -238,6 +240,7 @@ const CreateProductModal = (pros) => {
                 onCancel={() => {
                     setVisible(false);
                 }}
+                categories={productStore.categories}
             />
         </div >
     );
