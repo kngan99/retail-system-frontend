@@ -21,4 +21,14 @@ export const warehouseRoutes = [
     isLayout: false,
     isGuarded: false,
   },
+  {
+    path: '/warehouse/new-request-goods-note-cart',
+    name: 'home',
+    title: 'Warehouse home',
+    exact: true,
+    permission: '',
+    component: React.lazy(() => import('../../../modules/warehouse/pages/CreateRequestGoodsCartPage')),
+    isLayout: false,
+    isGuarded: false,
+  },
 ];
