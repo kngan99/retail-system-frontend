@@ -8,6 +8,7 @@ interface CashierInfo {
 
 class CartService {
   sessionPrefix: string = "http://localhost:4000/api/sessions";
+  cargoRequestPrefix: string = "http://localhost:4000/api/cargo-requests"
 
   public async startNewSession() {
     const result = await http.post(`${this.sessionPrefix}`, {
@@ -25,6 +26,11 @@ class CartService {
     const result = await http.get(`${this.sessionPrefix}/`, {
     });
     return result.data;
+  }
+
+  public async createCargoRequest(model: any) {
+    const result = await http.post(`${this.cargoRequestPrefix}/`, model);
+    return result;
   }
 
 }

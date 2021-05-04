@@ -37,12 +37,6 @@ const NewRequestGoodsNote = (props: ComponentProps) => {
   } = props;
     
   const {
-    ACCOUNT_LOGIN_WELCOME,
-    ACCOUNT_EMAIL,
-    PLACEHOLDER_EMAIL,
-    ACCOUNT_PASSWORD,
-    PLACEHOLDER_PASSWORD,
-    ACCOUNT_LINK_FORGOTPASSWORD,
     VALIDATE_REQUIRED,
   } = I18N;
 
@@ -55,7 +49,6 @@ const NewRequestGoodsNote = (props: ComponentProps) => {
 
   return (
       <>
-          {/* Copy from Login form have not fixed */}
       <PreCartPage></PreCartPage>
     </>
   );

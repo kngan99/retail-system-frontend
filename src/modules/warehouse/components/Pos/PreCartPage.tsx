@@ -38,6 +38,7 @@ import Button from "antd/lib/button";
 import Input from "antd/lib/input";
 import { Avatar, Form, List, message, Pagination, Skeleton, Spin, Table } from "antd";
 import { Link, Redirect, useHistory } from "react-router-dom";
+import { AuthenticationStoreContext } from "../../../authenticate/authentication.store";
 
 interface Product {
   Id: number;
@@ -59,12 +60,11 @@ const PreCartPage = () => {
   const cartStore = React.useContext(CartStoreContext);
   const [total, setTotal] = React.useState<number>();
   const [returnCash, setReturnCash] = React.useState<number>(0);
-  const history = useHistory();
   React.useEffect(() => {}, [returnCash, cartStore.loading]);
   React.useEffect(() => {
     productStore.startSearch();
   }, []);
-
+  
   const showTotal = (total: number) => {
     return `Total ${total} items`;
   };

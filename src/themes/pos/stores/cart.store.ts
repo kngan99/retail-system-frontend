@@ -37,6 +37,13 @@ interface Session {
     SalecleckId: number;
 }
 
+interface CargoRequest {
+    ProductId : number[];
+    Quantity: number[];
+    WarehouseId: number;
+    StoreId: number;
+}
+
 class CartStore {
     @observable productsInCart: CartProduct[] = [];
     @observable loading: boolean = true;
@@ -46,6 +53,12 @@ class CartStore {
     @observable salescleckFullName: string = '';
     @observable isCheckout: boolean = false;
     @observable isConfirm: boolean = false;
+    @observable cargoRequest: CargoRequest = {
+        ProductId: [],
+        Quantity: [],
+        WarehouseId: -1,
+        StoreId: -1,
+    };
     @computed get totalNum() {
         let total = 0;
         for (let item of this.productsInCart) {
@@ -196,6 +209,39 @@ class CartStore {
     @action.bound
     fetchCart = async () => {
         return this.productsInCart;
+    }
+
+    @action.bound
+    setCargoRequest = (warehouseId: number, storeId: number) => {
+        let prodId : number[] = [];
+        let quan : number[] = [];
+        for (let product of this.productsInCart) {
+            prodId.push(product.Id);
+            quan.push(product.Quantity);
+        }
+        this.cargoRequest = {
+            ProductId: prodId,
+            Quantity: quan,
+            WarehouseId: warehouseId,
+            StoreId: storeId,
+        }
+    }
+
+    @action.bound
+    resetCargoRequest = () => {
+        this.cargoRequest = {
+            ProductId: [],
+            Quantity: [],
+            WarehouseId: -1,
+            StoreId: -1,
+        };
+    }
+
+    @action.bound
+    sendCargoRequest = async () => {
+        console.log(this.cargoRequest);
+        const result = await cartService.createCargoRequest(this.cargoRequest);
+        return result;
     }
 
     constructor() {
