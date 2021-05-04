@@ -4,7 +4,9 @@ import { toast } from "react-toastify";
 import { useHistory } from "react-router-dom";
 import { Formik } from "formik";
 import { I18N } from "../../../../i18n.enum";
-import { Button, ButtonGroup, Form } from "react-bootstrap";
+import { Button, ButtonGroup, Col, Form } from "react-bootstrap";
+import * as yup from 'yup';
+import CartPage from "../Pos/CartPage";
 
 /*
  * Props of Component
@@ -41,18 +43,24 @@ const NewRequestGoodsNote = (props: ComponentProps) => {
     ACCOUNT_PASSWORD,
     PLACEHOLDER_PASSWORD,
     ACCOUNT_LINK_FORGOTPASSWORD,
-    BUTTONS_LOGIN,
-    BUTTONS_SIGNUP,
+    VALIDATE_REQUIRED,
   } = I18N;
 
+  /*
+   * Validation
+   */
+  const schema = yup.object({
+    warehouseId: yup.string().required(VALIDATE_REQUIRED),
+  });
 
   return (
       <>
           {/* Copy from Login form have not fixed */}
+      <CartPage></CartPage>
      <Formik
         validationSchema={schema}
         onSubmit={(values) => {
-          handleLogin(values);
+          // handleLogin(values);
         }}
         initialValues={initialValues}
       >
@@ -123,24 +131,12 @@ const NewRequestGoodsNote = (props: ComponentProps) => {
                 <Button
                   variant="link"
                   className="action-link"
-                  onClick={handleForgotPassword}
+                  // onClick={handleForgotPassword}
                 >
                   {ACCOUNT_LINK_FORGOTPASSWORD}
                 </Button>
               </Form.Group>
             </Form.Row>
-            <ButtonGroup className="form-actions">
-              <Button variant="primary" type="submit">
-                <span>{BUTTONS_LOGIN}</span>
-                <i className="ico ico-o-next"></i>
-              </Button>
-              {handleSignUp && (
-                <Button onClick={handleSignUp} variant="outline-primary">
-                  <span>{BUTTONS_SIGNUP}</span>
-                  <i className="ico ico-plus"></i>
-                </Button>
-              )}
-            </ButtonGroup>
           </Form>
         )}
       </Formik>
