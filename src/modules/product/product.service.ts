@@ -14,6 +14,13 @@ class ProductService {
     return result.data;
   }
 
+  public async getProductForecast(id: number) {
+    const result = await http.get(`${this.productPrefix}/timeseries/${id}`, {
+
+    });
+    return result.data;
+  }
+
   public async getAllProducts() {
     const result = await http.get(`${this.productPrefix}/`, {
 

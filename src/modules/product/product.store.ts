@@ -6,6 +6,7 @@ import { Product } from './product.dto';
 class ProductStore {
     @observable products: Product[] = [];
     @observable categories: any[] = [];
+    @observable salesForecast: any[] = [];
     @observable totalCount: number = 0;
     @observable pageNum: number = 1;
     @observable pageSize: number = 10;
@@ -20,6 +21,24 @@ class ProductStore {
         data = await productService.searchProductsPagination(skip, take, this.searchKey);
         this.products = data.items;
         this.totalCount = data.meta.totalItems;
+        this.loading = false;
+    }
+
+    @action.bound
+    async getProductForecast(id: number) {
+        this.loading = true;
+        const data = await productService.getProductForecast(id);
+        console.log(data.data);
+        const result = data.data;
+        var temp = [] as any;
+        result.map(item => {
+            var d = new Date(0); // The 0 there is the key, which sets the date to the epoch
+            d.setUTCSeconds(item[0]);
+            temp.push({ year: d.getDate(), value: item[1] });
+            console.log(item);
+        });
+        this.salesForecast = temp;
+        console.log(this.salesForecast);
         this.loading = false;
     }
 

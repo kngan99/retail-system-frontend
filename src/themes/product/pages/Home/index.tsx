@@ -8,6 +8,7 @@ import "antd/dist/antd.css";
 import UpdateProductModal from "../../../../modules/product/components/ManageProduct/UpdateProductModal";
 import CreateProductModal from "../../../../modules/product/components/ManageProduct/CreateProductModal";
 import { makeAutoObservable, autorun, observable } from "mobx"
+import App from "../../../../modules/product/components/ManageProduct/SalesAnalysis";
 
 interface Product {
   Id: number;
@@ -103,6 +104,7 @@ const HomePage = () => {
         <Space size="middle">
           <UpdateProductModal record={record} />
           <DeleteOutlined onClick={() => showPromiseConfirm(record)} />
+          <App record={record} />
         </Space>
       ),
     },
