@@ -42,7 +42,7 @@ class CartStore {
     @observable productsInCart: CartProduct[] = [];
     @observable loading: boolean = true;
     @observable customers: any[] = [];
-    @observable currentCustomer: any = { Id: 0, Phone: "", Address: "" };
+    @observable currentCustomer: any = { Id: 0, Phone: "", Address: "", City: "", Country: "" };
     @observable session: string = '';
     @observable sessionStart: string = '';
     @observable salescleckId: number = 0;

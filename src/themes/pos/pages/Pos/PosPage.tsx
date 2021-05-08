@@ -274,10 +274,10 @@ const PosPage = () => {
                 </Select>
               </Form.Item>
               <Form.Item label="Phone">
-                <Input value={cartStore.currentCustomer.Phone} />
+                <Input value={cartStore.currentCustomer.Phone} disabled />
               </Form.Item>
               <Form.Item label="Address">
-                <Input />
+                <Input value={cartStore.currentCustomer.Address + ", " + cartStore.currentCustomer.City} disabled />
               </Form.Item>
             </Form>
 
