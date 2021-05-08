@@ -11,6 +11,15 @@ class CustomerService {
     return result.data;
   }
 
+  public async createCustomer(customer: any) {
+    console.log("Value before sending")
+    console.log(customer);
+    const result = await http.post(`${this.sessionPrefix}/`, {
+      ...customer,
+    });
+    return result.data;
+  }
+
 }
 
 export default new CustomerService();

@@ -184,6 +184,13 @@ class CartStore {
         this.loading = false;
     }
     @action.bound
+    async createCustomer(customer: any) {
+        this.loading = true;
+        const result = await customerService.createCustomer(customer);
+        this.currentCustomer = result;
+        this.loading = false;
+    }
+    @action.bound
     endSession = async () => {
         this.loading = true;
         const result = await cartService.endSession(this.session);

@@ -13,6 +13,7 @@ import { Jumbotron, Container, Breadcrumb, Navbar, Nav, Row, Col } from 'react-b
 import '../../../../modules/product/components/ManageProduct/style.css';
 import Clock from 'react-live-clock';
 import { CommonStoreContext } from '../../../../common/common.store';
+import CreateCustomerModal from "../../components/CreateCustomerModal";
 
 interface Product {
   Id: number;
@@ -260,6 +261,8 @@ const PosPage = () => {
               wrapperCol={{ span: 14 }}
               layout="horizontal"
             >
+              <CreateCustomerModal />
+              <br />
               <Form.Item label="Customer">
                 <Select
                   showSearch
@@ -267,6 +270,7 @@ const PosPage = () => {
                   optionFilterProp="children"
                   onSearch={onSearch}
                   onChange={onCustomerChange}
+                  defaultValue={cartStore.currentCustomer.ContactName}
                 >
                   {cartStore.customers.map(function (item) {
                     return (<Option value={item['Id']}>{item['ContactName']}</Option>)
