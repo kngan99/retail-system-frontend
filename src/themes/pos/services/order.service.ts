@@ -23,12 +23,13 @@ interface CartProduct {
 class OrderService {
     orderPrefix: string = "http://localhost:4000/api/orders";
 
-    public async confirmOrder(SalescleckId: number, SessionId: string, cartproducts: CartProduct[]) {
+    public async confirmOrder(SalescleckId: number, SessionId: string, cartproducts: CartProduct[], CustomerId: number) {
         const result = await http.post(`${this.orderPrefix}`, {
             order: {
                 orderDate: moment().format("DD-MM-YYYY hh:mm:ss"),
                 saleClerkId: SalescleckId,
-                sessionId: SessionId
+                sessionId: SessionId,
+                customerId: CustomerId
             },
             cartproducts: cartproducts
         });

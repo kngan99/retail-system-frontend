@@ -42,7 +42,7 @@ class CartStore {
     @observable productsInCart: CartProduct[] = [];
     @observable loading: boolean = true;
     @observable customers: any[] = [];
-    @observable currentCustomer: any = { Phone: "", Address: "" };
+    @observable currentCustomer: any = { Id: 0, Phone: "", Address: "" };
     @observable session: string = '';
     @observable sessionStart: string = '';
     @observable salescleckId: number = 0;
@@ -204,7 +204,7 @@ class CartStore {
     }
     @action.bound
     confirmOrder = async () => {
-        const result = await orderService.confirmOrder(this.salescleckId, this.session, this.productsInCart);
+        const result = await orderService.confirmOrder(this.salescleckId, this.session, this.productsInCart, this.currentCustomer.Id);
         if (result) {
             message.success("Create order successfully!");
             console.log(result);
