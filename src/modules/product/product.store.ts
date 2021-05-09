@@ -34,7 +34,8 @@ class ProductStore {
         result.map(item => {
             var d = new Date(0); // The 0 there is the key, which sets the date to the epoch
             d.setUTCSeconds(item[0]);
-            temp.push({ year: d.getDate(), value: item[1] });
+            console.log(d);
+            temp.push({ year: new Date(parseInt(item[0])).getDate() + '/' + (new Date(parseInt(item[0])).getMonth() + 1), value: item[1] });
             console.log(item);
         });
         this.salesForecast = temp;

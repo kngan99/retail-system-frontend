@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Line } from '@ant-design/charts';
 import { Modal, Button } from 'antd';
 import { ProductStoreContext } from "../../product.store";
+import { LineChartOutlined } from "@ant-design/icons";
 
 const App = (pros) => {
     const productStore = React.useContext(ProductStoreContext);
@@ -82,9 +83,7 @@ const App = (pros) => {
 
     return (
         <>
-            <Button type="primary" onClick={async () => { await showModal(pros.record.Id) }}>
-                Open Modal with async logic
-      </Button>
+            <LineChartOutlined onClick={async () => { await showModal(pros.record.Id) }} />
             <Modal
                 title="Title"
                 visible={visible}

@@ -18,6 +18,7 @@ class ProductService {
     const result = await http.get(`${this.productPrefix}/timeseries/${id}`, {
 
     });
+    console.log(result.data);
     return result.data;
   }
 
