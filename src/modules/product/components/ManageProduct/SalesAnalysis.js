@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Line } from '@ant-design/charts';
+import { Line, Column } from '@ant-design/charts';
 import { Modal, Button } from 'antd';
 import { ProductStoreContext } from "../../product.store";
 import { LineChartOutlined } from "@ant-design/icons";
@@ -92,7 +92,7 @@ const App = (pros) => {
                 onCancel={handleCancel}
                 width={1000}
             >
-                {modalData && <Line {...config} />}
+                {modalData && <Column {...config} />}
             </Modal>
         </>
     );
