@@ -82,7 +82,7 @@ const Cart = observer(({ productsInCart, totalNum, totalAmount, isCheckout }) =>
                         <td>
                         </td>
                         <td class="pr-0">
-                            Total
+                            SubTotal
                         </td>
                         <td>
                             {totalAmount}
@@ -134,7 +134,7 @@ const Cart = observer(({ productsInCart, totalNum, totalAmount, isCheckout }) =>
                         <td>
                         </td>
                         <td>
-                            Total
+                            SubTotal
                         </td>
                         <td>
                             {totalAmount}

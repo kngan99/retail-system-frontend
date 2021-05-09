@@ -2,7 +2,7 @@ import { observer } from "mobx-react";
 import React from "react";
 import { ProductStoreContext } from "../../../../modules/product/product.store";
 import { CartStoreContext } from "../../stores/cart.store";
-import { Modal, Button, Pagination, Table, Tag, Radio, Space, Tabs, Card, Skeleton, Avatar, List, Spin, Divider, Form, Input, Select, message } from 'antd';
+import { Modal, Button, Pagination, Table, Tag, Radio, Space, Tabs, Card, Skeleton, Avatar, List, Spin, Divider, Form, Input, Select, message, Alert } from 'antd';
 import { ExclamationCircleOutlined, AudioOutlined, EditOutlined, EllipsisOutlined, SettingOutlined, DeleteOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import { ColumnsType } from "antd/es/table";
 import UpdateProductModal from "../../../../modules/product/components/ManageProduct/UpdateProductModal";
@@ -148,6 +148,15 @@ const PosPage = () => {
     }
   };
 
+  const onPressEnterCoupon = async (e: any) => {
+    if (!Number.isInteger(Number(e.target.value))) {
+      message.error("Invalid ID!");
+    }
+    else {
+      cartStore.getPromotion(Number(e.target.value));
+    }
+  };
+
   const handleConfirmOrderClick = async () => {
     await cartStore.confirmOrder();
   }
@@ -171,7 +180,7 @@ const PosPage = () => {
         margin: "auto", padding: "10px",
       }}>
         <Row>
-          <Col xs={{ span: 12, offset: 1 }} sm={{ span: 10, offset: 1 }} xl={{ span: 6, offset: 0 }}><Cart productsInCart={cartStore.productsInCart} totalNum={cartStore.totalNum} totalAmount={cartStore.totalAmount} isCheckout={cartStore.isCheckout} /></Col>
+          <Col xs={{ span: 12, offset: 1 }} sm={{ span: 10, offset: 1 }} xl={{ span: 6, offset: 0 }}><Cart productsInCart={cartStore.productsInCart} totalNum={cartStore.totalNum} totalAmount={cartStore.subtotalAmount} isCheckout={cartStore.isCheckout} /></Col>
           {(!cartStore.isCheckout) && <Col xs={{ span: 10, offset: 1 }} sm={{ span: 10, offset: 1 }} xl={{ span: 6, offset: 0 }}>
             <Breadcrumb style={{ backgroundColor: '#ffe58f' }} className="mb-0 pb-0">
               <h5>Products</h5>
@@ -253,6 +262,21 @@ const PosPage = () => {
           </Col>}
           {(cartStore.isCheckout) && <Col xs={{ span: 12, offset: 1 }} sm={{ span: 10, offset: 1 }} xl={{ span: 6, offset: 0 }}>
             <Breadcrumb className="mb-0 pb-0">
+              <h5>Promotion</h5>
+            </Breadcrumb>
+
+            <Form
+              labelCol={{ span: 4 }}
+              wrapperCol={{ span: 14 }}
+              layout="horizontal"
+            >
+              <Form.Item label="Coupon">
+                <Input placeholder="Enter coupon" onPressEnter={async (e) => await onPressEnterCoupon(e)} />
+              </Form.Item>
+            </Form>
+            {cartStore.discount != 0 && <Alert message={"Apply coupon successfully, Discount: " + cartStore.discount} type="success" />}
+            <br />
+            <Breadcrumb className="mb-0 pb-0">
               <h5>Customer</h5>
             </Breadcrumb>
 
@@ -272,7 +296,7 @@ const PosPage = () => {
                   onChange={onCustomerChange}
                   defaultValue={cartStore.currentCustomer.ContactName}
                 >
-                  {cartStore.customers.map(function (item) {
+                  {cartStore.customers && cartStore.customers.map(function (item) {
                     return (<Option value={item['Id']}>{item['ContactName']}</Option>)
                   })}
                 </Select>

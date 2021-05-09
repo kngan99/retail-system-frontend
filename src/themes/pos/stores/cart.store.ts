@@ -40,6 +40,8 @@ interface Session {
 
 class CartStore {
     @observable productsInCart: CartProduct[] = [];
+    @observable coupon: number = 0;
+    @observable discount: number = 0;
     @observable loading: boolean = true;
     @observable customers: any[] = [];
     @observable currentCustomer: any = { Id: 0, Phone: "", Address: "", City: "", Country: "" };
@@ -56,12 +58,19 @@ class CartStore {
         }
         return Number(total.toFixed(2));;
     }
+    @computed get subtotalAmount() {
+        let total = 0;
+        for (let item of this.productsInCart) {
+            total = total + (item.Total)
+        }
+        return Number(total.toFixed(2));
+    }
     @computed get totalAmount() {
         let total = 0;
         for (let item of this.productsInCart) {
             total = total + (item.Total)
         }
-        return total.toFixed(2);
+        return Number(total.toFixed(2)) - this.discount;
     }
     @action.bound
     addToCart = async (product: Product) => {
@@ -145,6 +154,7 @@ class CartStore {
     newOrder = async () => {
         this.loading = true;
         this.emptyCart();
+        this.resetPromotion();
         this.isConfirm = false;
         this.isCheckout = false;
         this.loading = false;
@@ -173,6 +183,21 @@ class CartStore {
         this.loading = true;
         const result = await customerService.searchCustomers(key);
         this.customers = result;
+        this.loading = false;
+    }
+    @action.bound
+    getPromotion = async (coupon: number) => {
+        this.loading = true;
+        this.resetPromotion();
+        const result = await orderService.getPromotion(coupon, this.totalAmount);
+        this.discount = result;
+        this.loading = false;
+    }
+    @action.bound
+    resetPromotion = async () => {
+        this.loading = true;
+        this.coupon = 0;
+        this.discount = 0;
         this.loading = false;
     }
     @action.bound

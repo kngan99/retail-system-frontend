@@ -63,6 +63,14 @@ class OrderService {
         return result.data;
     }
 
+    public async getPromotion(id: number, total: number) {
+        const result = await http.get(`${this.orderPrefix}/promotion/${id}`, {
+            params: {
+                total: total,
+            },
+        });
+        return result.data;
+    }
 }
 
 export default new OrderService();
