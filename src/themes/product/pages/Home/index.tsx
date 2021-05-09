@@ -154,7 +154,8 @@ const HomePage = () => {
                       style={{ width: 300, marginTop: 16 }}
                       actions={[
                         <UpdateProductModal record={product} />,
-                        <DeleteOutlined onClick={() => showPromiseConfirm(product)} />
+                        <DeleteOutlined onClick={() => showPromiseConfirm(product)} />,
+                        <App record={product} />
                       ]}
                     >
 
