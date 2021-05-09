@@ -1,5 +1,7 @@
 import http from "../../../common/sevices";
 import { message } from 'antd';
+import { OrderListDto } from "./list.dto";
+import { prepareGetQuery } from "../../../common/utils/routes.util";
 
 interface CashierInfo {
   Salesclerk: any;
@@ -31,6 +33,22 @@ class CartService {
   public async createCargoRequest(model: any) {
     const result = await http.post(`${this.cargoRequestPrefix}/`, model);
     return result;
+  }
+
+  public async adminDeleteOrder(id: number) {
+    const result = await http.delete(`${this.cargoRequestPrefix}/${id}`);
+    return result;
+  }
+
+  public async getOrderListByAdmin(criteria: OrderListDto) {
+    return await http.get(
+      `${this.cargoRequestPrefix}${prepareGetQuery({ ...criteria })}`
+    );
+  }
+
+  async getOrderByID(id: number) {
+    const result = await http.get(`${this.cargoRequestPrefix}/${id}`);
+    return result.data;
   }
 
 }

@@ -5,6 +5,8 @@ import cartService from '../services/cart.service'
 import orderService from '../services/order.service'
 import { message } from 'antd';
 // import { Product } from '../../../modules/product/product.dto';
+import { removeUnusedProps } from '../../../common/utils/apis.util';
+import { OrderListDto } from '../services/list.dto';
 
 interface CartProduct {
     Id: number;
@@ -73,6 +75,10 @@ class CartStore {
         }
         return total.toFixed(2);
     }
+    @observable orders: any[] = [];
+    @observable totalCount: number = 0;
+    @observable selectedOrder: any = null;
+
     @action.bound
     addToCart = async (product: Product) => {
         if (product.Discontinued) {
@@ -242,6 +248,31 @@ class CartStore {
         console.log(this.cargoRequest);
         const result = await cartService.createCargoRequest(this.cargoRequest);
         return result;
+    }
+
+    @action.bound
+    async adminDeleteOrder(id: number) {
+        const data = await cartService.adminDeleteOrder(id);
+        return data;
+    }
+
+    @action.bound
+    async getOrderListByAdmin(criteria: OrderListDto) {
+        const result = await cartService.getOrderListByAdmin(criteria);
+        if (result) {
+        if (result.data[0])
+            this.orders = result.data[0].map((item: any) =>
+            removeUnusedProps(item)
+            );
+        this.totalCount = result.data[1];
+        }
+    }
+
+    @action.bound
+    async getOrderById(id: number) {
+        const data = await cartService.getOrderByID(id);
+        this.selectedOrder = data;
+        return data;
     }
 
     constructor() {
