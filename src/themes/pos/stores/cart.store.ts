@@ -190,7 +190,9 @@ class CartStore {
         this.loading = true;
         this.resetPromotion();
         const result = await orderService.getPromotion(coupon, this.totalAmount);
-        this.discount = result;
+        if (result) {
+            this.discount = result;
+        }
         this.loading = false;
     }
     @action.bound
