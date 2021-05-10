@@ -67,7 +67,12 @@ const PosHistoryPage = (props) => {
       title: "Total",
       dataIndex: "ProductOrders",
       sorter: false,
-      render: (record) => (record.reduce((accumulator, current) => accumulator + (current.Price * (current.Quantity - current.ReturnedQuantity)) * (1 + current.Tax), 0))
+      render: (record) => (record.reduce((accumulator, current) => accumulator + ((current.Price * (current.Quantity - current.ReturnedQuantity)) * (1 + current.Tax) * (100 - current.Discount) / 100), 0))
+    },
+    {
+      title: "Discount",
+      dataIndex: "Discount",
+      sorter: false,
     },
     {
       title: "Action",

@@ -91,6 +91,11 @@ const HomePage = () => {
       sorter: false,
     },
     {
+      title: "Discount",
+      dataIndex: "Discount",
+      sorter: false,
+    },
+    {
       title: "Discontinued",
       dataIndex: "Discontinued",
       key: "Discontinued",

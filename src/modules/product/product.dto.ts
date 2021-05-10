@@ -9,4 +9,5 @@ export interface Product {
   Discontinued: boolean;
   PhotoURL: string;
   Category: any;
+  Discount: number;
 }

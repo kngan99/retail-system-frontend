@@ -180,7 +180,11 @@ const PosPage = () => {
         margin: "auto", padding: "10px",
       }}>
         <Row>
-          <Col xs={{ span: 12, offset: 1 }} sm={{ span: 10, offset: 1 }} xl={{ span: 6, offset: 0 }}><Cart productsInCart={cartStore.productsInCart} totalNum={cartStore.totalNum} totalAmount={cartStore.subtotalAmount} isCheckout={cartStore.isCheckout} /></Col>
+          <Col xs={{ span: 12, offset: 1 }} sm={{ span: 10, offset: 1 }} xl={{ span: 6, offset: 0 }}><Cart productsInCart={cartStore.productsInCart} totalNum={cartStore.totalNum} totalAmount={cartStore.subtotalAmount} isCheckout={cartStore.isCheckout} />
+            {cartStore.discount != 0 && <Alert message={"Order Discount: -" + cartStore.discount} type="error" />}
+            {(cartStore.isCheckout) && <Alert message={"Tax(10%): " + (cartStore.totalAmount * 0.1).toFixed(2)} type="warning" />}
+            {(cartStore.isCheckout) && <Alert message={"Total: " + (cartStore.totalAmount * 1.1).toFixed(2)} type="success" />}
+          </Col>
           {(!cartStore.isCheckout) && <Col xs={{ span: 10, offset: 1 }} sm={{ span: 10, offset: 1 }} xl={{ span: 6, offset: 0 }}>
             <Breadcrumb style={{ backgroundColor: '#ffe58f' }} className="mb-0 pb-0">
               <h5>Products</h5>
@@ -320,7 +324,7 @@ const PosPage = () => {
                   layout="horizontal"
                 >
                   <Form.Item label="Total">
-                    <Input disabled={cartStore.isCheckout} value={cartStore.totalAmount} />
+                    <Input disabled={cartStore.isCheckout} value={(cartStore.totalAmount * 1.1).toFixed(2)} />
                   </Form.Item>
                   <Form.Item label="Pay">
                     <Input onChange={async (e) => await onChangePay(e)} />

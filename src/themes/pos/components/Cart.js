@@ -49,6 +49,7 @@ const Cart = observer(({ productsInCart, totalNum, totalAmount, isCheckout }) =>
                         <th>Name</th>
                         <th>Quantity</th>
                         <th>Price</th>
+                        <th>Discount</th>
                         <th class="text-right pr-5">Total</th>
                         <th>Action</th>
                     </tr>
@@ -67,6 +68,8 @@ const Cart = observer(({ productsInCart, totalNum, totalAmount, isCheckout }) =>
                         </td>
                         <td>
                             {totalNum}
+                        </td>
+                        <td>
                         </td>
                         <td>
                         </td>
@@ -91,6 +94,8 @@ const Cart = observer(({ productsInCart, totalNum, totalAmount, isCheckout }) =>
                         </td>
                         <td>
                         </td>
+                        <td>
+                        </td>
                         <td class="p-0">
                             <Button onClick={async () => await handleCheckoutClick()} type="link" icon={<CheckOutlined />} >Confirm order</Button>
                         </td>
@@ -105,6 +110,7 @@ const Cart = observer(({ productsInCart, totalNum, totalAmount, isCheckout }) =>
                         <th>Name</th>
                         <th>Quantity</th>
                         <th>Price</th>
+                        <th>Discount</th>
                         <th class="text-right pr-5">Total</th>
                     </tr>
                 </thead>
@@ -125,6 +131,8 @@ const Cart = observer(({ productsInCart, totalNum, totalAmount, isCheckout }) =>
                         </td>
                         <td>
                         </td>
+                        <td>
+                        </td>
                         <td class="p-0">
                             {cartStore.isConfirm && <Button onClick={async () => await handleConfirmPrintClick()} type="link" icon={<PrinterOutlined />} >Print receipt</Button>}
                         </td>
@@ -138,6 +146,8 @@ const Cart = observer(({ productsInCart, totalNum, totalAmount, isCheckout }) =>
                         </td>
                         <td>
                             {totalAmount}
+                        </td>
+                        <td>
                         </td>
                         <td>
                         </td>

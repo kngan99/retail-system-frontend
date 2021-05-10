@@ -17,7 +17,9 @@ interface CartProduct {
     ReorderLevel: number;
     Discontinued: boolean;
     Quantity: number;
+    Discount: number;
     Total: number;
+    RawTotal: number;
 }
 interface Product {
     Id: number;
@@ -28,6 +30,7 @@ interface Product {
     UnitsInStock: number;
     ReorderLevel: number;
     Discontinued: boolean;
+    Discount: number;
 }
 
 interface Session {
@@ -82,14 +85,15 @@ class CartStore {
             await this.productsInCart.map(item => {
                 if (item.Id === product.Id) {
                     item.Quantity += 1;
-                    item.Total = Number((item.UnitPrice * item.Quantity).toFixed(2));
+                    item.RawTotal = Number((item.UnitPrice * item.Quantity).toFixed(2));
+                    item.Total = Number((item.UnitPrice * item.Quantity * (100 - item.Discount) / 100).toFixed(2));
                     found = true;
                     const index = this.productsInCart.findIndex(({ Id }) => Id === product.Id);
                     this.productsInCart.splice(index, 1, item);
                 }
             });
             if (!found) {
-                await this.productsInCart.push({ ...product, Quantity: 1, Total: product.UnitPrice });
+                await this.productsInCart.push({ ...product, Quantity: 1, RawTotal: product.UnitPrice, Total: Number((product.UnitPrice * (100 - product.Discount) / 100).toFixed(2)) });
             }
         }
     }
@@ -113,7 +117,8 @@ class CartStore {
         await this.productsInCart.map(item => {
             if (item.Id === product.Id) {
                 item.Quantity = Number(quantity);
-                item.Total = item.UnitPrice * item.Quantity;
+                item.RawTotal = Number((item.UnitPrice * item.Quantity).toFixed(2));
+                item.Total = Number((item.UnitPrice * item.Quantity * (100 - item.Discount) / 100).toFixed(2));
                 const index = this.productsInCart.findIndex(({ Id }) => Id === product.Id);
                 this.productsInCart.splice(index, 1, item);
             }
@@ -125,7 +130,8 @@ class CartStore {
             if (item.Id === product.Id) {
                 if (item.Quantity > 1) {
                     item.Quantity -= 1;
-                    item.Total = Number((item.UnitPrice * item.Quantity).toFixed(2));
+                    item.RawTotal = Number((item.UnitPrice * item.Quantity).toFixed(2));
+                    item.Total = Number((item.UnitPrice * item.Quantity * (100 - item.Discount) / 100).toFixed(2));
                     const index = this.productsInCart.findIndex(({ Id }) => Id === product.Id);
                     this.productsInCart.splice(index, 1, item);
                 }
@@ -238,7 +244,7 @@ class CartStore {
     }
     @action.bound
     confirmOrder = async () => {
-        const result = await orderService.confirmOrder(this.salescleckId, this.session, this.productsInCart, this.currentCustomer.Id);
+        const result = await orderService.confirmOrder(this.salescleckId, this.session, this.productsInCart, this.currentCustomer.Id, this.discount);
         if (result) {
             message.success("Create order successfully!");
             console.log(result);
