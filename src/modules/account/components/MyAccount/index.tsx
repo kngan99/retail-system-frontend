@@ -71,7 +71,7 @@ const MyAccount = (props: ComponentProps) => {
   const handleDelete = async (type: REFERENCE_TYPE) => {
     if (type === REFERENCE_TYPE.PROFILE_IMG) {
       const result = accountStore.deleteAccountFile(
-        authStore.loggedUser.id,
+        authStore.loggedUser.Id,
         REFERENCE_TYPE.PROFILE_IMG
       );
       if (result) {

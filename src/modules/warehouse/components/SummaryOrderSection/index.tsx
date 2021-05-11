@@ -76,24 +76,24 @@ const SummaryOrderSection = (props: ComponentProps) => {
                       : "Created By"}
                   </h3>
                   <span className="block-label">
-                    {"Created By Email"}
+                    {"Email"}
                   </span>
                   <span className="block-value">{createdByData.Email}</span>
                 </Col>
                 {createdByData.FName && (
                   <Col xs={12} className="block-item">
                     <span className="block-label">
-                      {"Created By Name"}
+                      {"Name"}
                     </span>
                     <span className="block-value">
-                      {createdByData.FName}
+                      {createdByData.FName} {createdByData.LName}
                     </span>
                   </Col>
                 )}
                 {createdByData.Homephone && (
                   <Col xs={12} className="block-item">
                     <span className="block-label">
-                      {"Created By Homephone"}
+                      {"Homephone"}
                     </span>
                     <span className="block-value">
                       {createdByData.Homephone}

@@ -33,6 +33,7 @@ export default class AuthenticationStore {
     if (data) {
       this._setCurrentInfo(data);
       const redirectUrl = (this.loggedUser.EmailVerified) ? url : urlNotVerified;
+      saveToStorage('loggedId', this.loggedUser.Id);
       console.log(data);
       console.log(this.loggedUser.Type);
       if (data.Type == "Salescleck") {

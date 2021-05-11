@@ -150,7 +150,7 @@ const OrderGrid = (props: ComponentProps) => {
       tmpIds = [];
     } else {
       selectedStatus.map((item: any) => {
-        tmpItems.push({ id: item.id, checked: event.target.checked });
+        tmpItems.push({ id: item.Id, checked: event.target.checked });
         tmpIds.push(item.id.toString());
         return selectedStatus;
       });
@@ -158,6 +158,7 @@ const OrderGrid = (props: ComponentProps) => {
       setIds(tmpIds);
       tmpIds = ['-1'];
     }
+    console.log(ids);
     handleSelectedItems(tmpIds);
   };
 
@@ -202,7 +203,7 @@ const OrderGrid = (props: ComponentProps) => {
     let tmpItems: any[] = [];
     setItems(orderStore.orders);
     items.map((item: any) => {
-      tmpItems.push({ id: item.id, checked: false });
+      tmpItems.push({ id: item.Id, checked: false });
       return items;
     });
     setSelectedStatus(tmpItems);
@@ -241,11 +242,11 @@ const OrderGrid = (props: ComponentProps) => {
                       <span>{"Id"}</span>
                     </th>
                     <th>{"Warehouse"}</th>
-                    <th>{"Notes"}</th>
                     <th>{"Created By"}</th>
                     <th>{"Created At"}</th>
                     <th>{"Updated By"}</th>
                     <th>{"Updated At"}</th>
+                    <th>{"Status"}</th>
                     <th className="col-actions"></th>
                   </tr>
                 </thead>
@@ -255,7 +256,7 @@ const OrderGrid = (props: ComponentProps) => {
                       <td className="col-selected">
                         <Form.Check
                           type="checkbox"
-                          onChange={() => handleSelectedRow(item.id.toString())}
+                          onChange={() => handleSelectedRow(item.Id.toString())}
                           value={item.Id}
                           className="order-checked-item"
                           name="orderID[]"
@@ -273,9 +274,8 @@ const OrderGrid = (props: ComponentProps) => {
                           {item.Id}
                         </span>
                       </td>
-                      <td>{item.Warehouse}</td>
-                      <td>{item.Notes}</td>
-                      <td>{item.CreatedBy}</td>
+                      <td>{item.Warehouse.ShortName}</td>
+                      <td>{item.CreatedByAccount.LName}</td>
                       <td>
                         {item.CreatedAt
                           ? toTimeFormat(
@@ -310,7 +310,7 @@ const OrderGrid = (props: ComponentProps) => {
                                 <Dropdown.Item
                                   className={action.status ? action.status : ''}
                                   onClick={() => {
-                                    action.action(item.id);
+                                    action.action(item.Id);
                                   }}
                                   key={`order-action-${index}`}
                                   disabled={handleStatus(action, item.status)}

@@ -14,6 +14,12 @@ export const adminMenu: AdminMenuDto[] = [
     isShow: true,
   },
   {
+    url: '/warehouse/request-goods-note-cart/manage',
+    label: 'Manage Goods Request',
+    icon: 'ico ico-noti-order',
+    isShow: true,
+  },
+  {
     url: '/',
     label: 'Setting',
     icon: 'ico ico-noti',

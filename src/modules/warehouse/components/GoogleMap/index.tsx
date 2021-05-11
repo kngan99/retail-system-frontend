@@ -1,70 +1,71 @@
-// import { GoogleMapStoreContext } from '@/libs/stores/google-map.store';
-// import { observer } from 'mobx-react-lite';
-// import React from 'react';
 
-// interface ComponentProps {
-//   markers: { lat: number; lng: number }[];
-// }
+import { observer } from 'mobx-react-lite';
+import React from 'react';
+import { GoogleMapStoreContext } from '../../../../common/utils/google-map.store';
 
-// const GoogleMap = (props: ComponentProps) => {
-//   const { markers } = props;
+interface ComponentProps {
+  markers: { lat: number; lng: number }[];
+}
 
-//   const googleMapStore = React.useContext(GoogleMapStoreContext);
+const GoogleMap = (props: ComponentProps) => {
+  const { markers } = props;
 
-//   // const [map, setMap] = React.useState<any>(null);
+  const googleMapStore = React.useContext(GoogleMapStoreContext);
 
-//   const [directionsService] = React.useState(
-//     new google.maps.DirectionsService()
-//   );
+  // const [map, setMap] = React.useState<any>(null);
 
-//   // const [keepMarkers, setKeepMarkers] = React.useState<any[]>([]);
+  const [directionsService] = React.useState(
+    new google.maps.DirectionsService()
+  );
 
-//   const [directionsRenderer] = React.useState(
-//     new google.maps.DirectionsRenderer()
-//   );
+  // const [keepMarkers, setKeepMarkers] = React.useState<any[]>([]);
 
-//   React.useEffect(() => {
-//     googleMapStore.initMap();
-//   }, [googleMapStore]);
+  const [directionsRenderer] = React.useState(
+    new google.maps.DirectionsRenderer()
+  );
 
-//   React.useEffect(() => {
-//     directionsRenderer.setMap(googleMapStore.map);
-//   }, [googleMapStore.map, directionsRenderer]);
+  React.useEffect(() => {
+    googleMapStore.initMap();
+  }, [googleMapStore]);
 
-//   React.useEffect(() => {
-//     googleMapStore.setMarkers(markers);
-//     if ((markers?.length || 0) >= 2) {
-//       const request = {
-//         origin: new google.maps.LatLng({
-//           lat: +markers[0].lat,
-//           lng: +markers[0].lng,
-//         }),
-//         destination: new google.maps.LatLng({
-//           lat: +markers[1].lat,
-//           lng: +markers[1].lng,
-//         }),
-//         travelMode: google.maps.TravelMode.DRIVING,
-//       };
-//       directionsService.route(request, function (result, status) {
-//         if (status === 'OK') {
-//           directionsRenderer.setDirections(result);
-//         }
-//       });
-//     }
-//   }, [
-//     markers,
-//     directionsService,
-//     directionsRenderer,
-//     googleMapStore.map,
-//     googleMapStore,
-//   ]);
-//   return (
-//     <>
-//       <div id="ggmap"></div>
-//     </>
-//   );
-// };
+  React.useEffect(() => {
+    directionsRenderer.setMap(googleMapStore.map);
+  }, [googleMapStore.map, directionsRenderer]);
 
-// export default observer(GoogleMap);
+  React.useEffect(() => {
+    googleMapStore.setMarkers(markers);
+    if ((markers?.length || 0) >= 2) {
+      const request = {
+        origin: new google.maps.LatLng({
+          lat: +markers[0].lat,
+          lng: +markers[0].lng,
+        }),
+        destination: new google.maps.LatLng({
+          lat: +markers[1].lat,
+          lng: +markers[1].lng,
+        }),
+        travelMode: google.maps.TravelMode.DRIVING,
+      };
+      directionsService.route(request, function (result, status) {
+        if (status === 'OK') {
+          directionsRenderer.setDirections(result);
+        }
+      });
+    }
+  }, [
+    markers,
+    directionsService,
+    directionsRenderer,
+    googleMapStore.map,
+    googleMapStore,
+  ]);
+  return (
+    <>
+      <div id="ggmap"></div>
+    </>
+  );
+};
 
-export {}
+export default observer(GoogleMap);
+
+//export {}

@@ -16,10 +16,13 @@ import Tracking from "../../components/Tracking";
 import { ActionBarDto } from "../../../theme/theme.dto";
 import { FilterByDto } from "../../../../common/dto/FilterBy.dto";
 import ActionBar from "../../../theme/components/ActionBar";
+import { AuthenticationStoreContext } from "../../../authenticate/authentication.store";
+import { retrieveFromStorage } from "../../../../common/utils/storage.util";
 
 const ManageOrderAdminPage = () => {
   const orderStore = React.useContext(CartStoreContext);
   const adminStore = React.useContext(AdminStoreContext);
+  const authStore = React.useContext(AuthenticationStoreContext);
   const history = useHistory();
 
   // -----------------------------
@@ -44,8 +47,9 @@ const ManageOrderAdminPage = () => {
    * Get list by criteria
    */
   const [criteriaDto, setCriteriaDto] = React.useState<any>({
+    skip: 0,
     take: +pageSizeOptions[0],
-    orderBy: "id",
+    orderBy: "Id",
     orderDirection: "DESC",
   });
 
@@ -182,7 +186,7 @@ const ManageOrderAdminPage = () => {
     setCriteriaDto({
       skip: page > 1 ? (page - 1) * +pageSizeOptions[0] : 0,
       take: +pageSizeOptions[0],
-      orderBy: "id",
+      orderBy: "Id",
       orderDirection: "DESC",
     });
   };
@@ -194,7 +198,7 @@ const ManageOrderAdminPage = () => {
       if (result) {
         setDeleteID(-1);
         message.success("Deleted successfully");
-        orderStore.getOrderListByAdmin(criteriaDto);
+        orderStore.getOrderListByAdmin({ ...criteriaDto, ...{userId: retrieveFromStorage("loggedId")} });
       }
     }
   };
@@ -245,7 +249,7 @@ const ManageOrderAdminPage = () => {
       label: "Show secret code",
       status: "",
       action: (id: number) => {
-        const orderById = orderStore.orders.filter((item) => item.id === id);
+        const orderById = orderStore.orders.filter((item) => item.Id === id);
         setSelectedOrder(orderById[0]);
         setShowPopup(true);
       },
@@ -259,8 +263,8 @@ const ManageOrderAdminPage = () => {
   const handleOrderSummary = async (id: number) => {
     resetData();
     const order = await orderStore.getOrderById(id);
-    if (order.createdByData) {
-      setCreatedBy(order.createdByData);
+    if (order.CreatedByAccount) {
+      setCreatedBy(order.CreatedByAccount);
     }
     setSelectedOrder(order);
     setShowSummary(true);
@@ -312,13 +316,18 @@ const ManageOrderAdminPage = () => {
 
   React.useEffect(() => {
     async function getOrders() {
-      orderStore.getOrderListByAdmin(criteriaDto);
+      orderStore.getOrderListByAdmin({ ...criteriaDto, ...{userId: retrieveFromStorage("loggedId")} });
       //const id = retrieveFromStorage("trackingOrder");
       // if (id) handleTracking(+id);
     }
     getOrders();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [orderStore, criteriaDto]);
+
+  React.useEffect(() => {}, [
+    authStore.loggedUser,
+  ]);
+
 
   return (
     <>

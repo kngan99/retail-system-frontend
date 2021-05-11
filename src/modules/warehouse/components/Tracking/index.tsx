@@ -2,7 +2,8 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { Container, Row, Col } from 'react-bootstrap';
 import ProgressOrder from '../Progress';
-// import GoogleMap from '../GoogleMap';
+import GoogleMap from '../GoogleMap';
+import { getDistance } from '../../../../common/utils/mapCalculate.ulti';
 
 /*
  * Props of Component
@@ -55,16 +56,15 @@ const TrackingOrder = (props: ComponentProps) => {
               <Col xs={12} md={4} className="item">
                 <span className="item-label">{"Distance"}</span>
                 <span className="item-value">
-                  {/* {markers[2]
+                  {markers[2]
                     ? getDistance(markers[2], markers[0]).toString() + ' km'
-                    : '0 km'} */}
+                    : '0 km'}
                 </span>
               </Col>
             </Row>
           </Col>
           <Col xs={12} className="block-map">
-            {/* <GoogleMap markers={markers} /> */}
-            Map
+            <GoogleMap markers={markers} />
           </Col>
         </Row>
         {selectedOrder?.status === "Cancel" ? (
