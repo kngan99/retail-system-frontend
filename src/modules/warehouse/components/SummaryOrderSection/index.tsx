@@ -48,6 +48,10 @@ const SummaryOrderSection = (props: ComponentProps) => {
               }
             </Row>
           </Col>
+          <Col xs={12} xl={12} className="block-item">
+            <span className="block-label">Warehouse address</span>
+            <span className="block-value">{orderData.Warehouse.Address}</span>
+          </Col>
           {orderData.Notes && (
             <Col xs={12} className="block-item">
               <span className="block-label">{"Notes"}</span>
@@ -63,11 +67,11 @@ const SummaryOrderSection = (props: ComponentProps) => {
             </Col>
           )}
           <Col xs={12} className="block-item">
-          <h3 className="block-title">Products</h3>
-          <ProductSummary
-            productsData={orderData.products}
-            quantities={orderData.quantities}
-          ></ProductSummary>
+            <h3 className="block-title">Products</h3>
+            <ProductSummary
+              productsData={orderData.products}
+              quantities={orderData.quantities}
+            ></ProductSummary>
           </Col>
           {createdByTitle === "Created By" && createdByData && (
             <>

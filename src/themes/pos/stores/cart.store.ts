@@ -78,6 +78,7 @@ class CartStore {
     @observable orders: any[] = [];
     @observable totalCount: number = 0;
     @observable selectedOrder: any = null;
+    @observable editingAdminOrder: any = null;
 
     @action.bound
     addToCart = async (product: Product) => {
@@ -275,6 +276,18 @@ class CartStore {
         return data;
     }
 
+    @action.bound
+    async resetUpdateAdminOrder() {
+        this.editingAdminOrder = null;
+    }
+
+    @action.bound
+    async getOrderByIdByAdmin(orderId: number) {
+        const data: any = await cartService.getOrderByID(orderId);
+        this.editingAdminOrder = data;
+        return data;
+    }
+    
     constructor() {
         makeObservable(this);
         autorun(() => console.log(this.productsInCart));

@@ -331,7 +331,7 @@ const ManageOrderAdminPage = () => {
 
   return (
     <>
-      <WarehouseWrapper pageTitle={"Manage Good Request"}>
+      <WarehouseWrapper pageTitle={"Manage Goods Requests"}>
         <ActionBar actions={actionsBar} />
         <OrderGrid
           totals={orderStore.totalCount}

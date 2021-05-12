@@ -22,8 +22,9 @@ const ProductSummary = (props: ComponentProps) => {
               <tr>
                 <th>Image</th>
                 <th>Name</th>
-                <th>Quantity</th>
-                <th>Units In Stock</th>
+                <th style={{ textAlign: 'center' }}>Quantity</th>
+                <th style={{ textAlign: 'center' }}>Price Per Unit</th>
+                <th style={{ textAlign: 'center' }}>Units In Stock</th>
                 <th className="text-right pr-5">Total</th>
               </tr>
             </thead>
@@ -37,11 +38,17 @@ const ProductSummary = (props: ComponentProps) => {
                     <td>
                         {item.ProductName}
                     </td>
-                    <td>
+                    <td style={{textAlign: 'center'}}>
                         {quantities[idx]}
                     </td>
-                    <td>
+                    <td style={{textAlign: 'center'}}>
+                        {item.UnitPrice}
+                    </td>
+                    <td style={{textAlign: 'center'}}>
                         {item.UnitsInStock}
+                    </td>
+                    <td className="text-right pr-5">
+                      {item.UnitPrice  * quantities[idx]}
                     </td>
                   </tr>
                 );

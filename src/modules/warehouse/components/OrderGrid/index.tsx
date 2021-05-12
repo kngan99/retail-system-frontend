@@ -1,6 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { Container, Row, Col, Table, Form, Dropdown } from 'react-bootstrap';
+import { Container, Row, Col, Table, Form, Dropdown, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { CommonStoreContext } from '../../../../common/common.store';
 import { CartStoreContext } from '../../../../themes/pos/stores/cart.store';
 import { pageSizeOptions } from '../../../../common/constants/paging.constants';
@@ -240,6 +240,19 @@ const OrderGrid = (props: ComponentProps) => {
                     </th>
                     <th>
                       <span>{"Id"}</span>
+                      {(
+                          <OverlayTrigger
+                            key={'top'}
+                            placement={'top'}
+                            overlay={
+                              <Tooltip id="tooltip-right">Please click on the Id of specific Request to see its Summary</Tooltip>
+                            }
+                          >
+                            <div className="tooltip-icon">
+                              <span className="ico ico-faq"></span>
+                            </div>
+                          </OverlayTrigger>
+                        )}
                     </th>
                     <th>{"Warehouse"}</th>
                     <th>{"Created By"}</th>
