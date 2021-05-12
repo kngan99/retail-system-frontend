@@ -1,12 +1,26 @@
-import React from 'react';
-import { observer } from 'mobx-react';
-import { useParams, useHistory } from 'react-router-dom';
-import { CartStoreContext } from '../../../../themes/pos/stores/cart.store';
-import { message } from 'antd';
-import WarehouseWrapper from '../../components/WarehouseWrapper';
-import ConfirmModal from '../../../../common/components/ConfirmModal';
-import PreCartPageEdit from '../../components/PosEdit/PreCartPageEdit';
-import { Button } from 'react-bootstrap';
+import React from "react";
+import { observer } from "mobx-react";
+import { useParams, useHistory, Link } from "react-router-dom";
+import { CartStoreContext } from "../../../../themes/pos/stores/cart.store";
+import { message, Row } from "antd";
+import WarehouseWrapper from "../../components/WarehouseWrapper";
+import ConfirmModal from "../../../../common/components/ConfirmModal";
+import CartPageEdit from "../../components/PosEdit/CartPageEdit";
+import { Button } from "react-bootstrap";
+import {
+  PlusOutlined,
+  MinusOutlined,
+  PlusCircleTwoTone,
+  DeleteOutlined,
+  CheckOutlined,
+  ArrowLeftOutlined,
+  PrinterOutlined,
+  ShoppingCartOutlined,
+  InfoCircleOutlined,
+  HomeOutlined,
+  UnorderedListOutlined
+} from "@ant-design/icons";
+import "antd/dist/antd.css";
 // // import { ADMIN_ORDER_ROUTERS } from '@/modules/order/router.enum';
 // // import { SERVICE_TYPE, ACTIONS_MODE } from '@/modules/order/order.enum';
 // import { OrderListDto } from '@/modules/order/order.dto';
@@ -15,6 +29,7 @@ const EditOrderAdminPage = () => {
   const orderStore = React.useContext(CartStoreContext);
   const history = useHistory();
   const { orderID } = useParams() as any;
+  const cartStore = React.useContext(CartStoreContext);
 
   /*
    * Get list by criteria
@@ -26,9 +41,8 @@ const EditOrderAdminPage = () => {
   /*
    * show hide new/edit driver popup
    */
-  const [showConfirmPopup, setShowConfirmPopup] = React.useState<boolean>(
-    false
-  );
+  const [showConfirmPopup, setShowConfirmPopup] =
+    React.useState<boolean>(false);
 
   /*
    * action of delete button
@@ -45,8 +59,8 @@ const EditOrderAdminPage = () => {
     if (orderID) {
       const result = await orderStore.adminDeleteOrder(orderID);
       if (result) {
-        message.success('Delete successfully')
-        history.push('/warehouse/request-goods-note-cart/manage');
+        message.success("Delete successfully");
+        history.push("/warehouse/request-goods-note-cart/manage");
       }
     }
   };
@@ -55,29 +69,24 @@ const EditOrderAdminPage = () => {
     setShowConfirmPopup(false);
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const init = async () => {
+    const result = await orderStore.getOrderById(orderID);
+    const result2 = orderStore.setProductInCart(
+      orderStore.selectedOrder.products
+    );
+    return result && result2;
+  };
+
   React.useEffect(() => {
     orderStore.editingAdminOrder = null;
-    orderStore.getOrderByIdByAdmin(orderID);
-  }, [orderStore, criteriaDto, orderID]);
+    init();
+  }, [orderStore, orderID, init]);
 
   return (
     <>
-      <WarehouseWrapper
-        pageTitle={'Edit Request'}
-      >
-        <Button
-          type="primary"
-          onClick={handleDelete}
-          style={{ marginTop: 16 }}
-        >
-          Delete this request
-        </Button>
-        {orderStore.editingAdminOrder &&
-          <>
-          <PreCartPageEdit>
-          </PreCartPageEdit>
-          </>
-          }
+      <WarehouseWrapper pageTitle={"Edit Request"}>
+        <CartPageEdit productsInCart={cartStore.productsInCart} totalNum={cartStore.totalNum} totalAmount={cartStore.totalAmount} isCheckout={cartStore.isCheckout} />
         <ConfirmModal
           show={showConfirmPopup}
           handleCancel={handleCancel}
@@ -85,6 +94,34 @@ const EditOrderAdminPage = () => {
         >
           <p>Are you sure want to delete? </p>
         </ConfirmModal>
+        <Row style={{ marginBottom: "15px", marginLeft: "15px" }}>
+            {!cartStore.isCheckout ? (
+              <>
+                <PlusCircleTwoTone
+                  style={{ marginTop: "5px", marginRight: "5px" }}
+                />
+                <Link to="/warehouse/new-request-goods-note">
+                  I want to choose more products
+                </Link>
+              </>
+            ) : (
+              <>
+                <UnorderedListOutlined
+                  style={{
+                    color: "#40a9ff",
+                    marginRight: "10px",
+                    fontSize: "22px",
+                  }}
+                />
+                <span style={{ color: "#40a9ff", fontWeight: 400 }}>
+                  Request Summary
+                </span>
+              </>
+            )}
+          </Row>
+        <Button type="primary" onClick={handleDelete} style={{ marginTop: 16 }}>
+          Delete this request
+        </Button>
       </WarehouseWrapper>
     </>
   );

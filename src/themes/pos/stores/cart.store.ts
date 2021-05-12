@@ -44,6 +44,8 @@ interface CargoRequest {
     Quantity: number[];
     WarehouseId: number;
     StoreId: number;
+    Status?: string | null;
+    Notes?: string | null;
 }
 
 class CartStore {
@@ -219,18 +221,30 @@ class CartStore {
     }
 
     @action.bound
-    setCargoRequest = (warehouseId: number, storeId: number) => {
+    setCargoRequest = (warehouseId: number, storeId: number, action: string, status?: string | null, notes?: string | null) => {
         let prodId : number[] = [];
         let quan : number[] = [];
         for (let product of this.productsInCart) {
             prodId.push(product.Id);
             quan.push(product.Quantity);
         }
-        this.cargoRequest = {
-            ProductId: prodId,
-            Quantity: quan,
-            WarehouseId: warehouseId,
-            StoreId: storeId,
+        if (action === 'Create') {
+            this.cargoRequest = {
+                ProductId: prodId,
+                Quantity: quan,
+                WarehouseId: warehouseId,
+                StoreId: storeId,
+            }
+        }
+        else {
+            this.cargoRequest = {
+                ProductId: prodId,
+                Quantity: quan,
+                WarehouseId: warehouseId,
+                StoreId: storeId,
+                Status: status,
+                Notes: notes,
+            }
         }
     }
 
@@ -241,6 +255,8 @@ class CartStore {
             Quantity: [],
             WarehouseId: -1,
             StoreId: -1,
+            Status: null,
+            Notes: null,
         };
     }
 
@@ -249,6 +265,18 @@ class CartStore {
         console.log(this.cargoRequest);
         const result = await cartService.createCargoRequest(this.cargoRequest);
         return result;
+    }
+
+    @action.bound
+    updateCargoRequest = async (id: number) => {
+        console.log(this.cargoRequest);
+        const result = await cartService.updateCargoRequest(id, this.cargoRequest);
+        return result;
+    }
+
+    @action.bound
+    setProductInCart = (productsInCart: any[]) => {
+       this.productsInCart = productsInCart;
     }
 
     @action.bound

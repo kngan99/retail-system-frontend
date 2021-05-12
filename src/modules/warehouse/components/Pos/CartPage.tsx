@@ -35,7 +35,8 @@ const CartPage = observer(
       } else {
         await cartStore.setCargoRequest(
           warehouseId,
-          authStore.loggedUser.StoreId
+          authStore.loggedUser.StoreId,
+          'Create'
         );
         await cartStore.checkoutCart();
       }
@@ -62,7 +63,7 @@ const CartPage = observer(
         return;
       }
       else{
-      cartStore.setCargoRequest(warehouseId, authStore.loggedUser.StoreId);
+      cartStore.setCargoRequest(warehouseId, authStore.loggedUser.StoreId, 'Create');
       const result = await cartStore.sendCargoRequest();
       if (result) message.success('Create Cargo Request successfully!');
       return result;

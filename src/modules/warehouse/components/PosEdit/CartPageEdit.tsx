@@ -1,8 +1,7 @@
 import React from "react";
 import { inject, observer } from "mobx-react";
-import { makeAutoObservable, autorun, observable } from "mobx";
-import { Table, Breadcrumb } from "react-bootstrap";
-import { Input, Tooltip, Button, message, Row, Col } from "antd";
+import { makeAutoObservable, autorun, observable, values } from "mobx";
+import { Input, Tooltip, Button, message, Row, Col} from "antd";
 import {
   PlusOutlined,
   MinusOutlined,
@@ -17,15 +16,57 @@ import {
   UnorderedListOutlined
 } from "@ant-design/icons";
 import { CartStoreContext } from "../../../../themes/pos/stores/cart.store";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { AuthenticationStoreContext } from "../../../authenticate/authentication.store";
 import CartItemEdit from "./CartItemEdit";
+import { Breadcrumb, Dropdown, Table } from "react-bootstrap";
+import "antd/dist/antd.css";
+
+const OrderStatus = [
+  {
+    key: "Created",
+    label: "Created",
+  },
+  {
+    key: "Verified",
+    label: "Verified",
+  },
+  {
+    key: "Assigned",
+    label: "Assigned",
+  },
+  {
+    key: "Accepted",
+    label: "Accepted",
+  },
+  {
+    key: "Preparing",
+    label: "Preparing",
+  },
+  {
+    key: "Delivering",
+    label: "Delivering",
+  },
+  {
+    key: "Success",
+    label: "Success",
+  },
+  {
+    key: "Canceled",
+    label: "Canceled",
+  },
+];
+
+
 
 const CartPageEdit = observer(
   ({ productsInCart, totalNum, totalAmount, isCheckout }) => {
     const cartStore = React.useContext(CartStoreContext);
     const authStore = React.useContext(AuthenticationStoreContext);
     const [warehouseId, setWarehouseId] = React.useState<number>(-1);
+    const [status, setStatus] = React.useState<string | null>(null);
+    const [notes, setNotes] = React.useState<string | null>(null);
+    const { orderID } = useParams() as any;
     const handleEmptyClick = async () => {
       await cartStore.emptyCart();
     };
@@ -35,7 +76,10 @@ const CartPageEdit = observer(
       } else {
         await cartStore.setCargoRequest(
           warehouseId,
-          authStore.loggedUser.StoreId
+          authStore.loggedUser.StoreId,
+          'Edit',
+          status === undefined ? null : status,
+          notes === undefined ? null : notes,
         );
         await cartStore.checkoutCart();
       }
@@ -62,40 +106,43 @@ const CartPageEdit = observer(
         return;
       }
       else{
-      cartStore.setCargoRequest(warehouseId, authStore.loggedUser.StoreId);
-      const result = await cartStore.sendCargoRequest();
-      if (result) message.success('Create Cargo Request successfully!');
+      cartStore.setCargoRequest(warehouseId, authStore.loggedUser.StoreId, 'Edit');
+      const result = await cartStore.updateCargoRequest(orderID);
+      message.success('Update Cargo Request successfully!');
       return result;
       }
     }
     return (
       <div className="mr-2">
         <Breadcrumb>
-          <h5>Request For Products</h5>
+          <h5>Products List</h5>
         </Breadcrumb>
         {console.log(cartStore.productsInCart)}
         <div>
-          <Row style={{ marginBottom: "15px", marginLeft: "15px" }}>
-            {!cartStore.isCheckout ? (
-              <>
-            <PlusCircleTwoTone
-              style={{ marginTop: "5px", marginRight: "5px" }}
-            />
-            <Link to="/warehouse/new-request-goods-note">
-              I want to choose more products
-            </Link>
-            </>
-            ) : (
-              <>
-              <UnorderedListOutlined style={{color: '#40a9ff', marginRight: '10px', fontSize: '22px'}}/>
-              <span style={{color: '#40a9ff', fontWeight: 400}}>Request Summary</span>
-              </>
-            )
-            }
+          <Row className='block-item'>
+            <span style={{margin: 'auto 27px auto 7px', fontSize: '16px'}}>Status</span>
+            <Dropdown>
+              <Dropdown.Toggle className="col-select-actions">
+                {status}
+              </Dropdown.Toggle>
+              <Dropdown.Menu className="col-select-contents">
+                {OrderStatus.map((status: any, index: number) => (
+                  <Dropdown.Item
+                    className={status.key ? status.key : ""}
+                    onSelect={() => {
+                      setStatus(status.label);
+                    }}
+                    key={`order-action-${index}`}
+                  >
+                    {status.label}
+                  </Dropdown.Item>
+                ))}
+              </Dropdown.Menu>
+            </Dropdown>
           </Row>
           <Row>
             <Input
-              placeholder="Enter Warehouse Id"
+              placeholder="Warehouse Id"
               prefix={<HomeOutlined className="site-form-item-icon" />}
               suffix={
                 <Tooltip title="Extra information">
@@ -105,6 +152,21 @@ const CartPageEdit = observer(
               style={{ marginBottom: "20px" }}
               onChange={(e) => {
                 setWarehouseId(parseInt(e.target.value));
+              }}
+            />
+          </Row>
+          <Row>
+            <Input
+              placeholder="Notes"
+              prefix={<HomeOutlined className="site-form-item-icon" />}
+              suffix={
+                <Tooltip title="Extra information">
+                  <InfoCircleOutlined style={{ color: "rgba(0,0,0,.45)" }} />
+                </Tooltip>
+              }
+              style={{ marginBottom: "20px" }}
+              onChange={(e) => {
+                setNotes(e.target.value);
               }}
             />
           </Row>
@@ -177,7 +239,11 @@ const CartPageEdit = observer(
               <tbody>
                 {productsInCart.map((item, idx) => {
                   return (
-                    <CartItemEdit item={item} key={idx} isCheckout={isCheckout} />
+                    <CartItemEdit
+                      item={item}
+                      key={idx}
+                      isCheckout={isCheckout}
+                    />
                   );
                 })}
                 <tr>
@@ -226,9 +292,12 @@ const CartPageEdit = observer(
                 </tr>
               </tbody>
             </Table>
-            <br/>
+            <br />
             <Button
-              type="primary" shape='round' icon={<ShoppingCartOutlined />} size='large'
+              type="primary"
+              shape="round"
+              icon={<ShoppingCartOutlined />}
+              size="large"
               onClick={async () => await handleSendCargoRequest()}
             >
               Update Request

@@ -37,7 +37,7 @@ import Modal from "antd/lib/modal";
 import Button from "antd/lib/button";
 import Input from "antd/lib/input";
 import { Avatar, Form, List, message, Pagination, Skeleton, Spin, Table } from "antd";
-import { Link, Redirect, useHistory } from "react-router-dom";
+import { Link, Redirect, useHistory, useParams } from "react-router-dom";
 import { AuthenticationStoreContext } from "../../../authenticate/authentication.store";
 
 interface Product {
@@ -54,7 +54,13 @@ interface Product {
 
 const { confirm } = Modal;
 
-const PreCartPageEdit = (props: any) => {
+interface ComponentProps {
+  children? : any
+}
+
+const PreCartPageEdit = (props: ComponentProps) => {
+  const {children} = props;
+  const { orderID } = useParams() as any;
   const commonStore = React.useContext(CommonStoreContext);
   const productStore = React.useContext(ProductStoreContext);
   const cartStore = React.useContext(CartStoreContext);
@@ -185,7 +191,7 @@ const PreCartPageEdit = (props: any) => {
           }}
         >
           <Row>
-            {!cartStore.isCheckout && (
+            {(
               <Col
                 xs={{ span: 12, offset: 1 }}
                 sm={{ span: 12, offset: 1 }}
@@ -220,7 +226,7 @@ const PreCartPageEdit = (props: any) => {
                       style={{margin: '15px 0'}}>
                     <Button
                       type="primary" shape='round' icon={<ShoppingCartOutlined />} size='large'>
-                      <Link to='/warehouse/new-request-goods-note-cart'  style={{color: 'white', marginTop: '5px', marginLeft: '5px'}}>Go to cart</Link>
+                      <Link to={`warehouse/request-goods-note/edit/${orderID}`}  style={{color: 'white', marginTop: '5px', marginLeft: '5px'}}>Go to cart</Link>
                     </Button>
                   </Col>
                 </Row>
@@ -324,6 +330,7 @@ const PreCartPageEdit = (props: any) => {
             )}
           </Row>
           <br />
+          {children}
         </div>
       }
     </>

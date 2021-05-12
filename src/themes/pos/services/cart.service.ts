@@ -35,6 +35,11 @@ class CartService {
     return result;
   }
 
+  public async updateCargoRequest(id: number, model: any) {
+    const result = await http.put(`${this.cargoRequestPrefix}/${id}`, model);
+    return result;
+  }
+
   public async adminDeleteOrder(id: number) {
     const result = await http.delete(`${this.cargoRequestPrefix}/${id}`);
     return result;
