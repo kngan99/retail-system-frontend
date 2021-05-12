@@ -6,6 +6,7 @@ import { message } from 'antd';
 import WarehouseWrapper from '../../components/WarehouseWrapper';
 import ConfirmModal from '../../../../common/components/ConfirmModal';
 import PreCartPageEdit from '../../components/PosEdit/PreCartPageEdit';
+import { Button } from 'react-bootstrap';
 // // import { ADMIN_ORDER_ROUTERS } from '@/modules/order/router.enum';
 // // import { SERVICE_TYPE, ACTIONS_MODE } from '@/modules/order/order.enum';
 // import { OrderListDto } from '@/modules/order/order.dto';
@@ -44,7 +45,7 @@ const EditOrderAdminPage = () => {
     if (orderID) {
       const result = await orderStore.adminDeleteOrder(orderID);
       if (result) {
-        message.success('Update successfully')
+        message.success('Delete successfully')
         history.push('/warehouse/request-goods-note-cart/manage');
       }
     }
@@ -64,6 +65,13 @@ const EditOrderAdminPage = () => {
       <WarehouseWrapper
         pageTitle={'Edit Request'}
       >
+        <Button
+          type="primary"
+          onClick={handleDelete}
+          style={{ marginTop: 16 }}
+        >
+          Delete this request
+        </Button>
         {orderStore.editingAdminOrder &&
           <>
           <PreCartPageEdit>

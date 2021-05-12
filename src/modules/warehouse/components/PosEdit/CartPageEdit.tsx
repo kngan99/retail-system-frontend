@@ -17,9 +17,9 @@ import {
   UnorderedListOutlined
 } from "@ant-design/icons";
 import { CartStoreContext } from "../../../../themes/pos/stores/cart.store";
-import CartItem from "./CartItem";
 import { Link } from "react-router-dom";
 import { AuthenticationStoreContext } from "../../../authenticate/authentication.store";
+import CartItemEdit from "./CartItemEdit";
 
 const CartPageEdit = observer(
   ({ productsInCart, totalNum, totalAmount, isCheckout }) => {
@@ -124,7 +124,7 @@ const CartPageEdit = observer(
             <tbody>
               {productsInCart.map((item, idx) => {
                 return (
-                  <CartItem item={item} key={idx} isCheckout={isCheckout} />
+                  <CartItemEdit item={item} key={idx} isCheckout={isCheckout} />
                 );
               })}
               <tr>
@@ -177,7 +177,7 @@ const CartPageEdit = observer(
               <tbody>
                 {productsInCart.map((item, idx) => {
                   return (
-                    <CartItem item={item} key={idx} isCheckout={isCheckout} />
+                    <CartItemEdit item={item} key={idx} isCheckout={isCheckout} />
                   );
                 })}
                 <tr>
@@ -231,7 +231,7 @@ const CartPageEdit = observer(
               type="primary" shape='round' icon={<ShoppingCartOutlined />} size='large'
               onClick={async () => await handleSendCargoRequest()}
             >
-              Send Request
+              Update Request
             </Button>
           </>
         )}
