@@ -81,7 +81,7 @@ const EditOrderAdminPage = () => {
   React.useEffect(() => {
     orderStore.editingAdminOrder = null;
     init();
-  }, [orderStore, orderID, init]);
+  }, []);
 
   return (
     <>
@@ -118,7 +118,7 @@ const EditOrderAdminPage = () => {
                 </span>
               </>
             )}
-          </Row>
+        </Row>
         <Button type="primary" onClick={handleDelete} style={{ marginTop: 16 }}>
           Delete this request
         </Button>

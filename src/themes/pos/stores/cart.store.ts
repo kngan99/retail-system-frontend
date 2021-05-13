@@ -315,10 +315,22 @@ class CartStore {
         this.editingAdminOrder = data;
         return data;
     }
+
+    @action.bound
+    async setProductsInCartQuantity() {
+        const result = await this.selectedOrder.quantities.map((item, idx) => { this.productsInCart[idx].Quantity = item })
+        return result;
+    }
+
+    @action.bound
+    async setProductsInCartTotal() {
+        const result = await this.selectedOrder.quantities.map((item, idx) => { this.productsInCart[idx].Total = item * this.productsInCart[idx].UnitPrice })
+        return result;
+    }
     
     constructor() {
         makeObservable(this);
-        autorun(() => console.log(this.productsInCart));
+        //autorun(() => console.log(this.productsInCart));
     }
 }
 export default new CartStore();

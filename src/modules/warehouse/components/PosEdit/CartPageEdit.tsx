@@ -1,7 +1,7 @@
 import React from "react";
 import { inject, observer } from "mobx-react";
 import { makeAutoObservable, autorun, observable, values } from "mobx";
-import { Input, Tooltip, Button, message, Row, Col} from "antd";
+import { Input, Tooltip, Button, message, Row, Col } from "antd";
 import {
   PlusOutlined,
   MinusOutlined,
@@ -13,13 +13,14 @@ import {
   ShoppingCartOutlined,
   InfoCircleOutlined,
   HomeOutlined,
-  UnorderedListOutlined
+  UnorderedListOutlined,
 } from "@ant-design/icons";
-import { CartStoreContext } from "../../../../themes/pos/stores/cart.store";
+import cartStore, {
+  CartStoreContext,
+} from "../../../../themes/pos/stores/cart.store";
 import { Link, useParams } from "react-router-dom";
 import { AuthenticationStoreContext } from "../../../authenticate/authentication.store";
-import CartItemEdit from "./CartItemEdit";
-import { Breadcrumb, Dropdown, Table } from "react-bootstrap";
+import { Breadcrumb, Container, Dropdown, Table } from "react-bootstrap";
 import "antd/dist/antd.css";
 
 const OrderStatus = [
@@ -57,8 +58,6 @@ const OrderStatus = [
   },
 ];
 
-
-
 const CartPageEdit = observer(
   ({ productsInCart, totalNum, totalAmount, isCheckout }) => {
     const cartStore = React.useContext(CartStoreContext);
@@ -77,9 +76,9 @@ const CartPageEdit = observer(
         await cartStore.setCargoRequest(
           warehouseId,
           authStore.loggedUser.StoreId,
-          'Edit',
+          "Edit",
           status === undefined ? null : status,
-          notes === undefined ? null : notes,
+          notes === undefined ? null : notes
         );
         await cartStore.checkoutCart();
       }
@@ -102,74 +101,157 @@ const CartPageEdit = observer(
     };
     const handleSendCargoRequest = async () => {
       if (warehouseId === -1) {
-        message.warning('Please choose Warehouse!');
+        message.warning("Please choose Warehouse!");
         return;
+      } else {
+        cartStore.setCargoRequest(
+          warehouseId,
+          authStore.loggedUser.StoreId,
+          "Edit"
+        );
+        const result = await cartStore.updateCargoRequest(orderID);
+        message.success("Update Cargo Request successfully!");
+        return result;
       }
-      else{
-      cartStore.setCargoRequest(warehouseId, authStore.loggedUser.StoreId, 'Edit');
-      const result = await cartStore.updateCargoRequest(orderID);
-      message.success('Update Cargo Request successfully!');
-      return result;
+    };
+
+    //Row CartItemEdit
+    const handleRemoveClick = async (e) => {
+      await cartStore.removeFromCart(e);
+    };
+    const handleIncreaseClick = async (e) => {
+      await cartStore.addToCart(e);
+    };
+    const handleDecreaseClick = async (e) => {
+      await cartStore.decreaseToCart(e);
+    };
+    const onChange = async (item, e) => {
+      if (!Number.isInteger(Number(e.target.value))) {
+        message.error("Invalid number!");
+      } else {
+        cartStore.updateQuantity(item, e.target.value);
+        console.log("Change:", e.target.value);
       }
-    }
+    };
+    //const [quantity, setQuantity] = React.useState<number>(-1);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const init = async () => {
+      await cartStore.getOrderById(orderID);
+      await setStatus(cartStore.selectedOrder.Status);
+      await setWarehouseId(cartStore.selectedOrder.warehouseId);
+      await setNotes(cartStore.selectedOrder.Notes);
+      await cartStore.setProductsInCartQuantity();
+      await cartStore.setProductsInCartTotal();
+    };
+
+    React.useEffect(() => {
+      init();
+    }, []);
+
     return (
       <div className="mr-2">
         <Breadcrumb>
           <h5>Products List</h5>
         </Breadcrumb>
-        {console.log(cartStore.productsInCart)}
         <div>
-          <Row className='block-item'>
-            <span style={{margin: 'auto 27px auto 7px', fontSize: '16px'}}>Status</span>
-            <Dropdown>
-              <Dropdown.Toggle className="col-select-actions">
-                {status}
-              </Dropdown.Toggle>
-              <Dropdown.Menu className="col-select-contents">
-                {OrderStatus.map((status: any, index: number) => (
-                  <Dropdown.Item
-                    className={status.key ? status.key : ""}
-                    onSelect={() => {
-                      setStatus(status.label);
-                    }}
-                    key={`order-action-${index}`}
-                  >
-                    {status.label}
-                  </Dropdown.Item>
-                ))}
-              </Dropdown.Menu>
-            </Dropdown>
-          </Row>
-          <Row>
-            <Input
-              placeholder="Warehouse Id"
-              prefix={<HomeOutlined className="site-form-item-icon" />}
-              suffix={
-                <Tooltip title="Extra information">
-                  <InfoCircleOutlined style={{ color: "rgba(0,0,0,.45)" }} />
-                </Tooltip>
-              }
-              style={{ marginBottom: "20px" }}
-              onChange={(e) => {
-                setWarehouseId(parseInt(e.target.value));
-              }}
-            />
-          </Row>
-          <Row>
-            <Input
-              placeholder="Notes"
-              prefix={<HomeOutlined className="site-form-item-icon" />}
-              suffix={
-                <Tooltip title="Extra information">
-                  <InfoCircleOutlined style={{ color: "rgba(0,0,0,.45)" }} />
-                </Tooltip>
-              }
-              style={{ marginBottom: "20px" }}
-              onChange={(e) => {
-                setNotes(e.target.value);
-              }}
-            />
-          </Row>
+          <Container fluid className={`block-orders block-summary-order`}>
+            <Row>
+              <Col xs={12} md={24}>
+                <Container fluid className={`block order-summary-item`}>
+                  <Col xs={12} md={24} className="block-item" style={{borderTop: 'none !important'}}>
+                    <Row>
+                      <span
+                        style={{
+                          margin: "auto 27px auto 7px",
+                          fontSize: "16px",
+                        }}
+                      >
+                        Status
+                      </span>
+                      <Dropdown>
+                        <Dropdown.Toggle className="col-select-actions">
+                          {status}
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu className="col-select-contents">
+                          {OrderStatus.map((status: any, index: number) => (
+                            <Dropdown.Item
+                              className={status.key ? status.key : ""}
+                              onSelect={() => {
+                                setStatus(status.label);
+                              }}
+                              key={`order-action-${index}`}
+                            >
+                              {status.label}
+                            </Dropdown.Item>
+                          ))}
+                        </Dropdown.Menu>
+                      </Dropdown>
+                    </Row>
+                  </Col>
+                  <Col xs={12} md={24} className="block-item">
+                    <Row>
+                      <span
+                        style={{
+                          margin: "auto 27px 8px 7px",
+                          fontSize: "16px",
+                        }}
+                      >
+                        Warehouse
+                      </span>
+                      <Input
+                        placeholder="Warehouse Id"
+                        prefix={
+                          <HomeOutlined className="site-form-item-icon" />
+                        }
+                        suffix={
+                          <Tooltip title="Extra information">
+                            <InfoCircleOutlined
+                              style={{ color: "rgba(0,0,0,.45)" }}
+                            />
+                          </Tooltip>
+                        }
+                        value={warehouseId}
+                        style={{ marginBottom: "20px" }}
+                        onChange={(e) => {
+                          setWarehouseId(parseInt(e.target.value));
+                        }}
+                      />
+                    </Row>
+                  </Col>
+                  <Col xs={12} md={24} className="block-item">
+                    <Row>
+                      <span
+                        style={{
+                          margin: "auto 27px 8px 7px",
+                          fontSize: "16px",
+                        }}
+                      >
+                        Notes
+                      </span>
+                      <Input
+                        placeholder="Notes"
+                        prefix={
+                          <UnorderedListOutlined className="site-form-item-icon" />
+                        }
+                        suffix={
+                          <Tooltip title="Extra information">
+                            <InfoCircleOutlined
+                              style={{ color: "rgba(0,0,0,.45)" }}
+                            />
+                          </Tooltip>
+                        }
+                        style={{ marginBottom: "20px" }}
+                        onChange={(e) => {
+                          setNotes(e.target.value);
+                        }}
+                      />
+                    </Row>
+                  </Col>
+                </Container>
+              </Col>
+            </Row>
+          </Container>
         </div>
         {!isCheckout && (
           <Table striped bordered hover size="sm">
@@ -184,11 +266,49 @@ const CartPageEdit = observer(
               </tr>
             </thead>
             <tbody>
-              {productsInCart.map((item, idx) => {
-                return (
-                  <CartItemEdit item={item} key={idx} isCheckout={isCheckout} />
-                );
-              })}
+              {productsInCart &&
+                productsInCart.map((item, idx) => {
+                  return (
+                    <tr>
+                      <td className="pr-0">{item.Id}</td>
+                      <td>{item.ProductName}</td>
+                      <td>
+                        <Input
+                          disabled={isCheckout}
+                          style={{ width: 50 }}
+                          size="small"
+                          value={item.Quantity}
+                          onChange={async (e) => await onChange(item, e)}
+                        />
+                      </td>
+                      <td>{item.UnitPrice}</td>
+                      <td className="text-right pr-5">{item.Total}</td>
+                      {!isCheckout && (
+                        <td className="p-0">
+                          <Button
+                            onClick={async () =>
+                              await handleIncreaseClick(item)
+                            }
+                            type="link"
+                            icon={<PlusOutlined />}
+                          />
+                          <Button
+                            onClick={async () =>
+                              await handleDecreaseClick(item)
+                            }
+                            type="link"
+                            icon={<MinusOutlined />}
+                          />
+                          <Button
+                            onClick={async () => await handleRemoveClick(item)}
+                            type="link"
+                            icon={<DeleteOutlined />}
+                          />
+                        </td>
+                      )}
+                    </tr>
+                  );
+                })}
               <tr>
                 <td></td>
                 <td className="pr-0">Num</td>
@@ -239,11 +359,44 @@ const CartPageEdit = observer(
               <tbody>
                 {productsInCart.map((item, idx) => {
                   return (
-                    <CartItemEdit
-                      item={item}
-                      key={idx}
-                      isCheckout={isCheckout}
-                    />
+                    <tr key={idx}>
+                      <td className="pr-0">{item.Id}</td>
+                      <td>{item.ProductName}</td>
+                      <td>
+                        <Input
+                          disabled={isCheckout}
+                          style={{ width: 50 }}
+                          size="small"
+                          value={item.Quantity}
+                          onChange={async (e) => await onChange(item, e)}
+                        />
+                      </td>
+                      <td>{item.UnitPrice}</td>
+                      <td className="text-right pr-5">{item.Total}</td>
+                      {!isCheckout && (
+                        <td className="p-0">
+                          <Button
+                            onClick={async () =>
+                              await handleIncreaseClick(item)
+                            }
+                            type="link"
+                            icon={<PlusOutlined />}
+                          />
+                          <Button
+                            onClick={async () =>
+                              await handleDecreaseClick(item)
+                            }
+                            type="link"
+                            icon={<MinusOutlined />}
+                          />
+                          <Button
+                            onClick={async () => await handleRemoveClick(item)}
+                            type="link"
+                            icon={<DeleteOutlined />}
+                          />
+                        </td>
+                      )}
+                    </tr>
                   );
                 })}
                 <tr>
@@ -309,4 +462,3 @@ const CartPageEdit = observer(
   }
 );
 export default CartPageEdit;
-
