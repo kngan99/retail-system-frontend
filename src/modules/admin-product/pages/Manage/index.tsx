@@ -1,6 +1,5 @@
 import React from 'react';
 import { observer } from 'mobx-react';
-import { toast } from 'react-toastify';
 import { useHistory } from 'react-router-dom';
 import { AdminStoreContext } from '../../admin.store';
 import { pageSizeOptions } from '../../../../common/constants/paging.constants';
@@ -11,6 +10,7 @@ import AdminAccountFormModal from '../../components/AdminAccountFormModal';
 import AdminAccountGrid from '../../components/AccountGrid';
 import ActionBar from '../../../theme/components/ActionBar';
 import HomePage from '../../../../themes/product/pages/Home';
+import { message } from 'antd';
 
 const ManageAccountAdminPage = () => {
   const history = useHistory();
@@ -75,8 +75,7 @@ const ManageAccountAdminPage = () => {
       if (result) {
         adminStore.getAccounts(criteriaDto.skip, criteriaDto.take);
         adminStore.resetAdminForm();
-        toast.dismiss();
-        toast.success((MESSAGES_CREATED_SUCCESS));
+        message.success((MESSAGES_CREATED_SUCCESS));
         setShowPopup(false);
       }
     }
@@ -85,8 +84,7 @@ const ManageAccountAdminPage = () => {
       if (result) {
         adminStore.getAccounts(criteriaDto.skip, criteriaDto.take);
         adminStore.resetAdminForm();
-        toast.dismiss();
-        toast.success((MESSAGES_UPDATE_SUCCESS));
+        message.success((MESSAGES_UPDATE_SUCCESS));
         setShowPopup(false);
       }
     }

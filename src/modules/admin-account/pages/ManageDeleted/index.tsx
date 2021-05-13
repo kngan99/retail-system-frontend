@@ -2,7 +2,6 @@ import React from 'react';
 import { observer } from 'mobx-react';
 
 // Grid
-import { toast } from 'react-toastify';
 import { AccountStoreContext } from '../../../account/account.store';
 import { I18N } from '../../../../i18n.enum';
 import AdminWrapper from '../../components/AdminWrapper';
@@ -10,6 +9,7 @@ import ConfirmModal from '../../../../common/components/ConfirmModal';
 import { pageSizeOptions } from '../../../../common/constants/paging.constants';
 import { FilterByDto } from '../../../../common/dto/FilterBy.dto';
 import DeletedAccountGridAdmin from "../../components/DeletedGrid";
+import { message } from 'antd';
 
 const ManageDeletedAccountAdminPage = () => {
   const accountStore = React.useContext(AccountStoreContext);
@@ -127,8 +127,7 @@ const ManageDeletedAccountAdminPage = () => {
       );
       if (result) {
         setRestoreID(-1);
-        toast.dismiss();
-        toast.success('Restore completed');
+        message.success('Restore completed');
         accountStore.getDeletedAccountByAdmin(criteriaDto);
       }
     }

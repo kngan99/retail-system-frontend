@@ -1,13 +1,13 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 
-import { toast } from 'react-toastify';
 import bsCustomFileInput from 'bs-custom-file-input';
 import { AuthenticationStoreContext } from '../../../authenticate/authentication.store';
 import { I18N } from '../../../../i18n.enum';
 import { REFERENCE_TYPE } from '../../../account/referenceType.enum';
 import AccountForm from '../../../account/components/AccountForm';
 import { AccountStoreContext } from '../../../account/account.store';
+import { message} from 'antd';
 
 interface ComponentProps {
   className?: string;
@@ -39,8 +39,7 @@ const EditAccount = (props: ComponentProps) => {
         id
       );
       if (result) {
-        toast.dismiss();
-        toast.success(MESSAGES_UPDATE_SUCCESS);
+        message.success(MESSAGES_UPDATE_SUCCESS);
         setAvatar({
           file: null,
         });
@@ -57,8 +56,7 @@ const EditAccount = (props: ComponentProps) => {
       if (data) {
         const user = await accountStore.getAccountInfo(id);
         authStore.setLoggedUser(user ?? authStore.loggedUser);
-        toast.dismiss();
-        toast.success(MESSAGES_UPDATE_SUCCESS);
+        message.success(MESSAGES_UPDATE_SUCCESS);
       }
     }
   };
@@ -77,9 +75,8 @@ const EditAccount = (props: ComponentProps) => {
       );
       if (result) {
         authStore.loggedUser.avatarUrl = '';
-        toast.dismiss();
         bsCustomFileInput.init();
-        toast.success(MESSAGES_DELETE_SUCCESS);
+        message.success(MESSAGES_DELETE_SUCCESS);
       }
     }
   };

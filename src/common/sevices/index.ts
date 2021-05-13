@@ -1,5 +1,5 @@
+import { message } from 'antd';
 import axios from 'axios';
-import { toast } from 'react-toastify';
 import { Errors } from '../../modules/messages/message.constants';
 import { handleResponseError } from '../utils/apis.util';
 import { removeFromStorage } from '../utils/storage.util';
@@ -25,11 +25,9 @@ axiosInstance.interceptors.request.use((config) => {
 axiosInstance.interceptors.response.use(
   (res) => res,
   (error) => {
-    // Remove all toasts !
-    toast.dismiss();
 
     if (!error.response) {
-      toast.error('Unknown error happened! Please contact admin for support');
+      message.error('Unknown error happened! Please contact admin for support');
       return handleResponseError(error);
     }
 
@@ -60,10 +58,10 @@ axiosInstance.interceptors.response.use(
 
     if (messageCode !== '') {
       const error = Errors.find((error) => error.key === messageCode);
-      if (error) toast.error((error.label));
-      else toast.error(messageDetail);
+      if (error) message.error((error.label));
+      else message.error(messageDetail);
     } else {
-      toast.error(messageDetail);
+      message.error(messageDetail);
     }
 
     if (error.response.status === 400) {
