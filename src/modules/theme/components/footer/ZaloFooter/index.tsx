@@ -1,6 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import zaloLogo from '../../../assets/images/qr.jpg';
+import zaloLogo from '../../../assets/images/qr.png';
 import '../../footer/_footer.scss';
 import { Button, Modal } from 'react-bootstrap';
 
