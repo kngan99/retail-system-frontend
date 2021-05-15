@@ -4,6 +4,7 @@ import AdminMenu from '../AdminMenu';
 import AdminTopMenu from '../AdminTopMenu';
 import PageTitle from '../../../../common/components/PageTitle';
 import AdminFooter from '../AdminFooter';
+import Footer from '../../../theme/components/footer/Footer';
 
 interface ComponentProps {
   children?: React.ReactNode;
@@ -33,7 +34,7 @@ const AdminWrapper = (props: ComponentProps) => {
             />
           )}
           {children}
-          <AdminFooter />
+          <Footer />
         </div>
       </div>
     </>
