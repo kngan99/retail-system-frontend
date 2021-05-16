@@ -17,7 +17,8 @@ import { ActionBarDto } from "../../../theme/theme.dto";
 import { FilterByDto } from "../../../../common/dto/FilterBy.dto";
 import ActionBar from "../../../theme/components/ActionBar";
 import { AuthenticationStoreContext } from "../../../authenticate/authentication.store";
-import { retrieveFromStorage } from "../../../../common/utils/storage.util";
+import { retrieveFromStorage, saveToStorage } from "../../../../common/utils/storage.util";
+import accountStore from "../../../account/account.store";
 
 const ManageOrderAdminPage = () => {
   const orderStore = React.useContext(CartStoreContext);
@@ -80,6 +81,8 @@ const ManageOrderAdminPage = () => {
    * Selected tracking order
    */
   const [notes, setNotes] = React.useState<any>([]);
+
+  const [currentOrder, setCurrentOrder] = React.useState<any>();
 
   /*
    * Setting filters
@@ -206,7 +209,9 @@ const ManageOrderAdminPage = () => {
   /*
    * Selected tracking order
    */
-  const [selectedOrder, setSelectedOrder] = React.useState<any>({});
+  const [selectedOrder, setSelectedOrder] = React.useState<any>();
+
+  const [currentStore, setCurrentStore] = React.useState<any>();
 
   /*
    * Setting actions in grid
@@ -237,14 +242,14 @@ const ManageOrderAdminPage = () => {
     //   },
     // },
 
-    // {
-    //   label: "Tracking",
-    //   status: "",
-    //   action: (id: number) => {
-    //     handleTracking(id);
-    //     scrollToElement("order-tracking");
-    //   },
-    // },
+    {
+      label: "Tracking",
+      status: "",
+      action: (id: number) => {
+        handleTracking(id);
+        scrollToElement("order-tracking");
+      },
+    },
     {
       label: "Show secret code",
       status: "",
@@ -280,43 +285,44 @@ const ManageOrderAdminPage = () => {
     setCreatedBy(null);
   };
 
-  // const handleTracking = React.useCallback(
-  //   (id: number) => {
-  //     const orderById = orderStore.orders.filter((item) => item.id === id);
-  //     setSelectedOrder(orderById[0]);
+  const handleTracking = React.useCallback(
+    async (id: number) => {
+      let orderById = await orderStore.getOrderById(id);
+      setSelectedOrder(orderStore.selectedOrder);
+      console.log(orderStore.selectedOrder);
+      // if (orderById.length) {
+      //   let tmpMarkers = [];
+      //   // tmpMarkers.push(
+      //   //   {
+      //   //     lat: +orderById[0].pickupAddress[0],
+      //   //     lng: +orderById[0].pickupAddress[1],
+      //   //   },
+      //   //   {
+      //   //     lat: +orderById[0].dropoffAddress[0],
+      //   //     lng: +orderById[0].dropoffAddress[1],
+      //   //   }
+      //   // );
 
-  //     if (orderById.length) {
-  //       let tmpMarkers = [];
-  //       tmpMarkers.push(
-  //         {
-  //           lat: +orderById[0].pickupAddress[0],
-  //           lng: +orderById[0].pickupAddress[1],
-  //         },
-  //         {
-  //           lat: +orderById[0].dropoffAddress[0],
-  //           lng: +orderById[0].dropoffAddress[1],
-  //         }
-  //       );
+      //   // if (orderById[0].tracking?.length > 0) {
+      //   //   for (let i in orderById[0].tracking) {
+      //   //     tmpMarkers.push({
+      //   //       lat: +orderById[0].tracking[i].lat,
+      //   //       lng: +orderById[0].tracking[i].lng,
+      //   //     });
+      //   //   }
+      //   // }
 
-  //       if (orderById[0].tracking?.length > 0) {
-  //         for (let i in orderById[0].tracking) {
-  //           tmpMarkers.push({
-  //             lat: +orderById[0].tracking[i].lat,
-  //             lng: +orderById[0].tracking[i].lng,
-  //           });
-  //         }
-  //       }
-
-  //       setMarkers(tmpMarkers);
-  //       saveToStorage('trackingOrder', orderById[0].id);
-  //     }
-  //   },
-  //   [orderStore.orders]
-  // );
+      //   setMarkers(tmpMarkers);
+      //   saveToStorage('trackingOrder', orderById[0].id);
+      // }
+    },
+    [orderStore]
+  );
 
   React.useEffect(() => {
     async function getOrders() {
       orderStore.getOrderListByAdmin({ ...criteriaDto, ...{userId: retrieveFromStorage("loggedId")} });
+      //setCurrentStore(accountStore.currentUserDetail.StoreId);
       //const id = retrieveFromStorage("trackingOrder");
       // if (id) handleTracking(+id);
     }
