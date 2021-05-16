@@ -7,6 +7,7 @@ import reportWebVitals from "./reportWebVitals";
 import AccountLayout from "./themes/account/layout";
 import ProductLayout from "./themes/product/layout";
 import POSLayout from "./themes/pos/layout"
+import PromotionLayout from "./themes/promotion/layout"
 import "./themes/style.scss";
 import { cssTransition, ToastContainer } from "react-toastify";
 import { Spin } from 'antd';
@@ -35,6 +36,10 @@ ReactDOM.render(
           <Route
             path="/pos"
             render={(props: any) => <POSLayout {...props} exact />}
+          />
+          <Route
+            path="/promotion"
+            render={(props: any) => <PromotionLayout {...props} exact />}
           />
           <Route path="/" render={(props: any) => <App />} />
         </Switch>
