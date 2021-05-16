@@ -7,6 +7,7 @@ import { ColumnsType } from "antd/es/table";
 import "antd/dist/antd.css";
 import UpdateProductModal from "../../../../modules/product/components/ManageProduct/UpdateProductModal";
 import CreateProductModal from "../../../../modules/product/components/ManageProduct/CreateProductModal";
+import CreatePromotionModal from "../../components/CreatePromotionModal";
 import { makeAutoObservable, autorun, observable } from "mobx"
 import App from "../../../../modules/product/components/ManageProduct/SalesAnalysis";
 
@@ -118,8 +119,8 @@ const HomePage = () => {
   return (
     <>
       <div style={{ background: "white" }}>
-        {/* <br />
-        <CreateProductModal /> */}
+        <br />
+        <CreatePromotionModal />
         <br />
         <Spin spinning={promotionStore.loading}>
           <Table<Promotion> columns={columns} dataSource={promotionStore.promotions} rowKey={(record) => record.orderdiscounts_Coupon} pagination={false} />
