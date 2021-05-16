@@ -52,6 +52,7 @@ class CartStore {
     @observable sessionStart: string = '';
     @observable salescleckId: number = 0;
     @observable salescleckFullName: string = '';
+    @observable salescleckStore: any = undefined;
     @observable isCheckout: boolean = false;
     @observable isConfirm: boolean = false;
     @computed get totalNum() {
@@ -177,6 +178,9 @@ class CartStore {
         if (result && result.Salesclerk) {
             this.salescleckFullName = result.Salesclerk.FName + " " + result.Salesclerk.LName;
             this.salescleckId = result.Salesclerk.Id;
+            if (result.Salesclerk.Store) {
+                this.salescleckStore = result.Salesclerk.Store;
+            }
         }
         if (result && result.Session) {
             this.session = result.Session.SessionId;

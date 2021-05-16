@@ -53,7 +53,6 @@ const HistoryPage = (props) => {
                         {historyStore.currentDetailSession && <Collapse defaultActiveKey={['1']}>
                             <Panel header={<strong style={{ color: '#8c8c8c' }}>Detail info</strong>} key="1">
                                 <Descriptions size="small" column={2}>
-                                    <Descriptions.Item label="Store Manager:">Lili Qu</Descriptions.Item>
                                     <Descriptions.Item label="Session Id:">
                                         <a>{historyStore.currentDetailSession.data.SessionId}</a>
                                     </Descriptions.Item>
@@ -61,9 +60,6 @@ const HistoryPage = (props) => {
                                     <Descriptions.Item label="Session end:">{new Date(historyStore.currentDetailSession.data.End).toLocaleString()}</Descriptions.Item>
                                     <Descriptions.Item label="Total:">{historyStore.currentDetailSession.total[0].total}</Descriptions.Item>
                                     <Descriptions.Item label="Current time:"><Clock format={commonStore.hourMinusFormat} ticking={true} /></Descriptions.Item>
-                                    <Descriptions.Item label="Store:">
-                                        TN Store, A123 St., W.10, D.1, Abc City
-                                </Descriptions.Item>
                                 </Descriptions>
                             </Panel>
                         </Collapse>}

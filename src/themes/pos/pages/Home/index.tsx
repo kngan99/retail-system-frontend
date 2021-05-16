@@ -63,16 +63,31 @@ const HomePage = () => {
                     >
                         <Collapse defaultActiveKey={['1']}>
                             <Panel header={<strong style={{ color: '#8c8c8c' }}>Detail info</strong>} key="1">
-                                <Descriptions size="small" column={3}>
-                                    <Descriptions.Item label="Store Manager:">Lili Qu</Descriptions.Item>
-                                    <Descriptions.Item label="Session Id:">
+                                <Descriptions size="small" column={2}>
+                                    <Descriptions.Item label="Session Id">
                                         <a>{cartStore.session}</a>
                                     </Descriptions.Item>
-                                    <Descriptions.Item label="Session start:">{new Date(cartStore.sessionStart).toLocaleString()}</Descriptions.Item>
-                                    <Descriptions.Item label="Current time:"><Clock format={commonStore.hourMinusFormat} ticking={true} /></Descriptions.Item>
-                                    <Descriptions.Item label="Store:">
-                                        TN Store, A123 St., W.10, D.1, Abc City
-                                </Descriptions.Item>
+                                    <Descriptions.Item label="Session start">{new Date(cartStore.sessionStart).toLocaleString()}</Descriptions.Item>
+                                    <Descriptions.Item label="Current time"><Clock format={commonStore.hourMinusFormat} ticking={true} /></Descriptions.Item>
+                                    {cartStore.salescleckStore && <Descriptions.Item label="Store">
+                                        {cartStore.salescleckStore.ShortName}
+                                    </Descriptions.Item>}
+                                    {cartStore.salescleckStore &&
+                                        <Descriptions.Item label="Store's Address">
+                                            {cartStore.salescleckStore.Address + ", " + cartStore.salescleckStore.City + ", " + cartStore.salescleckStore.Region + ", " + cartStore.salescleckStore.Country}
+                                        </Descriptions.Item>}
+                                    {cartStore.salescleckStore &&
+                                        <Descriptions.Item label="Store's Phone">
+                                            {cartStore.salescleckStore.Phone}
+                                        </Descriptions.Item>}
+                                    {cartStore.salescleckStore &&
+                                        <Descriptions.Item label="Store's Fax">
+                                            {cartStore.salescleckStore.Fax}
+                                        </Descriptions.Item>}
+                                    {cartStore.salescleckStore &&
+                                        <Descriptions.Item label="Store's Email">
+                                            {cartStore.salescleckStore.Email}
+                                        </Descriptions.Item>}
                                 </Descriptions>
                             </Panel>
                         </Collapse>
