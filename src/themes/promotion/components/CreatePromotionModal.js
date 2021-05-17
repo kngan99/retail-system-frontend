@@ -189,6 +189,7 @@ const CreatePromotionModal = (pros) => {
 
     const onCreate = async (values) => {
         console.log("Received values of form: ", values);
+        await promotionStore.createPromotion({ ...values, StartTime: new Date(values.ValidTime[0]), EndTime: new Date(values.ValidTime[1]) })
         // insertUsersApi(values);
         // await productStore.createProducts(values);
         setVisible(false);

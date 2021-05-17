@@ -13,9 +13,6 @@ class PromotionStore {
     async getPromotions() {
         this.loading = true;
         let data: any = [];
-        this.pageNum = 1;
-        this.pageSize = 10;
-        this.totalCount = 0;
         data = await orderService.getPromotion(this.pageNum, this.pageSize);
         this.promotions = data.items;
         this.totalCount = data.meta.totalItems;
@@ -43,7 +40,7 @@ class PromotionStore {
     }
 
     @action.bound
-    async updateProducts(id: number, promotion: any) {
+    async updatePromotion(id: number, promotion: any) {
         this.loading = true;
         await orderService.updatePromotion(id, promotion);
         await this.getPromotions();

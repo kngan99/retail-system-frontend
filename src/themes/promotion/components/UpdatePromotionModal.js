@@ -188,9 +188,8 @@ const CreatePromotionModal = (pros) => {
     const [visible, setVisible] = useState(false);
 
     const onCreate = async (values) => {
-        console.log("Received values of form: ", values);
-        // insertUsersApi(values);
-        // await productStore.createProducts(values);
+        console.log("Received values of form: ", { ...values, Coupon: pros.record.orderdiscounts_Coupon, StartTime: new Date(values.ValidTime[0]), EndTime: new Date(values.ValidTime[1]) });
+        await promotionStore.updatePromotion(pros.record.orderdiscounts_Coupon, { ...values, StartTime: new Date(values.ValidTime[0]), EndTime: new Date(values.ValidTime[1]) })
         setVisible(false);
     };
 
