@@ -10,6 +10,7 @@ import CreateProductModal from "../../../../modules/product/components/ManagePro
 import CreatePromotionModal from "../../components/CreatePromotionModal";
 import { makeAutoObservable, autorun, observable } from "mobx"
 import App from "../../../../modules/product/components/ManageProduct/SalesAnalysis";
+import UpdatePromotionModal from "../../components/UpdatePromotionModal";
 
 interface Promotion {
   orderdiscounts_Coupon: number;
@@ -91,17 +92,15 @@ const HomePage = () => {
       dataIndex: "promotions_PercentOff",
       sorter: false,
     },
-    // {
-    //   title: "Action",
-    //   key: "action",
-    //   render: (_, record) => (
-    //     <Space size="middle">
-    //       <UpdateProductModal record={record} />
-    //       <DeleteOutlined onClick={() => showPromiseConfirm(record)} />
-    //       <App record={record} />
-    //     </Space>
-    //   ),
-    // },
+    {
+      title: "Action",
+      key: "action",
+      render: (_, record) => (
+        <Space size="middle">
+          <UpdatePromotionModal record={record} />
+        </Space>
+      ),
+    },
   ];
 
   const callback = (key: any) => {

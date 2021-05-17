@@ -34,6 +34,21 @@ class PromotionStore {
         this.loading = false;
     }
 
+    @action.bound
+    async createPromotion(promotion: any) {
+        this.loading = true;
+        await orderService.createPromotion(promotion);
+        await this.getPromotions();
+        this.loading = false;
+    }
+
+    @action.bound
+    async updateProducts(id: number, promotion: any) {
+        this.loading = true;
+        await orderService.updatePromotion(id, promotion);
+        await this.getPromotions();
+        this.loading = false;
+    }
 
     constructor() {
         makeObservable(this);

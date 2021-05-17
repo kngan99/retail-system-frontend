@@ -22,7 +22,7 @@ interface CartProduct {
 }
 
 class PromotionService {
-    orderPrefix: string = "http://localhost:4000/api/orderdiscounts";
+    orderdiscountPrefix: string = "http://localhost:4000/api/orderdiscounts";
 
     // public async confirmOrder(SalescleckId: number, SessionId: string, cartproducts: CartProduct[], CustomerId: number, Discount: number) {
     //     const result = await http.post(`${this.orderPrefix}`, {
@@ -39,11 +39,29 @@ class PromotionService {
     // }
 
     public async getPromotion(skip: number, take: number) {
-        const result = await http.get(`${this.orderPrefix}`, {
+        const result = await http.get(`${this.orderdiscountPrefix}`, {
             params: {
                 page: skip,
                 limit: take,
             },
+        });
+        return result.data;
+    }
+
+    public async createPromotion(promotion: any) {
+        console.log("Value before sending")
+        console.log(promotion);
+        const result = await http.post(`${this.orderdiscountPrefix}/`, {
+            ...promotion,
+        });
+        return result.data;
+    }
+
+    public async updatePromotion(id: number, promotion: any) {
+        console.log("Value before sending")
+        console.log(promotion);
+        const result = await http.put(`${this.orderdiscountPrefix}/${id}`, {
+            ...promotion,
         });
         return result.data;
     }
