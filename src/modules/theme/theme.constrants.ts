@@ -20,6 +20,18 @@ export const adminMenu: AdminMenuDto[] = [
     isShow: true,
   },
   {
+    url: '/warehouse/manage',
+    label: 'Manage Warehouses',
+    icon: 'ico icon-menu',
+    isShow: true,
+  },
+  {
+    url: '/store/manage',
+    label: 'Manage Store',
+    icon: 'ico icon-delivery',
+    isShow: true,
+  },
+  {
     url: '/',
     label: 'Setting',
     icon: 'ico ico-noti',

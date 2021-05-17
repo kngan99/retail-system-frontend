@@ -51,4 +51,14 @@ export const warehouseRoutes = [
     isLayout: false,
     isGuarded: false,
   },
+  {
+    path: '/warehouse/manage',
+    name: 'home',
+    title: 'New Request',
+    exact: true,
+    permission: '',
+    component: React.lazy(() => import('../../../modules/admin-warehouse/pages/Manage')),
+    isLayout: false,
+    isGuarded: false,
+  },
 ];
