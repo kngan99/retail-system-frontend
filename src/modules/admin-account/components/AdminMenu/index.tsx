@@ -57,7 +57,7 @@ const AdminMenu = (props: ComponentProps) => {
    */
   const [showMenu, setShowMenu] = React.useState<boolean>(false);
 
-  const [isDisplayIconArray, setIsDisplayIconArray] = React.useState<any[]>([true, true, true]);
+  const [isDisplayIconArray, setIsDisplayIconArray] = React.useState<any[]>([true, true, true, true]);
 
   const handleMediaQueryChange = (matches: boolean) => {
     if (matches === false) setShowMenu(matches);
@@ -82,10 +82,10 @@ const AdminMenu = (props: ComponentProps) => {
 
   React.useEffect(() => {
     if(authenticationStore.loggedUser && authenticationStore.loggedUser.Type==='StoreManager'){
-      setIsDisplayIconArray([true,true,true]);
+      setIsDisplayIconArray([true,true,true, true, true]);
     }
     else{
-    setIsDisplayIconArray([false,false,true]);
+    setIsDisplayIconArray([false,false,true, true, true]);
     }
   },[]);
 

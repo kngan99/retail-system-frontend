@@ -1,5 +1,8 @@
 .modal-dialog {
 }
+
+.pac-container { z-index: 10000 !important; display: block !important;}
+
 .modal-content {
   border: 0;
   border-radius: $border-radius-sm;

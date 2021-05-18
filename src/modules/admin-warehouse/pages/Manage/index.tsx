@@ -71,8 +71,8 @@ const ManageAccountAdminPage = () => {
       if (result) {
         adminStore.getAccounts(criteriaDto.skip, criteriaDto.take);
         adminStore.resetAdminForm();
-        message.success(MESSAGES_CREATED_SUCCESS);
         setShowPopup(false);
+        message.success(MESSAGES_CREATED_SUCCESS);
       }
     }
     if (mode === "edit") {
@@ -80,12 +80,12 @@ const ManageAccountAdminPage = () => {
       if (result) {
         adminStore.getAccounts(criteriaDto.skip, criteriaDto.take);
         adminStore.resetAdminForm();
-        message.success(MESSAGES_UPDATE_SUCCESS);
         setShowPopup(false);
+        message.success(MESSAGES_UPDATE_SUCCESS);
       }
     }
+    setShowPopup(false);
     message.success(MESSAGES_CREATED_SUCCESS);
-        setShowPopup(false);
   };
 
   const handleEdit = async (id: number) => {

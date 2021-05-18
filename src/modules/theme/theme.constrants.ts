@@ -22,13 +22,13 @@ export const adminMenu: AdminMenuDto[] = [
   {
     url: '/warehouse/manage',
     label: 'Manage Warehouses',
-    icon: 'ico icon-menu',
+    icon: 'ico ico-pickup',
     isShow: true,
   },
   {
     url: '/store/manage',
     label: 'Manage Store',
-    icon: 'ico icon-delivery',
+    icon: 'ico ico-standard',
     isShow: true,
   },
   {

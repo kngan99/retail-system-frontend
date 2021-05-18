@@ -1,14 +1,15 @@
-import React from 'react';
-import { observer } from 'mobx-react-lite';
-import { Modal, Form, Col, Button, ButtonGroup } from 'react-bootstrap';
-import { Formik } from 'formik';
-import * as yup from 'yup';
-import { PHONE_REGEXP} from '../../../../common/constants/rules.constants';
-import bsCustomFileInput from 'bs-custom-file-input';
-import { NewAccountDto } from '../../../account/account.dto';
-import { AdminStoreContext } from '../../admin.store';
-import { AccountType, newAdminFormInit } from '../../admin.constants';
-import { I18N } from '../../../../i18n.enum';
+import React from "react";
+import { observer } from "mobx-react-lite";
+import { Modal, Form, Col, Button, ButtonGroup } from "react-bootstrap";
+import { Formik } from "formik";
+import * as yup from "yup";
+import { PHONE_REGEXP } from "../../../../common/constants/rules.constants";
+import bsCustomFileInput from "bs-custom-file-input";
+import { NewAccountDto } from "../../../account/account.dto";
+import { AdminStoreContext } from "../../admin.store";
+import { AccountType, newAdminFormInit } from "../../admin.constants";
+import { I18N } from "../../../../i18n.enum";
+import GoogleMapAutocomplete from "../../../../common/components/GoogleMapAutocomplete";
 
 interface ComponentProps {
   style?: React.CSSProperties;
@@ -56,21 +57,18 @@ const AdminAccountFormModal = (props: ComponentProps) => {
     BUTTONS_UPDATE,
   } = I18N;
 
-  const [initialValues, setInitValues] = React.useState<any>(
-    newAdminFormInit
-  );
+  const [initialValues, setInitValues] = React.useState<any>({});
+
+  
   /*
    * Validation
    */
   const schema = yup.object({
-    fName: yup.string().required((VALIDATE_REQUIRED)),
-    lName: yup.string().required((VALIDATE_REQUIRED)),
-    email: yup.string().required((VALIDATE_REQUIRED)).email((VALIDATE_EMAIL)),
-    homePhone: yup
-      .string()
-      .required()
-      .matches(PHONE_REGEXP, (VALIDATE_PHONE)),
-    type: yup.string().required((VALIDATE_REQUIRED)),
+    fName: yup.string().required(VALIDATE_REQUIRED),
+    lName: yup.string().required(VALIDATE_REQUIRED),
+    email: yup.string().required(VALIDATE_REQUIRED).email(VALIDATE_EMAIL),
+    homePhone: yup.string().required().matches(PHONE_REGEXP, VALIDATE_PHONE),
+    type: yup.string().required(VALIDATE_REQUIRED),
   });
 
   React.useEffect(() => {
@@ -81,38 +79,46 @@ const AdminAccountFormModal = (props: ComponentProps) => {
     setInitValues(adminStore.adminForm);
   }, [adminStore.adminForm]);
 
+
+  const handleChangePlace = (value: any, field: string, setFieldValue: any) => {
+    setFieldValue('Address', value?.formatted_address, false);
+    setFieldValue('AddressCoorLat', value.geometry?.location?.lat(), false);
+    setFieldValue('AddressCoorLong', value.geometry?.location?.lng(), false);
+    value?.address_components.map((value: any) => {
+      if (value.types[0] === 'administrative_area_level_1') {
+        setFieldValue('City', value.short_name, false);
+      }
+    });
+  };
+
   return (
     <Modal
       show={show}
       onHide={() => handleClose()}
       aria-labelledby="contained-modal-title-vcenter"
       centered
-      className={`modal-custom modal-employee ${className ? className : ''}`}
+      className={`modal-custom modal-employee ${className ? className : ""}`}
       style={style}
     >
       <Modal.Header>
-        {mode === 'create'
-          ? "New Warehouse"
-          : "Edit Warehouse"}
+        {mode === "create" ? "New Warehouse" : "Edit Warehouse"}
       </Modal.Header>
       <Modal.Body>
         <Formik
-          validationSchema={schema}
           onSubmit={(values) => {
-            console.log("dgf")
-            console.log(values)
+            if (values.Id) delete values.Id;
             handleSubmit(values);
           }}
           initialValues={initialValues}
         >
-          {({ handleSubmit, handleChange, handleBlur, values, errors }) => (
+          {({ handleSubmit, handleChange, handleBlur, values, errors, setFieldValue }) => (
             <Form
               noValidate
               onSubmit={(e) => {
                 e.preventDefault();
                 handleSubmit();
               }}
-              className={`form form-employee ${className ? className : ''}`}
+              className={`form form-employee ${className ? className : ""}`}
               style={style}
             >
               {children}
@@ -179,10 +185,16 @@ const AdminAccountFormModal = (props: ComponentProps) => {
                 <Form.Label className="form-label-required">
                   {"Address"} <span>*</span>
                 </Form.Label>
-                <Form.Control
-                  type="text"
+                <GoogleMapAutocomplete
+                  handleChangePlace={handleChangePlace}
+                  field="Warehouse"
+                  setFieldValue={setFieldValue}
+                  componentId="warehouse-input"
                   value={values.Address}
-                  onChange={handleChange}
+                  onChange={(e) => {
+                    console.log("ghdfjkl");
+                    handleChange(e.target.value);
+                  }}
                 />
                 {/*<Form.Control.Feedback type="invalid">
                   {errors.fName}
@@ -297,21 +309,21 @@ const AdminAccountFormModal = (props: ComponentProps) => {
                 </Form.Control.Feedback>*/}
               </Form.Group>
               <ButtonGroup className="form-actions">
-                {mode === 'create' && (
+                {mode === "create" && (
                   <Button variant="primary" type="submit">
-                    <span>{(BUTTONS_CREATE)}</span>
+                    <span>{BUTTONS_CREATE}</span>
                     <i className="ico ico-plus"></i>
                   </Button>
                 )}
-                {mode === 'edit' && (
+                {mode === "edit" && (
                   <Button variant="primary" type="submit">
-                    <span>{(BUTTONS_UPDATE)}</span>
+                    <span>{BUTTONS_UPDATE}</span>
                     <i className="ico ico-plus"></i>
                   </Button>
                 )}
-                {mode === 'edit' && (
+                {mode === "edit" && (
                   <Button onClick={handleDelete}>
-                    <span>{(BUTTONS_DELETE)}</span>
+                    <span>{BUTTONS_DELETE}</span>
                     <i className="ico ico-delete"></i>
                   </Button>
                 )}

@@ -82,10 +82,10 @@ const AdminMenu = (props: ComponentProps) => {
 
   React.useEffect(() => {
     if(authenticationStore.loggedUser && authenticationStore.loggedUser.Type==='StoreManager'){
-      setIsDisplayIconArray([true,true,true]);
+      setIsDisplayIconArray([true,true,true, true]);
     }
     else{
-    setIsDisplayIconArray([false,false,true]);
+    setIsDisplayIconArray([false,false,true, true]);
     }
   },[]);
 

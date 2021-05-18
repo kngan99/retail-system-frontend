@@ -9,7 +9,7 @@ class AdminStore {
     @observable totalCount: number = 0;
     @observable adminForm: any = newAdminFormInit;
   
-    @action
+    @action.bound
     async getAccounts(skip: number, take: number) {
         let data: any = [];
         data = await adminService.getAccounts(skip, take);
@@ -17,7 +17,7 @@ class AdminStore {
         this.totalCount = data[1];
     }
 
-    @action
+    @action.bound
     async getAccountById(id: number) {
         const result = await adminService.getAccountById(id);
         if (result) {
@@ -26,29 +26,29 @@ class AdminStore {
         return true;
     }
 
-    @action
+    @action.bound
     async setAdminForm(data: any) {
         this.adminForm = data;
     }
 
-    @action
+    @action.bound
     async resetAdminForm() {
         this.adminForm = newAdminFormInit;
     }
 
-    @action
+    @action.bound
     async addAccount() {
         const data = await adminService.addAccount(this.adminForm);
         return data;
     }
 
-    @action
+    @action.bound
     async updateAccount(id: number, model: any) {
         const result = await adminService.updateAccount(id, model);
-        return result.data?.result;
+        return result.data;
     }
 
-    @action
+    @action.bound
     async deleteAccount(id: number) {
         const result = await adminService.deleteAccount(id);
         return result.data?.result;
