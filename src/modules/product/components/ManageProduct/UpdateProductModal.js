@@ -90,6 +90,7 @@ const CollectionCreateForm = ({ visible, onCreate, onCancel, record, categories 
                     UnitPrice: record.UnitPrice,
                     Discount: record.Discount,
                     UnitsInStock: record.UnitsInStock,
+                    Quantity: record.Quantity,
                     ReorderLevel: record.ReorderLevel,
                     Discontinued: record.Discontinued,
                     prefix: "86",
@@ -183,6 +184,20 @@ const CollectionCreateForm = ({ visible, onCreate, onCancel, record, categories 
                 <Form.Item
                     name="UnitsInStock"
                     label="Units In Stock"
+                    rules={[
+                        {
+                            required: true,
+                            message: 'This is a required field!',
+                        },
+                    ]}
+                    hasFeedback
+                >
+                    <InputNumber />
+                </Form.Item>
+
+                <Form.Item
+                    name="Quantity"
+                    label="Quantity"
                     rules={[
                         {
                             required: true,
