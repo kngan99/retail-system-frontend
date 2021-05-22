@@ -86,6 +86,12 @@ const HomePage = () => {
       sorter: false,
     },
     {
+      title: "Quantity",
+      dataIndex: "StoreProducts",
+      sorter: false,
+      render: (record) => (record[0].Quantity)
+    },
+    {
       title: "ReorderLevel",
       dataIndex: "ReorderLevel",
       sorter: false,

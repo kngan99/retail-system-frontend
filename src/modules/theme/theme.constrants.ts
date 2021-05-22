@@ -14,6 +14,12 @@ export const adminMenu: AdminMenuDto[] = [
     isShow: true,
   },
   {
+    url: '/promotion/manage',
+    label: 'Manage Promotions',
+    icon: 'ico ico-accounts',
+    isShow: true,
+  },
+  {
     url: '/pos/past',
     label: 'Manage Sesions And Orders',
     icon: 'ico ico-accounts',
