@@ -76,6 +76,18 @@ class ProductService {
     return result.data;
   }
 
+  public async searchNotAddedProductsPagination(skip: number, take: number, key: string) {
+    const result = await http.get(`${this.productPrefix}/searchNotAddedProducts`, {
+      params: {
+        page: skip,
+        limit: take,
+        key: key,
+      },
+    });
+    console.log(result.data)
+    return result.data;
+  }
+
   public async deleteProducts(id: number) {
     const result = await http.delete(`${this.productPrefix}/${id}`, {
     });
