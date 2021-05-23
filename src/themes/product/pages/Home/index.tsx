@@ -2,7 +2,7 @@ import { observer } from "mobx-react";
 import React from "react";
 import { ProductStoreContext } from "../../../../modules/product/product.store";
 import { AddProductStoreContext } from "../../../../modules/product/addproduct.store";
-import { Row, Modal, Col, Button, Pagination, Table, Tag, Radio, Space, Tabs, Card, Skeleton, Avatar, List, Spin } from 'antd';
+import { Input, Row, Modal, Col, Button, Pagination, Table, Tag, Radio, Space, Tabs, Card, Skeleton, Avatar, List, Spin } from 'antd';
 import { ExclamationCircleOutlined, AudioOutlined, EditOutlined, EllipsisOutlined, SettingOutlined, DeleteOutlined, PlusCircleOutlined } from "@ant-design/icons";
 import { ColumnsType } from "antd/es/table";
 import "antd/dist/antd.css";
@@ -205,6 +205,14 @@ const HomePage = () => {
     console.log(key);
   }
 
+  const { Search } = Input;
+  const search = async (key: string) => {
+    await productStore.changeSearchKey(key);
+  }
+  const searchNotAdded = async (key: string) => {
+    await addProductStore.changeSearchKey(key);
+  }
+
   const { TabPane } = Tabs;
   const { Meta } = Card;
   const gridStyle = {
@@ -217,11 +225,17 @@ const HomePage = () => {
     <>
       <div style={{ background: "white" }}>
         {console.log(productStore.products)}
-        <br />
-        <CreateProductModal />
-        <br />
         <Tabs defaultActiveKey="1" onChange={callback}>
           <TabPane tab="Table" key="1">
+            <Row>
+              <Search
+                placeholder="input id or name"
+                onSearch={(value: any) => search(value)}
+                enterButton
+                autoFocus={true}
+              />
+            </Row>
+            <br />
             <Spin spinning={productStore.loading}>
               <Table<Product> columns={columns} dataSource={productStore.products} rowKey={(record) => record.Id} pagination={false} />
               <br />
@@ -240,6 +254,15 @@ const HomePage = () => {
             </Spin>
           </TabPane>
           <TabPane tab="Cards" key="2">
+            <Row>
+              <Search
+                placeholder="input id or name"
+                onSearch={(value: any) => search(value)}
+                enterButton
+                autoFocus={true}
+              />
+            </Row>
+            <br />
             <Spin spinning={productStore.loading}>
               <List
                 grid={{
@@ -293,7 +316,23 @@ const HomePage = () => {
               </Row>
             </Spin>
           </TabPane>
-          <TabPane tab="Add existed products" key="3">
+          <TabPane tab="Add products" key="3">
+            <br />
+            <Row>
+              <Col xs={{ span: 5 }} sm={{ span: 5 }}>
+                <CreateProductModal />
+              </Col>
+              <Col xs={{ span: 15 }} sm={{ span: 15 }}></Col>
+              <Col xs={{ span: 4 }} sm={{ span: 4 }}>
+                <Search
+                  placeholder="input id or name"
+                  onSearch={(value: any) => searchNotAdded(value)}
+                  enterButton
+                  autoFocus={true}
+                />
+              </Col>
+            </Row>
+            <br />
             <Spin spinning={addProductStore.loading}>
               <Table<Product> columns={newcolumns} dataSource={addProductStore.products} rowKey={(record) => record.Id} pagination={false} />
               <br />
