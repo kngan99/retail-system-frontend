@@ -120,7 +120,7 @@ const ManageAccountAdminPage = () => {
 
   return (
     <>
-      <AdminWrapper pageTitle={"Manage Warehouses"}>
+      <AdminWrapper pageTitle={"Manage Stores"}>
         <ActionBar actions={actionsBar} />
         <AdminAccountGrid
           handleChangePageItem={handleChangePageItem}
