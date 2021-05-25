@@ -57,7 +57,7 @@ const TrackingOrder = (props: ComponentProps) => {
                 <span className="item-label">{"Distance"}</span>
                 <span className="item-value">
                   {markers[2]
-                    ? getDistance(markers[2], markers[0]).toString() + ' km'
+                    ? getDistance(markers[1], markers[0]).toString() + ' km'
                     : '0 km'}
                 </span>
               </Col>

@@ -6,7 +6,7 @@ import * as yup from "yup";
 import { PHONE_REGEXP } from "../../../../common/constants/rules.constants";
 import bsCustomFileInput from "bs-custom-file-input";
 import { NewAccountDto } from "../../../account/account.dto";
-import { AdminStoreContext } from "../../admin.store";
+import { StoreStoreContext } from "../../admin.store";
 import { AccountType, newAdminFormInit } from "../../admin.constants";
 import { I18N } from "../../../../i18n.enum";
 import GoogleMapAutocomplete from "../../../../common/components/GoogleMapAutocomplete";
@@ -37,7 +37,7 @@ const AdminAccountFormModal = (props: ComponentProps) => {
     mode,
   } = props;
 
-  const adminStore = React.useContext(AdminStoreContext);
+  const adminStore = React.useContext(StoreStoreContext);
   /*
    * Translation
    */
@@ -208,7 +208,7 @@ const AdminAccountFormModal = (props: ComponentProps) => {
                   handleChangePlace={handleChangePlace}
                   field="Warehouse"
                   setFieldValue={setFieldValue}
-                  componentId="warehouse-input"
+                  componentId="Address"
                   value={values.Address}
                   onChange={(e) => {
                     console.log("ghdfjkl");

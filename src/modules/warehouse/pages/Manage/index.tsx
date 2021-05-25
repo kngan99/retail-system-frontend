@@ -19,10 +19,14 @@ import ActionBar from "../../../theme/components/ActionBar";
 import { AuthenticationStoreContext } from "../../../authenticate/authentication.store";
 import { retrieveFromStorage, saveToStorage } from "../../../../common/utils/storage.util";
 import accountStore from "../../../account/account.store";
+import { StoreStoreContext } from "../../../admin-store/admin.store";
+import { WarehouseStoreContext } from "../../../admin-warehouse/admin.store";
 
 const ManageOrderAdminPage = () => {
   const orderStore = React.useContext(CartStoreContext);
   const adminStore = React.useContext(AdminStoreContext);
+  const storeStore = React.useContext(StoreStoreContext);
+  const warehouseStore = React.useContext(WarehouseStoreContext);
   const authStore = React.useContext(AuthenticationStoreContext);
   const history = useHistory();
 
@@ -288,43 +292,34 @@ const ManageOrderAdminPage = () => {
   const handleTracking = React.useCallback(
     async (id: number) => {
       let orderById = await orderStore.getOrderById(id);
+      const isGetStore = await storeStore.getAccountById(parseInt(retrieveFromStorage("storeId")!));
+      const isGetWarehouse = await warehouseStore.getAccountById(orderStore.selectedOrder.warehouseId);
       setSelectedOrder(orderStore.selectedOrder);
-      console.log(orderStore.selectedOrder);
-      // if (orderById.length) {
-      //   let tmpMarkers = [];
-      //   // tmpMarkers.push(
-      //   //   {
-      //   //     lat: +orderById[0].pickupAddress[0],
-      //   //     lng: +orderById[0].pickupAddress[1],
-      //   //   },
-      //   //   {
-      //   //     lat: +orderById[0].dropoffAddress[0],
-      //   //     lng: +orderById[0].dropoffAddress[1],
-      //   //   }
-      //   // );
+      console.log(storeStore.currentStore);
+      console.log(warehouseStore.currentWarehouse);
+      if (orderById) {
+        let tmpMarkers = new Array();
+        tmpMarkers.push(
+          {
+            lat: +warehouseStore.currentWarehouse.AddressCoorLat,
+            lng: +warehouseStore.currentWarehouse.AddressCoorLong,
+          },
+          {
+            lat: +storeStore.currentStore.AddressCoorLat,
+            lng: +storeStore.currentStore.AddressCoorLong,
+          }
+        );
 
-      //   // if (orderById[0].tracking?.length > 0) {
-      //   //   for (let i in orderById[0].tracking) {
-      //   //     tmpMarkers.push({
-      //   //       lat: +orderById[0].tracking[i].lat,
-      //   //       lng: +orderById[0].tracking[i].lng,
-      //   //     });
-      //   //   }
-      //   // }
-
-      //   setMarkers(tmpMarkers);
-      //   saveToStorage('trackingOrder', orderById[0].id);
-      // }
+        setMarkers(tmpMarkers);
+      }
     },
     [orderStore]
   );
 
   React.useEffect(() => {
     async function getOrders() {
-      orderStore.getOrderListByAdmin({ ...criteriaDto, ...{userId: retrieveFromStorage("loggedId")} });
-      //setCurrentStore(accountStore.currentUserDetail.StoreId);
-      //const id = retrieveFromStorage("trackingOrder");
-      // if (id) handleTracking(+id);
+      orderStore.getOrderListByAdmin({ ...criteriaDto, ...{ userId: retrieveFromStorage("loggedId") } });
+      setCurrentStore(retrieveFromStorage("storeId"));
     }
     getOrders();
     // eslint-disable-next-line react-hooks/exhaustive-deps

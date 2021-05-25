@@ -4,7 +4,7 @@ import { Container, Row, Col, Table, Form, Button } from "react-bootstrap";
 import Paging from "../../../../common/components/Paging";
 import { pageSizeOptions } from "../../../../common/constants/paging.constants";
 import { AccountsActionsDto } from "../../../account/account.dto";
-import { AdminStoreContext } from "../../admin.store";
+import { StoreStoreContext } from "../../admin.store";
 import ConfirmModal from "../../../../common/components/ConfirmModal";
 
 /*
@@ -25,7 +25,7 @@ interface ComponentProps {
 }
 
 const AdminAccountGrid = (props: ComponentProps) => {
-  const adminStore = React.useContext(AdminStoreContext);
+  const adminStore = React.useContext(StoreStoreContext);
 
   /*
    * Props of Component

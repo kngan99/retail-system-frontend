@@ -1,7 +1,7 @@
 import React from "react";
 import { observer } from "mobx-react";
 import { useHistory } from "react-router-dom";
-import { AdminStoreContext } from "../../admin.store";
+import { StoreStoreContext } from "../../admin.store";
 import { pageSizeOptions } from "../../../../common/constants/paging.constants";
 import { I18N } from "../../../../i18n.enum";
 import AdminWrapper from "../../components/AdminWrapper";
@@ -21,7 +21,7 @@ const ManageAccountAdminPage = () => {
     BUTTONS_RESTORE,
   } = I18N;
 
-  const adminStore = React.useContext(AdminStoreContext);
+  const adminStore = React.useContext(StoreStoreContext);
 
   const [showPopup, setShowPopup] = React.useState<boolean>(false);
 

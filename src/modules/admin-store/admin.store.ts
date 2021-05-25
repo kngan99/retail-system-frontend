@@ -4,10 +4,11 @@ import adminService from './admin.service';
 import { NewAccountDto } from '../account/account.dto';
 import { newAdminFormInit } from './admin.constants';
 
-class AdminStore {
+class StoreStore {
     @observable accounts: any[] = [];
     @observable totalCount: number = 0;
     @observable adminForm: any = newAdminFormInit;
+    @observable currentStore: any;
   
     @action.bound
     async getAccounts(skip: number, take: number) {
@@ -21,7 +22,8 @@ class AdminStore {
     async getAccountById(id: number) {
         const result = await adminService.getAccountById(id);
         if (result) {
-        this.setAdminForm(result);
+            this.setAdminForm(result);
+            this.currentStore = result;
         }
         return true;
     }
@@ -59,7 +61,7 @@ class AdminStore {
     }
   }
   
-  export default new AdminStore();
+  export default new StoreStore();
   
-  export const AdminStoreContext = React.createContext(new AdminStore());
+  export const StoreStoreContext = React.createContext(new StoreStore());
   
