@@ -181,7 +181,7 @@ const PosPage = () => {
         margin: "auto", padding: "10px",
       }}>
         <Row>
-          <Col xs={{ span: 12, offset: 1 }} sm={{ span: 10, offset: 1 }} xl={{ span: 6, offset: 0 }}><Cart productsInCart={cartStore.productsInCart} totalNum={cartStore.totalNum} totalAmount={cartStore.subtotalAmount} isCheckout={cartStore.isCheckout} />
+          <Col className="printable" xs={{ span: 12, offset: 1 }} sm={{ span: 10, offset: 1 }} xl={{ span: 6, offset: 0 }}><Cart productsInCart={cartStore.productsInCart} totalNum={cartStore.totalNum} totalAmount={cartStore.subtotalAmount} isCheckout={cartStore.isCheckout} />
             {/* {cartStore.discount !== 0 && <Alert message={"Order Discount: -" + cartStore.discount} type="error" />}
             {(cartStore.isCheckout) && <Alert message={"Tax(10%): " + (cartStore.totalAmount * 0.1).toFixed(2)} type="warning" />}
             {(cartStore.isCheckout) && <Alert message={"Total: " + (cartStore.totalAmount * 1.1).toFixed(2)} type="success" />} */}
@@ -294,7 +294,7 @@ const PosPage = () => {
               </Col>
             </Row>
           </Col>}
-          {(cartStore.isCheckout) && <Col xs={{ span: 12, offset: 1 }} sm={{ span: 10, offset: 1 }} xl={{ span: 6, offset: 0 }}>
+          {(cartStore.isCheckout) && <Col className="no-print" xs={{ span: 12, offset: 1 }} sm={{ span: 10, offset: 1 }} xl={{ span: 6, offset: 0 }}>
             <Breadcrumb className="mb-0 pb-0">
               <h5>Promotion</h5>
             </Breadcrumb>

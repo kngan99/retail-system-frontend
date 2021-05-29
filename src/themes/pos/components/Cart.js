@@ -134,7 +134,7 @@ const Cart = observer(({ productsInCart, totalNum, totalAmount, isCheckout }) =>
                         <td>
                         </td>
                         <td class="p-0">
-                            {cartStore.isConfirm && <Button onClick={async () => await handleConfirmPrintClick()} type="link" icon={<PrinterOutlined />} >Print receipt</Button>}
+                            {cartStore.isConfirm && <Button className="no-print" onClick={async () => await handleConfirmPrintClick()} type="link" icon={<PrinterOutlined />} >Print receipt</Button>}
                         </td>
 
                     </tr>
@@ -153,7 +153,7 @@ const Cart = observer(({ productsInCart, totalNum, totalAmount, isCheckout }) =>
                         </td>
                         <td class="p-0">
                             {!cartStore.isConfirm && <Button onClick={async () => await handleModifyClick()} type="link" icon={< ArrowLeftOutlined />} >Modify order</Button>}
-                            {cartStore.isConfirm && <Button loading={cartStore.loading} onClick={async () => await handleNewOrderClick()} type="link" icon={<ShoppingCartOutlined />} >New order</Button>}
+                            {cartStore.isConfirm && <Button className="no-print" loading={cartStore.loading} onClick={async () => await handleNewOrderClick()} type="link" icon={<ShoppingCartOutlined />} >New order</Button>}
                         </td>
                     </tr>
                 </tbody>

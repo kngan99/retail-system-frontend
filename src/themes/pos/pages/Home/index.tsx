@@ -41,22 +41,22 @@ const HomePage = () => {
         <>
 
             <AdminWrapper>
-                <div style={{ background: "linear-gradient(90deg, #fab91a 0, #ffd424 100%)" }} className="site-page-header-ghost-wrapper">
+                <div style={{ background: "linear-gradient(90deg, #fab91a 0, #ffd424 100%)" }} className="site-page-header-ghost-wrapper printable">
                     <PageHeader
                         ghost={false}
                         // onBack={() => window.history.back()}
                         title={<h5 style={{ 'color': '#8c8c8c' }}>Salesclerk:</h5>}
                         subTitle={<h5 style={{ 'color': '#ffc53d' }}>{cartStore.salescleckFullName}</h5>}
                         extra={[
-                            <Button key="3">Help?</Button>,
-                            <Button onClick={() => { history.push('/pos/past') }} key="2">View past</Button>,
-                            !cartStore.session && <Button key="1" loading={cartStore.loading} onClick={async () => await handleStartSessionClick()} type="primary">
+                            <Button className="no-print" key="3">Help?</Button>,
+                            <Button className="no-print" onClick={() => { history.push('/pos/past') }} key="2">View past</Button>,
+                            !cartStore.session && <Button className="no-print" key="1" loading={cartStore.loading} onClick={async () => await handleStartSessionClick()} type="primary">
                                 Start Session
                         </Button>,
-                            cartStore.session && <Button key="4" loading={cartStore.loading} onClick={async () => await handleEndSessionClick()} type="primary" danger>
+                            cartStore.session && <Button className="no-print" key="4" loading={cartStore.loading} onClick={async () => await handleEndSessionClick()} type="primary" danger>
                                 End Session
                         </Button>,
-                            <Button key="5" type="primary" onClick={() => handleLogout()}>
+                            <Button className="no-print" key="5" type="primary" onClick={() => handleLogout()}>
                                 Log out
                         </Button>,
                         ]}
@@ -99,7 +99,7 @@ const HomePage = () => {
 
                         <div className="site-layout-content"><PosPage></PosPage></div>
                     </Content>
-                    <Footer style={{ textAlign: 'center', background: "linear-gradient(90deg, #fab91a 0, #ffd424 100%)" }}></Footer>
+                    <Footer className="no-print" style={{ textAlign: 'center', background: "linear-gradient(90deg, #fab91a 0, #ffd424 100%)" }}></Footer>
                 </Layout>}
                 <br />
                 <br />
