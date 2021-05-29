@@ -14,6 +14,7 @@ import '../../../../modules/product/components/ManageProduct/style.css';
 import Clock from 'react-live-clock';
 import { CommonStoreContext } from '../../../../common/common.store';
 import CreateCustomerModal from "../../components/CreateCustomerModal";
+import { Table as BootstrapTable } from 'react-bootstrap';
 
 interface Product {
   Id: number;
@@ -181,9 +182,38 @@ const PosPage = () => {
       }}>
         <Row>
           <Col xs={{ span: 12, offset: 1 }} sm={{ span: 10, offset: 1 }} xl={{ span: 6, offset: 0 }}><Cart productsInCart={cartStore.productsInCart} totalNum={cartStore.totalNum} totalAmount={cartStore.subtotalAmount} isCheckout={cartStore.isCheckout} />
-            {cartStore.discount != 0 && <Alert message={"Order Discount: -" + cartStore.discount} type="error" />}
+            {/* {cartStore.discount !== 0 && <Alert message={"Order Discount: -" + cartStore.discount} type="error" />}
             {(cartStore.isCheckout) && <Alert message={"Tax(10%): " + (cartStore.totalAmount * 0.1).toFixed(2)} type="warning" />}
-            {(cartStore.isCheckout) && <Alert message={"Total: " + (cartStore.totalAmount * 1.1).toFixed(2)} type="success" />}
+            {(cartStore.isCheckout) && <Alert message={"Total: " + (cartStore.totalAmount * 1.1).toFixed(2)} type="success" />} */}
+            <br/>
+            {(cartStore.isCheckout) && <Alert message="Order's summary: " type="info" />}
+            {(cartStore.isCheckout) &&
+              <BootstrapTable striped bordered hover>
+              <thead>
+                {cartStore.discount !== 0 && <tr>
+                  <th>Order Discount</th>
+                  <th>{"-" + cartStore.discount}</th>
+                </tr>}
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    Tax(10%)
+                  </td>
+                  <td>
+                    {(cartStore.totalAmount * 0.1).toFixed(2)}
+                  </td>
+                </tr>
+               <tr>
+                  <td>
+                    Total
+                  </td>
+                  <td>
+                    {(cartStore.totalAmount * 1.1).toFixed(2)}
+                  </td>
+                </tr>
+              </tbody>
+            </BootstrapTable>}
           </Col>
           {(!cartStore.isCheckout) && <Col xs={{ span: 10, offset: 1 }} sm={{ span: 10, offset: 1 }} xl={{ span: 6, offset: 0 }}>
             <Breadcrumb style={{ backgroundColor: '#ffe58f' }} className="mb-0 pb-0">
@@ -339,8 +369,12 @@ const PosPage = () => {
                   </Form.Item>}
                 </Form>
               </TabPane>
-              <TabPane tab="Credit card" key="2"></TabPane>
-              <TabPane tab="E-Wallet" key="3"></TabPane>
+              <TabPane tab="Credit card" key="2">
+                <Alert message="This payment method is currently not supported. Please try again later!" type="warning" />
+              </TabPane>
+              <TabPane tab="E-Wallet" key="3">
+                <Alert message="This payment method is currently not supported. Please try again later!" type="warning" />
+              </TabPane>
             </Tabs>
           </Col>}
         </Row>
