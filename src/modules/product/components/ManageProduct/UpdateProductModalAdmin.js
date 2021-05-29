@@ -90,7 +90,6 @@ const CollectionCreateForm = ({ visible, onCreate, onCancel, record, categories 
                     UnitPrice: record.UnitPrice,
                     Discount: record.Discount,
                     UnitsInStock: record.UnitsInStock,
-                    Quantity: record.StoreProducts[0].Quantity,
                     ReorderLevel: record.ReorderLevel,
                     Discontinued: record.Discontinued,
                     prefix: "86",
@@ -104,6 +103,12 @@ const CollectionCreateForm = ({ visible, onCreate, onCancel, record, categories 
                     <InputNumber disabled={true} placeholder="Id" />
                 </Form.Item>
                 <Form.Item
+                    name="Image"
+                    label="Image"
+                >
+                    <UploadAvatarDynamic record={record} />
+                </Form.Item>
+                <Form.Item
                     name="ProductName"
                     label="Product Name"
                     rules={[
@@ -114,7 +119,7 @@ const CollectionCreateForm = ({ visible, onCreate, onCancel, record, categories 
                     ]}
                     hasFeedback
                 >
-                    <Input disabled={true}/>
+                    <Input />
                 </Form.Item>
 
                 <Form.Item
@@ -126,7 +131,7 @@ const CollectionCreateForm = ({ visible, onCreate, onCancel, record, categories 
                         },
                     ]}
                 >
-                    <Select disabled={true}>
+                    <Select>
                         {categories.map(function (item) {
                             return (<Option value={item['Id']}>{item['CategoryName']}</Option>)
                         })}
@@ -144,7 +149,7 @@ const CollectionCreateForm = ({ visible, onCreate, onCancel, record, categories 
                     ]}
                     hasFeedback
                 >
-                    <Input disabled={true}/>
+                    <Input />
                 </Form.Item>
 
                 <Form.Item
@@ -158,7 +163,7 @@ const CollectionCreateForm = ({ visible, onCreate, onCancel, record, categories 
                     ]}
                     hasFeedback
                 >
-                    <InputNumber disabled={true}/>
+                    <InputNumber />
                 </Form.Item>
 
                 <Form.Item
@@ -172,7 +177,7 @@ const CollectionCreateForm = ({ visible, onCreate, onCancel, record, categories 
                     ]}
                     hasFeedback
                 >
-                    <InputNumber disabled={true}/>
+                    <InputNumber />
                 </Form.Item>
 
                 <Form.Item
@@ -186,23 +191,8 @@ const CollectionCreateForm = ({ visible, onCreate, onCancel, record, categories 
                     ]}
                     hasFeedback
                 >
-                    <InputNumber disabled={true}/>
-                </Form.Item>
-
-                <Form.Item
-                    name="Quantity"
-                    label="Quantity"
-                    rules={[
-                        {
-                            required: true,
-                            message: 'This is a required field!',
-                        },
-                    ]}
-                    hasFeedback
-                >
                     <InputNumber />
                 </Form.Item>
-
 
                 <Form.Item
                     name="ReorderLevel"
@@ -215,14 +205,24 @@ const CollectionCreateForm = ({ visible, onCreate, onCancel, record, categories 
                     ]}
                     hasFeedback
                 >
-                    <InputNumber disabled={true}/>
+                    <InputNumber />
+                </Form.Item>
+
+                <Form.Item name="Discontinued"
+                    label="Discontinued">
+                    <Switch
+                        checkedChildren="Out Of Stock"
+                        unCheckedChildren="In Stock"
+                        checked={switchState}
+                        onChange={onChange}
+                    />
                 </Form.Item>
             </Form>
         </Modal>
     );
 };
 
-const UpdateProductModal = (pros) => {
+const UpdateProductModalAdmin = (pros) => {
     const productStore = React.useContext(ProductStoreContext);
     console.log("now record")
     console.log(pros.record);
@@ -258,4 +258,4 @@ const UpdateProductModal = (pros) => {
     );
 };
 
-export default UpdateProductModal;
+export default UpdateProductModalAdmin;

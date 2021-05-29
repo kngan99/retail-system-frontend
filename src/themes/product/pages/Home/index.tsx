@@ -7,9 +7,11 @@ import { ExclamationCircleOutlined, AudioOutlined, EditOutlined, EllipsisOutline
 import { ColumnsType } from "antd/es/table";
 import "antd/dist/antd.css";
 import UpdateProductModal from "../../../../modules/product/components/ManageProduct/UpdateProductModal";
+import UpdateProductModalAdmin from "../../../../modules/product/components/ManageProduct/UpdateProductModalAdmin";
 import CreateProductModal from "../../../../modules/product/components/ManageProduct/CreateProductModal";
 import { makeAutoObservable, autorun, observable } from "mobx"
 import App from "../../../../modules/product/components/ManageProduct/SalesAnalysis";
+import { AuthenticationStoreContext } from "../../../../modules/authenticate/authentication.store";
 
 interface Product {
   Id: number;
@@ -29,9 +31,12 @@ const { confirm } = Modal;
 const HomePage = () => {
   const productStore = React.useContext(ProductStoreContext);
   const addProductStore = React.useContext(AddProductStoreContext);
+  const authenticationStore = React.useContext(AuthenticationStoreContext);
   React.useEffect(() => {
     productStore.startSearch();
-    addProductStore.startSearch();
+    if (localStorage.getItem('role') != 'StoresManager') {
+      addProductStore.startSearch();
+    }
   }, []);
 
 
@@ -82,6 +87,63 @@ const HomePage = () => {
       onCancel() { },
     });
   }
+
+  const admincolumns: ColumnsType<Product> = [
+    {
+      title: "ProductName",
+      dataIndex: "ProductName",
+      sorter: false,
+    },
+    {
+      title: "Category",
+      dataIndex: "Category",
+      sorter: false,
+      render: (record) => record.CategoryName
+    },
+    {
+      title: "QuantityPerUnit",
+      dataIndex: "QuantityPerUnit",
+      sorter: false,
+    },
+    {
+      title: "UnitPrice",
+      dataIndex: "UnitPrice",
+      sorter: false,
+    },
+    {
+      title: "UnitsInStock",
+      dataIndex: "UnitsInStock",
+      sorter: false,
+    },
+    {
+      title: "ReorderLevel",
+      dataIndex: "ReorderLevel",
+      sorter: false,
+    },
+    {
+      title: "Discount",
+      dataIndex: "Discount",
+      sorter: false,
+    },
+    {
+      title: "Discontinued",
+      dataIndex: "Discontinued",
+      key: "Discontinued",
+      render: (val) =>
+        (!val) ? <Tag color="green">In stock</Tag> : <Tag color="red">Out of stock</Tag>,
+    },
+    {
+      title: "Action",
+      key: "action",
+      render: (_, record) => (
+        <Space size="middle">
+          <UpdateProductModalAdmin record={record} />
+          <DeleteOutlined onClick={() => showPromiseConfirm(record)} />
+          <App record={record} />
+        </Space>
+      ),
+    },
+  ];
 
   const columns: ColumnsType<Product> = [
     {
@@ -140,7 +202,7 @@ const HomePage = () => {
         <Space size="middle">
           <UpdateProductModal record={record} />
           <DeleteOutlined onClick={() => showPromiseConfirm(record)} />
-          <App record={record} />
+          {/* <App record={record} /> */}
         </Space>
       ),
     },
@@ -195,7 +257,15 @@ const HomePage = () => {
       key: "action",
       render: (_, record) => (
         <Space size="middle">
-          <PlusCircleOutlined onClick={() => showAddProductPromiseConfirm(record)} />
+          <Button
+            style={{}}
+            icon={<PlusCircleOutlined/>}
+            className=""
+            type="primary"
+            onClick={() => showAddProductPromiseConfirm(record)}
+          >
+            Add
+          </Button>
         </Space>
       ),
     },
@@ -225,6 +295,8 @@ const HomePage = () => {
     <>
       <div style={{ background: "white" }}>
         {console.log(productStore.products)}
+        {localStorage.getItem('role') == 'StoresManager' && <CreateProductModal />}
+        {localStorage.getItem('role') == 'StoresManager' && <br />}
         <Tabs defaultActiveKey="1" onChange={callback}>
           <TabPane tab="Table" key="1">
             <Row>
@@ -236,8 +308,13 @@ const HomePage = () => {
               />
             </Row>
             <br />
+            ABC
+            {localStorage.getItem('role')}
             <Spin spinning={productStore.loading}>
-              <Table<Product> columns={columns} dataSource={productStore.products} rowKey={(record) => record.Id} pagination={false} />
+              {localStorage.getItem('role') == 'StoresManager' &&
+                <Table<Product> columns={admincolumns} dataSource={productStore.products} rowKey={(record) => record.Id} pagination={false} />}
+              {localStorage.getItem('role') != 'StoresManager' &&
+                <Table<Product> columns={columns} dataSource={productStore.products} rowKey={(record) => record.Id} pagination={false} />}
               <br />
               <Row>
                 <Col span={18} offset={6}>
@@ -280,9 +357,10 @@ const HomePage = () => {
                     <Card
                       style={{ width: 300, marginTop: 16 }}
                       actions={[
-                        <UpdateProductModal record={product} />,
+                        localStorage.getItem('role') == 'StoresManager' && <UpdateProductModalAdmin record={product} />,
+                        localStorage.getItem('role') != 'StoresManager' && <UpdateProductModal record = { product }/>,
                         <DeleteOutlined onClick={() => showPromiseConfirm(product)} />,
-                        <App record={product} />
+                        localStorage.getItem('role') == 'StoresManager' && <App record={product} />
                       ]}
                     >
 
@@ -316,21 +394,15 @@ const HomePage = () => {
               </Row>
             </Spin>
           </TabPane>
-          <TabPane tab="Add products" key="3">
+          {localStorage.getItem('role') != 'StoresManager' && <TabPane tab="Add products" key="3">
             <br />
             <Row>
-              <Col xs={{ span: 5 }} sm={{ span: 5 }}>
-                <CreateProductModal />
-              </Col>
-              <Col xs={{ span: 15 }} sm={{ span: 15 }}></Col>
-              <Col xs={{ span: 4 }} sm={{ span: 4 }}>
-                <Search
-                  placeholder="input id or name"
-                  onSearch={(value: any) => searchNotAdded(value)}
-                  enterButton
-                  autoFocus={true}
-                />
-              </Col>
+              <Search
+                placeholder="input id or name"
+                onSearch={(value: any) => searchNotAdded(value)}
+                enterButton
+                autoFocus={true}
+              />
             </Row>
             <br />
             <Spin spinning={addProductStore.loading}>
@@ -349,7 +421,7 @@ const HomePage = () => {
                 </Col>
               </Row>
             </Spin>
-          </TabPane>
+          </TabPane>}
         </Tabs>
       </div>
     </>
