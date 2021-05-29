@@ -18,7 +18,7 @@ const ManagePromotionAdminPage = () => {
    * Translation
    */
   const {
-    ADMIN_MANAGE_PRODUCT,
+    ADMIN_MANAGE_ORDER_PROMOTION,
     BUTTONS_ADD_NEW,
     MESSAGES_CREATED_SUCCESS,
     MESSAGES_UPDATE_SUCCESS,
@@ -119,7 +119,7 @@ const ManagePromotionAdminPage = () => {
 
   return (
     <>
-      <AdminWrapper pageTitle={(ADMIN_MANAGE_PRODUCT)}>
+      <AdminWrapper pageTitle={(ADMIN_MANAGE_ORDER_PROMOTION)}>
         {/* <ActionBar actions={actionsBar} /> */}
         <HomePage />
       </AdminWrapper>

@@ -37,13 +37,16 @@ export default class AuthenticationStore {
       console.log(data);
       this.role = this.loggedUser.Type;
       console.log(this.loggedUser.Type);
-      if (data.Type == "Salescleck") {
+      if (data.Type === "Salescleck") {
         this._redirectAfterLogin(history, "/pos");
       }
-      else if (data.Type == "StoreManager") {
-        this._redirectAfterLogin(history, "/account/manage");
+      else if (data.Type === "StoreManager") {
+        this._redirectAfterLogin(history, "/pos/past");
       }
-      else if (data.Type == "StoresManager") {
+      else if (data.Type === "StoreStaff") {
+        this._redirectAfterLogin(history, "/product/manage");
+      }
+      else if (data.Type === "StoresManager") {
         this._redirectAfterLogin(history, "/product/manage");
       }
       else {

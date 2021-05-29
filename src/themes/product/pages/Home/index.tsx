@@ -308,8 +308,6 @@ const HomePage = () => {
               />
             </Row>
             <br />
-            ABC
-            {localStorage.getItem('role')}
             <Spin spinning={productStore.loading}>
               {localStorage.getItem('role') == 'StoresManager' &&
                 <Table<Product> columns={admincolumns} dataSource={productStore.products} rowKey={(record) => record.Id} pagination={false} />}

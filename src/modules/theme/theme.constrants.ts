@@ -2,6 +2,12 @@ import { AdminMenuDto } from "./theme.dto";
 
 export const adminMenu: AdminMenuDto[] = [
   {
+    url: '/pos',
+    label: 'Point of sale',
+    icon: 'ico ico-accounts',
+    isShow: true,
+  },
+  {
     url: '/account/manage',
     label: 'Manage Accounts',
     icon: 'ico ico-accounts',
