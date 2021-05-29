@@ -29,6 +29,7 @@ const AutoCompleteOption = AutoComplete.Option;
 
 
 const { RangePicker } = DatePicker;
+const dateFormat = 'YYYY-MM-DD h:mm:ss';
 
 const roles = [
     {
@@ -118,8 +119,8 @@ const CollectionCreateForm = ({ visible, onCreate, onCancel, record }) => {
                     ]}
                 >
                     <RangePicker
-                        defaultValue={[moment(record.promotions_StartTime), moment(record.promotions_EndTime)]}
-                        showTime />
+                        defaultValue={[moment(record.promotions_StartTime, dateFormat), moment(record.promotions_EndTime, dateFormat)]}
+                        showTime format={dateFormat} />
                 </Form.Item>
 
                 <Form.Item
