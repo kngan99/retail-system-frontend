@@ -202,7 +202,7 @@ const HomePage = () => {
         <Space size="middle">
           <UpdateProductModal record={record} />
           <DeleteOutlined onClick={() => showPromiseConfirm(record)} />
-          {/* <App record={record} /> */}
+          <App record={record} />
         </Space>
       ),
     },

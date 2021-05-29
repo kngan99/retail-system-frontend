@@ -103,7 +103,7 @@ const HomePage = () => {
       key: "action",
       render: (_, record) => (
         <Space size="middle">
-          <UpdatePromotionModal record={record} />
+          {localStorage.getItem('role') === 'StoresManager' && <UpdatePromotionModal record={record} />}
         </Space>
       ),
     },
@@ -124,9 +124,9 @@ const HomePage = () => {
   return (
     <>
       <div style={{ background: "white" }}>
-        <br />
-        <CreatePromotionModal />
-        <br />
+        {localStorage.getItem('role') === 'StoresManager' && <br />}
+        {localStorage.getItem('role') === 'StoresManager' && <CreatePromotionModal />}
+        {localStorage.getItem('role') === 'StoresManager' && <br />}
         <Spin spinning={promotionStore.loading}>
           <Table<Promotion> columns={columns} dataSource={promotionStore.promotions} rowKey={(record) => record.orderdiscounts_Coupon} pagination={false} />
         </Spin>
