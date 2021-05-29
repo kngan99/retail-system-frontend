@@ -58,6 +58,14 @@ const PosHistoryPage = () => {
       sorter: false,
     },
     {
+      title: "Salescleck",
+      dataIndex: "SaleclerkId",
+      sorter: false,
+      render: (text, row, index) => {
+        return row.Account.FName +" "+ row.Account.LName;
+      }
+    },
+    {
       title: "Start",
       dataIndex: "Start",
       sorter: false,

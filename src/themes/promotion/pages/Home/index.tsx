@@ -76,11 +76,17 @@ const HomePage = () => {
       title: "StartTime",
       dataIndex: "promotions_StartTime",
       sorter: false,
+      render: (text, row, index) => {
+        return <span>{new Date(text).toLocaleString()}</span>
+      }
     },
     {
       title: "EndTime",
       dataIndex: "promotions_EndTime",
       sorter: false,
+      render: (text, row, index) => {
+        return <span>{new Date(text).toLocaleString()}</span>
+      }
     },
     {
       title: "Discription",
