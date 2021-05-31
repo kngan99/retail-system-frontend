@@ -115,6 +115,11 @@ class ProductStore {
         this.loading = false;
     }
 
+    @action.bound
+    async addBarcode(id: number, code: string) {
+        await productService.addBarcode(id, code);
+    }
+
     constructor() {
         makeObservable(this);
         autorun(() => console.log(this.products));

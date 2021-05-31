@@ -93,6 +93,11 @@ class ProductService {
         });;
     });
   }
+
+  public async addBarcode(id: number, code: string) {
+    const result = await http.post(`${this.productPrefix}/barcode/${id}/${code}`);
+    return result.data;
+  }
 }
 
 export default new ProductService();

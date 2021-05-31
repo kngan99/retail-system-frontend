@@ -9,6 +9,7 @@ import UpdateProductModal from "../../../../modules/product/components/ManagePro
 import CreateProductModal from "../../../../modules/product/components/ManageProduct/CreateProductModal";
 import { makeAutoObservable, autorun, observable } from "mobx"
 import App from "../../../../modules/product/components/ManageProduct/SalesAnalysis";
+import BarCode from "../../../../modules/product/components/ManageProduct/Barcode";
 
 interface Product {
   Id: number;
@@ -105,6 +106,7 @@ const HomePage = () => {
           <UpdateProductModal record={record} />
           <DeleteOutlined onClick={() => showPromiseConfirm(record)} />
           <App record={record} />
+          <BarCode record={record}/>
         </Space>
       ),
     },
