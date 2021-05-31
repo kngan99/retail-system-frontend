@@ -17,19 +17,21 @@ interface CartProduct {
     ReorderLevel: number;
     Discontinued: boolean;
     Quantity: number;
+    Discount: number
     Total: number;
 }
 
 class OrderService {
     orderPrefix: string = "http://localhost:4000/api/orders";
 
-    public async confirmOrder(SalescleckId: number, SessionId: string, cartproducts: CartProduct[], CustomerId: number) {
+    public async confirmOrder(SalescleckId: number, SessionId: string, cartproducts: CartProduct[], CustomerId: number, Discount: number) {
         const result = await http.post(`${this.orderPrefix}`, {
             order: {
                 orderDate: moment().format("DD-MM-YYYY hh:mm:ss"),
                 saleClerkId: SalescleckId,
                 sessionId: SessionId,
-                customerId: CustomerId
+                customerId: CustomerId,
+                discount: Discount
             },
             cartproducts: cartproducts
         });
@@ -63,6 +65,14 @@ class OrderService {
         return result.data;
     }
 
+    public async getPromotion(id: number, total: number) {
+        const result = await http.get(`${this.orderPrefix}/promotion/${id}`, {
+            params: {
+                total: total,
+            },
+        });
+        return result.data;
+    }
 }
 
 export default new OrderService();

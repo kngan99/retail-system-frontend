@@ -7,6 +7,7 @@ import { LoginDto } from '../account/account.dto';
 export default class AuthenticationStore {
   @observable loggedUser: any = null;
   @observable tmpUser: any = null;
+  @observable role: string = '';
   @observable loginFormValue: LoginDto = {
     email: '',
     password: '',
@@ -34,12 +35,19 @@ export default class AuthenticationStore {
       this._setCurrentInfo(data);
       const redirectUrl = (this.loggedUser.EmailVerified) ? url : urlNotVerified;
       console.log(data);
+      this.role = this.loggedUser.Type;
       console.log(this.loggedUser.Type);
-      if (data.Type == "Salescleck") {
+      if (data.Type === "Salescleck") {
         this._redirectAfterLogin(history, "/pos");
       }
-      else if (data.Type == "StoreManager") {
-        this._redirectAfterLogin(history, "/account/manage");
+      else if (data.Type === "StoreManager") {
+        this._redirectAfterLogin(history, "/pos/past");
+      }
+      else if (data.Type === "StoreStaff") {
+        this._redirectAfterLogin(history, "/product/manage");
+      }
+      else if (data.Type === "StoresManager") {
+        this._redirectAfterLogin(history, "/product/manage");
       }
       else {
         this._redirectAfterLogin(history, redirectUrl);
@@ -72,6 +80,7 @@ export default class AuthenticationStore {
 
   private _setCurrentInfo(data: any) {
     this.loggedUser = data;
+    localStorage.setItem('role', data.Type);
     saveToStorage('token', data.token);
   }
 

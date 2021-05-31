@@ -41,38 +41,53 @@ const HomePage = () => {
         <>
 
             <AdminWrapper>
-                <div style={{ background: "linear-gradient(90deg, #fab91a 0, #ffd424 100%)" }} className="site-page-header-ghost-wrapper">
+                <div style={{ background: "linear-gradient(90deg, #fab91a 0, #ffd424 100%)" }} className="site-page-header-ghost-wrapper printable">
                     <PageHeader
                         ghost={false}
                         // onBack={() => window.history.back()}
                         title={<h5 style={{ 'color': '#8c8c8c' }}>Salesclerk:</h5>}
                         subTitle={<h5 style={{ 'color': '#ffc53d' }}>{cartStore.salescleckFullName}</h5>}
                         extra={[
-                            <Button key="3">Help?</Button>,
-                            <Button onClick={() => { history.push('/pos/past') }} key="2">View past</Button>,
-                            !cartStore.session && <Button key="1" loading={cartStore.loading} onClick={async () => await handleStartSessionClick()} type="primary">
+                            <Button className="no-print" key="3">Help?</Button>,
+                            <Button className="no-print" onClick={() => { history.push('/pos/past') }} key="2">View past</Button>,
+                            !cartStore.session && <Button className="no-print" key="1" loading={cartStore.loading} onClick={async () => await handleStartSessionClick()} type="primary">
                                 Start Session
                         </Button>,
-                            cartStore.session && <Button key="4" loading={cartStore.loading} onClick={async () => await handleEndSessionClick()} type="primary" danger>
+                            cartStore.session && <Button className="no-print" key="4" loading={cartStore.loading} onClick={async () => await handleEndSessionClick()} type="primary" danger>
                                 End Session
                         </Button>,
-                            <Button key="5" type="primary" onClick={() => handleLogout()}>
+                            <Button className="no-print" key="5" type="primary" onClick={() => handleLogout()}>
                                 Log out
                         </Button>,
                         ]}
                     >
                         <Collapse defaultActiveKey={['1']}>
                             <Panel header={<strong style={{ color: '#8c8c8c' }}>Detail info</strong>} key="1">
-                                <Descriptions size="small" column={3}>
-                                    <Descriptions.Item label="Store Manager:">Lili Qu</Descriptions.Item>
-                                    <Descriptions.Item label="Session Id:">
+                                <Descriptions size="small" column={2}>
+                                    <Descriptions.Item label="Session Id">
                                         <a>{cartStore.session}</a>
                                     </Descriptions.Item>
-                                    <Descriptions.Item label="Session start:">{new Date(cartStore.sessionStart).toLocaleString()}</Descriptions.Item>
-                                    <Descriptions.Item label="Current time:"><Clock format={commonStore.hourMinusFormat} ticking={true} /></Descriptions.Item>
-                                    <Descriptions.Item label="Store:">
-                                        TN Store, A123 St., W.10, D.1, Abc City
-                                </Descriptions.Item>
+                                    <Descriptions.Item label="Session start">{new Date(cartStore.sessionStart).toLocaleString()}</Descriptions.Item>
+                                    <Descriptions.Item label="Current time"><Clock format={commonStore.hourMinusFormat} ticking={true} /></Descriptions.Item>
+                                    {cartStore.salescleckStore && <Descriptions.Item label="Store">
+                                        {cartStore.salescleckStore.ShortName}
+                                    </Descriptions.Item>}
+                                    {cartStore.salescleckStore &&
+                                        <Descriptions.Item label="Store's Address">
+                                            {cartStore.salescleckStore.Address + ", " + cartStore.salescleckStore.City + ", " + cartStore.salescleckStore.Region + ", " + cartStore.salescleckStore.Country}
+                                        </Descriptions.Item>}
+                                    {cartStore.salescleckStore &&
+                                        <Descriptions.Item label="Store's Phone">
+                                            {cartStore.salescleckStore.Phone}
+                                        </Descriptions.Item>}
+                                    {cartStore.salescleckStore &&
+                                        <Descriptions.Item label="Store's Fax">
+                                            {cartStore.salescleckStore.Fax}
+                                        </Descriptions.Item>}
+                                    {cartStore.salescleckStore &&
+                                        <Descriptions.Item label="Store's Email">
+                                            {cartStore.salescleckStore.Email}
+                                        </Descriptions.Item>}
                                 </Descriptions>
                             </Panel>
                         </Collapse>
@@ -84,7 +99,7 @@ const HomePage = () => {
 
                         <div className="site-layout-content"><PosPage></PosPage></div>
                     </Content>
-                    <Footer style={{ textAlign: 'center', background: "linear-gradient(90deg, #fab91a 0, #ffd424 100%)" }}></Footer>
+                    <Footer className="no-print" style={{ textAlign: 'center', background: "linear-gradient(90deg, #fab91a 0, #ffd424 100%)" }}></Footer>
                 </Layout>}
                 <br />
                 <br />

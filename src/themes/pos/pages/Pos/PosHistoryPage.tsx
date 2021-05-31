@@ -58,6 +58,14 @@ const PosHistoryPage = () => {
       sorter: false,
     },
     {
+      title: "Salescleck",
+      dataIndex: "SaleclerkId",
+      sorter: false,
+      render: (text, row, index) => {
+        return row.Account.FName +" "+ row.Account.LName;
+      }
+    },
+    {
       title: "Start",
       dataIndex: "Start",
       sorter: false,
@@ -116,10 +124,21 @@ const PosHistoryPage = () => {
       }
     },
     {
-      title: "Total",
+      title: "RawTotal",
       dataIndex: "ProductOrders",
       sorter: false,
-      render: (record) => (record.reduce((accumulator, current) => accumulator + (current.Price * (current.Quantity - current.ReturnedQuantity)) * (1 + current.Tax), 0))
+      render: (record) => (record.reduce((accumulator, current) => accumulator + (current.Price * (current.Quantity - current.ReturnedQuantity)), 0)).toFixed(2)
+    },
+    {
+      title: "Discount",
+      dataIndex: "Discount",
+      sorter: false,
+    },
+    {
+      title: "Total(+VAT)",
+      dataIndex: "ProductOrders",
+      sorter: false,
+      render: (record, row) => ((record.reduce((accumulator, current) => accumulator + (current.Price * (current.Quantity - current.ReturnedQuantity)), 0) - row.Discount) * 1.1).toFixed(2),
     },
     {
       title: "Action",

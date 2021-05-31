@@ -85,7 +85,7 @@ const App = (pros) => {
         <>
             <LineChartOutlined onClick={async () => { await showModal(pros.record.Id) }} />
             <Modal
-                title="Title"
+                title="Sales summary and forecast"
                 visible={visible}
                 onOk={handleOk}
                 confirmLoading={confirmLoading}

@@ -88,7 +88,9 @@ const CollectionCreateForm = ({ visible, onCreate, onCancel, record, categories 
                     CategoryId: record.CategoryId,
                     QuantityPerUnit: record.QuantityPerUnit,
                     UnitPrice: record.UnitPrice,
+                    Discount: record.Discount,
                     UnitsInStock: record.UnitsInStock,
+                    Quantity: record.StoreProducts[0].Quantity,
                     ReorderLevel: record.ReorderLevel,
                     Discontinued: record.Discontinued,
                     prefix: "86",
@@ -102,12 +104,6 @@ const CollectionCreateForm = ({ visible, onCreate, onCancel, record, categories 
                     <InputNumber disabled={true} placeholder="Id" />
                 </Form.Item>
                 <Form.Item
-                    name="Image"
-                    label="Image"
-                >
-                    <UploadAvatarDynamic record={record} />
-                </Form.Item>
-                <Form.Item
                     name="ProductName"
                     label="Product Name"
                     rules={[
@@ -118,7 +114,7 @@ const CollectionCreateForm = ({ visible, onCreate, onCancel, record, categories 
                     ]}
                     hasFeedback
                 >
-                    <Input />
+                    <Input disabled={true}/>
                 </Form.Item>
 
                 <Form.Item
@@ -130,7 +126,7 @@ const CollectionCreateForm = ({ visible, onCreate, onCancel, record, categories 
                         },
                     ]}
                 >
-                    <Select>
+                    <Select disabled={true}>
                         {categories.map(function (item) {
                             return (<Option value={item['Id']}>{item['CategoryName']}</Option>)
                         })}
@@ -148,7 +144,7 @@ const CollectionCreateForm = ({ visible, onCreate, onCancel, record, categories 
                     ]}
                     hasFeedback
                 >
-                    <Input />
+                    <Input disabled={true}/>
                 </Form.Item>
 
                 <Form.Item
@@ -162,12 +158,40 @@ const CollectionCreateForm = ({ visible, onCreate, onCancel, record, categories 
                     ]}
                     hasFeedback
                 >
-                    <InputNumber />
+                    <InputNumber disabled={true}/>
+                </Form.Item>
+
+                <Form.Item
+                    name="Discount"
+                    label="Discount"
+                    rules={[
+                        {
+                            required: true,
+                            message: 'This is a required field!',
+                        },
+                    ]}
+                    hasFeedback
+                >
+                    <InputNumber disabled={true}/>
                 </Form.Item>
 
                 <Form.Item
                     name="UnitsInStock"
                     label="Units In Stock"
+                    rules={[
+                        {
+                            required: true,
+                            message: 'This is a required field!',
+                        },
+                    ]}
+                    hasFeedback
+                >
+                    <InputNumber disabled={true}/>
+                </Form.Item>
+
+                <Form.Item
+                    name="Quantity"
+                    label="Quantity"
                     rules={[
                         {
                             required: true,
@@ -191,17 +215,7 @@ const CollectionCreateForm = ({ visible, onCreate, onCancel, record, categories 
                     ]}
                     hasFeedback
                 >
-                    <InputNumber />
-                </Form.Item>
-
-                <Form.Item name="Discontinued"
-                    label="Discontinued">
-                    <Switch
-                        checkedChildren="Out Of Stock"
-                        unCheckedChildren="In Stock"
-                        checked={switchState}
-                        onChange={onChange}
-                    />
+                    <InputNumber disabled={true}/>
                 </Form.Item>
             </Form>
         </Modal>

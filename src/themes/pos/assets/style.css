@@ -95,8 +95,15 @@ a:hover {
 
 @media print {
     button, .menu-wrapper {
-        visibility: hidden;
+        display:none;
     }
+    div.top-menu, div.admin-footer {
+        display:none;
+    }
+    .no-print {
+        display:none;
+    }
+    /* body * {display:none;} */
 }
 
 .ant-layout-footer{

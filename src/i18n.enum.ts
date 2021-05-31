@@ -9,6 +9,7 @@ export enum I18N {
     ADMIN_EDIT_ACCOUNT = 'Edit Account',
     ADMIN_MANAGE_ACCOUNT = 'Manage Accounts',
     ADMIN_MANAGE_PRODUCT = 'Manage Products',
+    ADMIN_MANAGE_ORDER_PROMOTION = 'Manage Order Promotions',
     ACCOUNT_CREATE_TITLE = 'Sign up',
     ACCOUNT_CONFIRM_PASSWORD = 'Confirm Password',
     ACCOUNT_PHONE_REQUIRED = 'Phone number',

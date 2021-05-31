@@ -81,11 +81,20 @@ const AdminMenu = (props: ComponentProps) => {
   };
 
   React.useEffect(() => {
-    if(authenticationStore.loggedUser && authenticationStore.loggedUser.Type==='StoreManager'){
-      setIsDisplayIconArray([true,true,true]);
+    if (localStorage.getItem('role')==='StoreManager'){
+      setIsDisplayIconArray([false,false,true,true,true,true]);
+    }
+    else if (localStorage.getItem('role') === 'StoreStaff') {
+      setIsDisplayIconArray([false, false, true, false, false, true]);
+    }
+    else if (localStorage.getItem('role') === 'StoresManager') {
+      setIsDisplayIconArray([false,false, true, true, false, true]);
+    }
+    else if (localStorage.getItem('role') === 'Salescleck') {
+      setIsDisplayIconArray([true,false, false, false, true, true]);
     }
     else{
-    setIsDisplayIconArray([false,false,true]);
+    setIsDisplayIconArray([false,false,false,true,true]);
     }
   },[]);
 

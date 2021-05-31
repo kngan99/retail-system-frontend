@@ -1,7 +1,7 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { CartStoreContext } from "../stores/cart.store";
-import { Input, Tooltip, Button, message } from 'antd';
+import { Input, Tooltip, Button, message, Badge } from 'antd';
 import { PlusOutlined, MinusOutlined, DeleteOutlined } from "@ant-design/icons";
 
 const CartItem = ({ item, isCheckout }) => {
@@ -38,6 +38,9 @@ const CartItem = ({ item, isCheckout }) => {
             </td>
             <td>
                 {item.UnitPrice}
+            </td>
+            <td>
+                <Badge count={'-' + item.Discount + '%'} />
             </td>
             <td class="text-right pr-5">
                 {item.Total}

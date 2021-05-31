@@ -49,6 +49,7 @@ const Cart = observer(({ productsInCart, totalNum, totalAmount, isCheckout }) =>
                         <th>Name</th>
                         <th>Quantity</th>
                         <th>Price</th>
+                        <th>Discount</th>
                         <th class="text-right pr-5">Total</th>
                         <th>Action</th>
                     </tr>
@@ -72,6 +73,8 @@ const Cart = observer(({ productsInCart, totalNum, totalAmount, isCheckout }) =>
                         </td>
                         <td>
                         </td>
+                        <td>
+                        </td>
                         <td class="p-0">
                             <Button onClick={async () => await handleEmptyClick()} type="link" icon={<DeleteOutlined />} >Empty cart</Button>
                         </td>
@@ -82,10 +85,12 @@ const Cart = observer(({ productsInCart, totalNum, totalAmount, isCheckout }) =>
                         <td>
                         </td>
                         <td class="pr-0">
-                            Total
+                            SubTotal
                         </td>
                         <td>
                             {totalAmount}
+                        </td>
+                        <td>
                         </td>
                         <td>
                         </td>
@@ -105,6 +110,7 @@ const Cart = observer(({ productsInCart, totalNum, totalAmount, isCheckout }) =>
                         <th>Name</th>
                         <th>Quantity</th>
                         <th>Price</th>
+                        <th>Discount</th>
                         <th class="text-right pr-5">Total</th>
                     </tr>
                 </thead>
@@ -125,8 +131,10 @@ const Cart = observer(({ productsInCart, totalNum, totalAmount, isCheckout }) =>
                         </td>
                         <td>
                         </td>
+                        <td>
+                        </td>
                         <td class="p-0">
-                            {cartStore.isConfirm && <Button onClick={async () => await handleConfirmPrintClick()} type="link" icon={<PrinterOutlined />} >Print receipt</Button>}
+                            {cartStore.isConfirm && <Button className="no-print" onClick={async () => await handleConfirmPrintClick()} type="link" icon={<PrinterOutlined />} >Print receipt</Button>}
                         </td>
 
                     </tr>
@@ -134,16 +142,18 @@ const Cart = observer(({ productsInCart, totalNum, totalAmount, isCheckout }) =>
                         <td>
                         </td>
                         <td>
-                            Total
+                            SubTotal
                         </td>
                         <td>
                             {totalAmount}
                         </td>
                         <td>
                         </td>
+                        <td>
+                        </td>
                         <td class="p-0">
                             {!cartStore.isConfirm && <Button onClick={async () => await handleModifyClick()} type="link" icon={< ArrowLeftOutlined />} >Modify order</Button>}
-                            {cartStore.isConfirm && <Button loading={cartStore.loading} onClick={async () => await handleNewOrderClick()} type="link" icon={<ShoppingCartOutlined />} >New order</Button>}
+                            {cartStore.isConfirm && <Button className="no-print" loading={cartStore.loading} onClick={async () => await handleNewOrderClick()} type="link" icon={<ShoppingCartOutlined />} >New order</Button>}
                         </td>
                     </tr>
                 </tbody>

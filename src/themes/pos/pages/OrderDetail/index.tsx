@@ -55,7 +55,6 @@ const HistoryPage = (props) => {
                         {orderStore.order && <Collapse defaultActiveKey={['1']}>
                             <Panel header={<strong style={{ color: '#8c8c8c' }}>Detail info</strong>} key="1">
                                 <Descriptions size="small" column={2}>
-                                    <Descriptions.Item label="Store Manager">Lili Qu</Descriptions.Item>
                                     <Descriptions.Item label="Session Id">
                                         <a>{orderStore.order.SessionId}</a>
                                     </Descriptions.Item>
@@ -63,8 +62,14 @@ const HistoryPage = (props) => {
                                     <Descriptions.Item label="Saleslerk">{orderStore.order.Account.FName + " " + orderStore.order.Account.LName}</Descriptions.Item>
                                     <Descriptions.Item label="Current time"><Clock format={commonStore.hourMinusFormat} ticking={true} /></Descriptions.Item>
                                     <Descriptions.Item label="Store">
-                                        TN Store, A123 St., W.10, D.1, Abc City
-                                </Descriptions.Item>
+                                        {orderStore.order.Account.Store.ShortName}
+                                    </Descriptions.Item>
+                                    <Descriptions.Item label="Store's Address">
+                                        {orderStore.order.Account.Store.Address + ", " + orderStore.order.Account.Store.City + ", " + orderStore.order.Account.Store.Region + ", " + orderStore.order.Account.Store.Country}
+                                    </Descriptions.Item>
+                                    <Descriptions.Item label="Store's Phone">
+                                        {orderStore.order.Account.Store.Phone}
+                                    </Descriptions.Item>
                                 </Descriptions>
                             </Panel>
                         </Collapse>}

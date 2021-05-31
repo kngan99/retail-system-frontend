@@ -2,7 +2,7 @@ import { observer } from "mobx-react";
 import React from "react";
 import { ProductStoreContext } from "../../../../modules/product/product.store";
 import { CartStoreContext } from "../../stores/cart.store";
-import { Modal, Button, Pagination, Table, Tag, Radio, Space, Tabs, Card, Skeleton, Avatar, List, Spin, Divider, Form, Input, Select, message } from 'antd';
+import { Modal, Button, Pagination, Table, Tag, Radio, Space, Tabs, Card, Skeleton, Avatar, List, Spin, Divider, Form, Input, Select, message, Alert } from 'antd';
 import { ExclamationCircleOutlined, AudioOutlined, EditOutlined, EllipsisOutlined, SettingOutlined, DeleteOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import { ColumnsType } from "antd/es/table";
 import UpdateProductModal from "../../../../modules/product/components/ManageProduct/UpdateProductModal";
@@ -14,6 +14,7 @@ import '../../../../modules/product/components/ManageProduct/style.css';
 import Clock from 'react-live-clock';
 import { CommonStoreContext } from '../../../../common/common.store';
 import CreateCustomerModal from "../../components/CreateCustomerModal";
+import { Table as BootstrapTable } from 'react-bootstrap';
 
 interface Product {
   Id: number;
@@ -148,6 +149,15 @@ const PosPage = () => {
     }
   };
 
+  const onPressEnterCoupon = async (e: any) => {
+    if (!Number.isInteger(Number(e.target.value))) {
+      message.error("Invalid ID!");
+    }
+    else {
+      cartStore.getPromotion(Number(e.target.value));
+    }
+  };
+
   const handleConfirmOrderClick = async () => {
     await cartStore.confirmOrder();
   }
@@ -171,7 +181,40 @@ const PosPage = () => {
         margin: "auto", padding: "10px",
       }}>
         <Row>
-          <Col xs={{ span: 12, offset: 1 }} sm={{ span: 10, offset: 1 }} xl={{ span: 6, offset: 0 }}><Cart productsInCart={cartStore.productsInCart} totalNum={cartStore.totalNum} totalAmount={cartStore.totalAmount} isCheckout={cartStore.isCheckout} /></Col>
+          <Col className="printable" xs={{ span: 12, offset: 1 }} sm={{ span: 10, offset: 1 }} xl={{ span: 6, offset: 0 }}><Cart productsInCart={cartStore.productsInCart} totalNum={cartStore.totalNum} totalAmount={cartStore.subtotalAmount} isCheckout={cartStore.isCheckout} />
+            {/* {cartStore.discount !== 0 && <Alert message={"Order Discount: -" + cartStore.discount} type="error" />}
+            {(cartStore.isCheckout) && <Alert message={"Tax(10%): " + (cartStore.totalAmount * 0.1).toFixed(2)} type="warning" />}
+            {(cartStore.isCheckout) && <Alert message={"Total: " + (cartStore.totalAmount * 1.1).toFixed(2)} type="success" />} */}
+            <br/>
+            {(cartStore.isCheckout) && <Alert message="Order's summary: " type="info" />}
+            {(cartStore.isCheckout) &&
+              <BootstrapTable striped bordered hover>
+              <thead>
+                {cartStore.discount !== 0 && <tr>
+                  <th>Order Discount</th>
+                  <th>{"-" + cartStore.discount}</th>
+                </tr>}
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    Tax(10%)
+                  </td>
+                  <td>
+                    {(cartStore.totalAmount * 0.1).toFixed(2)}
+                  </td>
+                </tr>
+               <tr>
+                  <td>
+                    Total
+                  </td>
+                  <td>
+                    {(cartStore.totalAmount * 1.1).toFixed(2)}
+                  </td>
+                </tr>
+              </tbody>
+            </BootstrapTable>}
+          </Col>
           {(!cartStore.isCheckout) && <Col xs={{ span: 10, offset: 1 }} sm={{ span: 10, offset: 1 }} xl={{ span: 6, offset: 0 }}>
             <Breadcrumb style={{ backgroundColor: '#ffe58f' }} className="mb-0 pb-0">
               <h5>Products</h5>
@@ -251,7 +294,22 @@ const PosPage = () => {
               </Col>
             </Row>
           </Col>}
-          {(cartStore.isCheckout) && <Col xs={{ span: 12, offset: 1 }} sm={{ span: 10, offset: 1 }} xl={{ span: 6, offset: 0 }}>
+          {(cartStore.isCheckout) && <Col className="no-print" xs={{ span: 12, offset: 1 }} sm={{ span: 10, offset: 1 }} xl={{ span: 6, offset: 0 }}>
+            <Breadcrumb className="mb-0 pb-0">
+              <h5>Promotion</h5>
+            </Breadcrumb>
+
+            <Form
+              labelCol={{ span: 4 }}
+              wrapperCol={{ span: 14 }}
+              layout="horizontal"
+            >
+              <Form.Item label="Coupon">
+                <Input placeholder="Enter coupon" onPressEnter={async (e) => await onPressEnterCoupon(e)} />
+              </Form.Item>
+            </Form>
+            {cartStore.discount != 0 && <Alert message={"Apply coupon successfully, Discount: " + cartStore.discount} type="success" />}
+            <br />
             <Breadcrumb className="mb-0 pb-0">
               <h5>Customer</h5>
             </Breadcrumb>
@@ -272,7 +330,7 @@ const PosPage = () => {
                   onChange={onCustomerChange}
                   defaultValue={cartStore.currentCustomer.ContactName}
                 >
-                  {cartStore.customers.map(function (item) {
+                  {cartStore.customers && cartStore.customers.map(function (item) {
                     return (<Option value={item['Id']}>{item['ContactName']}</Option>)
                   })}
                 </Select>
@@ -296,7 +354,7 @@ const PosPage = () => {
                   layout="horizontal"
                 >
                   <Form.Item label="Total">
-                    <Input disabled={cartStore.isCheckout} value={cartStore.totalAmount} />
+                    <Input disabled={cartStore.isCheckout} value={(cartStore.totalAmount * 1.1).toFixed(2)} />
                   </Form.Item>
                   <Form.Item label="Pay">
                     <Input onChange={async (e) => await onChangePay(e)} />
@@ -311,8 +369,12 @@ const PosPage = () => {
                   </Form.Item>}
                 </Form>
               </TabPane>
-              <TabPane tab="Credit card" key="2"></TabPane>
-              <TabPane tab="E-Wallet" key="3"></TabPane>
+              <TabPane tab="Credit card" key="2">
+                <Alert message="This payment method is currently not supported. Please try again later!" type="warning" />
+              </TabPane>
+              <TabPane tab="E-Wallet" key="3">
+                <Alert message="This payment method is currently not supported. Please try again later!" type="warning" />
+              </TabPane>
             </Tabs>
           </Col>}
         </Row>

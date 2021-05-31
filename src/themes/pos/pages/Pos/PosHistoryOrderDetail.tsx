@@ -57,15 +57,20 @@ const PosOrderHistoryPage = (props) => {
       sorter: false,
     },
     {
-      title: "Tax",
-      dataIndex: "Tax",
+      title: "Price",
+      dataIndex: "Price",
+      sorter: false,
+    },
+    {
+      title: "Discount",
+      dataIndex: "Discount",
       sorter: false,
     },
     {
       title: "Total",
       dataIndex: "Total",
       sorter: false,
-      render: (_, record) => (record ? (record.Quantity - record.ReturnedQuantity) * record.Price * (1 + record.Tax) : 0)
+      render: (_, record) => (record ? Number(((record.Quantity - record.ReturnedQuantity) * record.Price * (100 - record.Discount) / 100).toFixed(2)) : 0.0)
     },
   ];
 

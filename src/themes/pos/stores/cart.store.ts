@@ -17,7 +17,9 @@ interface CartProduct {
     ReorderLevel: number;
     Discontinued: boolean;
     Quantity: number;
+    Discount: number;
     Total: number;
+    RawTotal: number;
 }
 interface Product {
     Id: number;
@@ -28,6 +30,7 @@ interface Product {
     UnitsInStock: number;
     ReorderLevel: number;
     Discontinued: boolean;
+    Discount: number;
 }
 
 interface Session {
@@ -40,6 +43,8 @@ interface Session {
 
 class CartStore {
     @observable productsInCart: CartProduct[] = [];
+    @observable coupon: number = 0;
+    @observable discount: number = 0;
     @observable loading: boolean = true;
     @observable customers: any[] = [];
     @observable currentCustomer: any = { Id: 0, Phone: "", Address: "", City: "", Country: "" };
@@ -47,6 +52,7 @@ class CartStore {
     @observable sessionStart: string = '';
     @observable salescleckId: number = 0;
     @observable salescleckFullName: string = '';
+    @observable salescleckStore: any = undefined;
     @observable isCheckout: boolean = false;
     @observable isConfirm: boolean = false;
     @computed get totalNum() {
@@ -56,12 +62,19 @@ class CartStore {
         }
         return Number(total.toFixed(2));;
     }
+    @computed get subtotalAmount() {
+        let total = 0;
+        for (let item of this.productsInCart) {
+            total = total + (item.Total)
+        }
+        return Number(total.toFixed(2));
+    }
     @computed get totalAmount() {
         let total = 0;
         for (let item of this.productsInCart) {
             total = total + (item.Total)
         }
-        return total.toFixed(2);
+        return Number(total.toFixed(2)) - this.discount;
     }
     @action.bound
     addToCart = async (product: Product) => {
@@ -73,14 +86,15 @@ class CartStore {
             await this.productsInCart.map(item => {
                 if (item.Id === product.Id) {
                     item.Quantity += 1;
-                    item.Total = Number((item.UnitPrice * item.Quantity).toFixed(2));
+                    item.RawTotal = Number((item.UnitPrice * item.Quantity).toFixed(2));
+                    item.Total = Number((item.UnitPrice * item.Quantity * (100 - item.Discount) / 100).toFixed(2));
                     found = true;
                     const index = this.productsInCart.findIndex(({ Id }) => Id === product.Id);
                     this.productsInCart.splice(index, 1, item);
                 }
             });
             if (!found) {
-                await this.productsInCart.push({ ...product, Quantity: 1, Total: product.UnitPrice });
+                await this.productsInCart.push({ ...product, Quantity: 1, RawTotal: product.UnitPrice, Total: Number((product.UnitPrice * (100 - product.Discount) / 100).toFixed(2)) });
             }
         }
     }
@@ -104,7 +118,8 @@ class CartStore {
         await this.productsInCart.map(item => {
             if (item.Id === product.Id) {
                 item.Quantity = Number(quantity);
-                item.Total = item.UnitPrice * item.Quantity;
+                item.RawTotal = Number((item.UnitPrice * item.Quantity).toFixed(2));
+                item.Total = Number((item.UnitPrice * item.Quantity * (100 - item.Discount) / 100).toFixed(2));
                 const index = this.productsInCart.findIndex(({ Id }) => Id === product.Id);
                 this.productsInCart.splice(index, 1, item);
             }
@@ -116,7 +131,8 @@ class CartStore {
             if (item.Id === product.Id) {
                 if (item.Quantity > 1) {
                     item.Quantity -= 1;
-                    item.Total = Number((item.UnitPrice * item.Quantity).toFixed(2));
+                    item.RawTotal = Number((item.UnitPrice * item.Quantity).toFixed(2));
+                    item.Total = Number((item.UnitPrice * item.Quantity * (100 - item.Discount) / 100).toFixed(2));
                     const index = this.productsInCart.findIndex(({ Id }) => Id === product.Id);
                     this.productsInCart.splice(index, 1, item);
                 }
@@ -145,6 +161,7 @@ class CartStore {
     newOrder = async () => {
         this.loading = true;
         this.emptyCart();
+        this.resetPromotion();
         this.isConfirm = false;
         this.isCheckout = false;
         this.loading = false;
@@ -161,6 +178,9 @@ class CartStore {
         if (result && result.Salesclerk) {
             this.salescleckFullName = result.Salesclerk.FName + " " + result.Salesclerk.LName;
             this.salescleckId = result.Salesclerk.Id;
+            if (result.Salesclerk.Store) {
+                this.salescleckStore = result.Salesclerk.Store;
+            }
         }
         if (result && result.Session) {
             this.session = result.Session.SessionId;
@@ -173,6 +193,23 @@ class CartStore {
         this.loading = true;
         const result = await customerService.searchCustomers(key);
         this.customers = result;
+        this.loading = false;
+    }
+    @action.bound
+    getPromotion = async (coupon: number) => {
+        this.loading = true;
+        this.resetPromotion();
+        const result = await orderService.getPromotion(coupon, this.totalAmount);
+        if (result) {
+            this.discount = result;
+        }
+        this.loading = false;
+    }
+    @action.bound
+    resetPromotion = async () => {
+        this.loading = true;
+        this.coupon = 0;
+        this.discount = 0;
         this.loading = false;
     }
     @action.bound
@@ -211,7 +248,7 @@ class CartStore {
     }
     @action.bound
     confirmOrder = async () => {
-        const result = await orderService.confirmOrder(this.salescleckId, this.session, this.productsInCart, this.currentCustomer.Id);
+        const result = await orderService.confirmOrder(this.salescleckId, this.session, this.productsInCart, this.currentCustomer.Id, this.discount);
         if (result) {
             message.success("Create order successfully!");
             console.log(result);
