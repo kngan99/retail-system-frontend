@@ -11,6 +11,8 @@ import PromotionLayout from "./themes/promotion/layout"
 import "./themes/style.scss";
 import { cssTransition, ToastContainer } from "react-toastify";
 import { Spin } from 'antd';
+import WarehouseLayout from "./themes/warehouse/layout";
+import StoreLayout from "./themes/store/layout";
 
 const Zoom = cssTransition({
   enter: 'zoomIn',
@@ -40,6 +42,14 @@ ReactDOM.render(
           <Route
             path="/promotion"
             render={(props: any) => <PromotionLayout {...props} exact />}
+          />
+            <Route
+            path="/warehouse"
+            render={(props: any) => <WarehouseLayout {...props} exact />}
+          />
+          <Route
+            path="/store"
+            render={(props: any) => <StoreLayout {...props} exact />}
           />
           <Route path="/" render={(props: any) => <App />} />
         </Switch>

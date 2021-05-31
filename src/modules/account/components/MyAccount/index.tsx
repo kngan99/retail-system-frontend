@@ -1,13 +1,13 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 
-import { toast } from 'react-toastify';
 import bsCustomFileInput from 'bs-custom-file-input';
 import { AuthenticationStoreContext } from '../../../authenticate/authentication.store';
 import { AccountStoreContext } from '../../account.store';
 import { I18N } from '../../../../i18n.enum';
 import { REFERENCE_TYPE } from '../../referenceType.enum';
 import AccountForm from '../AccountForm';
+import { message } from 'antd';
 
 interface ComponentProps {
   className?: string;
@@ -38,8 +38,7 @@ const MyAccount = (props: ComponentProps) => {
         authStore.loggedUser.Id
       );
       if (result) {
-        toast.dismiss();
-        toast.success(MESSAGES_UPDATE_SUCCESS);
+        message.success(MESSAGES_UPDATE_SUCCESS);
         setAvatar({
           file: null,
         });
@@ -57,8 +56,7 @@ const MyAccount = (props: ComponentProps) => {
       if (data) {
         const user = await accountStore.getAccountInfo(authStore.loggedUser.Id);
         authStore.setLoggedUser(user ?? authStore.loggedUser);
-        toast.dismiss();
-        toast.success(MESSAGES_UPDATE_SUCCESS);
+        message.success(MESSAGES_UPDATE_SUCCESS);
       }
     }
   };
@@ -72,14 +70,13 @@ const MyAccount = (props: ComponentProps) => {
   const handleDelete = async (type: REFERENCE_TYPE) => {
     if (type === REFERENCE_TYPE.PROFILE_IMG) {
       const result = accountStore.deleteAccountFile(
-        authStore.loggedUser.id,
+        authStore.loggedUser.Id,
         REFERENCE_TYPE.PROFILE_IMG
       );
       if (result) {
         authStore.loggedUser.avatarUrl = '';
-        toast.dismiss();
         bsCustomFileInput.init();
-        toast.success(MESSAGES_DELETE_SUCCESS);
+        message.success(MESSAGES_DELETE_SUCCESS);
       }
     }
   };

@@ -20,7 +20,7 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "experimentalDecorators": true,
+    "types": ["google.maps"],
     "typeRoots": [
       "./src/libs/types"
     ],

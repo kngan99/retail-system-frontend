@@ -34,6 +34,8 @@ export default class AuthenticationStore {
     if (data) {
       this._setCurrentInfo(data);
       const redirectUrl = (this.loggedUser.EmailVerified) ? url : urlNotVerified;
+      saveToStorage('loggedId', this.loggedUser.Id);
+      saveToStorage("storeId", this.loggedUser.StoreId);
       console.log(data);
       this.role = this.loggedUser.Type;
       console.log(this.loggedUser.Type);
@@ -48,6 +50,9 @@ export default class AuthenticationStore {
       }
       else if (data.Type === "StoresManager") {
         this._redirectAfterLogin(history, "/product/manage");
+      }
+      else if (data.Type == "StoreWarehouseManager") {
+        this._redirectAfterLogin(history, "/warehouse/new-request-goods-note");
       }
       else {
         this._redirectAfterLogin(history, redirectUrl);

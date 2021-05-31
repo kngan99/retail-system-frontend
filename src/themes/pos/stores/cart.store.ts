@@ -6,6 +6,8 @@ import orderService from '../services/order.service'
 import customerService from '../services/customer.service'
 import { message } from 'antd';
 // import { Product } from '../../../modules/product/product.dto';
+import { removeUnusedProps } from '../../../common/utils/apis.util';
+import { OrderListDto } from '../services/list.dto';
 
 interface CartProduct {
     Id: number;
@@ -41,6 +43,15 @@ interface Session {
     SalecleckId: number;
 }
 
+interface CargoRequest {
+    ProductId : number[];
+    Quantity: number[];
+    WarehouseId: number;
+    StoreId: number;
+    Status?: string | null;
+    Notes?: string | null;
+}
+
 class CartStore {
     @observable productsInCart: CartProduct[] = [];
     @observable coupon: number = 0;
@@ -55,6 +66,12 @@ class CartStore {
     @observable salescleckStore: any = undefined;
     @observable isCheckout: boolean = false;
     @observable isConfirm: boolean = false;
+    @observable cargoRequest: CargoRequest = {
+        ProductId: [],
+        Quantity: [],
+        WarehouseId: -1,
+        StoreId: -1,
+    };
     @computed get totalNum() {
         let total = 0;
         for (let item of this.productsInCart) {
@@ -76,6 +93,11 @@ class CartStore {
         }
         return Number(total.toFixed(2)) - this.discount;
     }
+    @observable orders: any[] = [];
+    @observable totalCount: number = 0;
+    @observable selectedOrder: any = null;
+    @observable editingAdminOrder: any = null;
+
     @action.bound
     addToCart = async (product: Product) => {
         if (product.Discontinued) {
@@ -260,9 +282,117 @@ class CartStore {
         return this.productsInCart;
     }
 
+    @action.bound
+    setCargoRequest = (warehouseId: number, storeId: number, action: string, status?: string | null, notes?: string | null) => {
+        let prodId : number[] = [];
+        let quan : number[] = [];
+        for (let product of this.productsInCart) {
+            prodId.push(product.Id);
+            quan.push(product.Quantity);
+        }
+        if (action === 'Create') {
+            this.cargoRequest = {
+                ProductId: prodId,
+                Quantity: quan,
+                WarehouseId: warehouseId,
+                StoreId: storeId,
+            }
+        }
+        else {
+            this.cargoRequest = {
+                ProductId: prodId,
+                Quantity: quan,
+                WarehouseId: warehouseId,
+                StoreId: storeId,
+                Status: status,
+                Notes: notes,
+            }
+        }
+    }
+
+    @action.bound
+    resetCargoRequest = () => {
+        this.cargoRequest = {
+            ProductId: [],
+            Quantity: [],
+            WarehouseId: -1,
+            StoreId: -1,
+            Status: null,
+            Notes: null,
+        };
+    }
+
+    @action.bound
+    sendCargoRequest = async () => {
+        console.log(this.cargoRequest);
+        const result = await cartService.createCargoRequest(this.cargoRequest);
+        return result;
+    }
+
+    @action.bound
+    updateCargoRequest = async (id: number) => {
+        console.log(this.cargoRequest);
+        const result = await cartService.updateCargoRequest(id, this.cargoRequest);
+        return result;
+    }
+
+    @action.bound
+    setProductInCart = (productsInCart: any[]) => {
+       this.productsInCart = productsInCart;
+    }
+
+    @action.bound
+    async adminDeleteOrder(id: number) {
+        const data = await cartService.adminDeleteOrder(id);
+        return data;
+    }
+
+    @action.bound
+    async getOrderListByAdmin(criteria: OrderListDto) {
+        const result = await cartService.getOrderListByAdmin(criteria);
+        if (result) {
+        if (result.data[0])
+            this.orders = result.data[0].map((item: any) =>
+            removeUnusedProps(item)
+            );
+        this.totalCount = result.data[1];
+        }
+    }
+
+    @action.bound
+    async getOrderById(id: number) {
+        const data = await cartService.getOrderByID(id);
+        this.selectedOrder = data;
+        return data;
+    }
+
+    @action.bound
+    async resetUpdateAdminOrder() {
+        this.editingAdminOrder = null;
+    }
+
+    @action.bound
+    async getOrderByIdByAdmin(orderId: number) {
+        const data: any = await cartService.getOrderByID(orderId);
+        this.editingAdminOrder = data;
+        return data;
+    }
+
+    @action.bound
+    async setProductsInCartQuantity() {
+        const result = await this.selectedOrder.quantities.map((item, idx) => { this.productsInCart[idx].Quantity = item })
+        return result;
+    }
+
+    @action.bound
+    async setProductsInCartTotal() {
+        const result = await this.selectedOrder.quantities.map((item, idx) => { this.productsInCart[idx].Total = item * this.productsInCart[idx].UnitPrice })
+        return result;
+    }
+    
     constructor() {
         makeObservable(this);
-        autorun(() => console.log(this.productsInCart));
+        //autorun(() => console.log(this.productsInCart));
     }
 }
 export default new CartStore();

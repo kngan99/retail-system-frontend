@@ -6,7 +6,7 @@ import OnePage from '../../../../modules/theme/components/OnePage';
 import DefaultRegisterForm from '../../../../modules/account/components/DefaultRegisterForm';
 import { DEFAULT_ROUTERS } from '../../../../modules/account/router.enum';
 import { CreateUserDto } from '../../../../modules/account/account.dto';
-import { toast } from 'react-toastify';
+import { message } from 'antd';
 const CreateAccountPage = () => {
   const accountStore = React.useContext(AccountStoreContext);
   const history = useHistory();
@@ -42,7 +42,7 @@ const CreateAccountPage = () => {
     // if (result) {
       accountStore.resetCreateUserForm();
       history.push(DEFAULT_ROUTERS.LOGIN);
-      toast.success('Register successfully! Check your email to verified and login');
+      message.success('Register successfully! Check your email to verified and login');
     //}
   };
 
