@@ -38,6 +38,21 @@ class OrderService {
         return result.data;
     }
 
+    public async confirmStripeOrder(SalescleckId: number, SessionId: string, cartproducts: CartProduct[], CustomerId: number, Discount: number, Stripe: string) {
+        const result = await http.post(`${this.orderPrefix}`, {
+            order: {
+                orderDate: moment().format("DD-MM-YYYY hh:mm:ss"),
+                saleClerkId: SalescleckId,
+                sessionId: SessionId,
+                customerId: CustomerId,
+                discount: Discount,
+                stripe: Stripe,
+            },
+            cartproducts: cartproducts
+        });
+        return result.data;
+    }
+
     public async getPastSessions(skip: number, take: number, key: string) {
         const result = await http.get(`${this.orderPrefix}/paginateOrdersBySession`, {
             params: {

@@ -278,6 +278,15 @@ class CartStore {
         }
     }
     @action.bound
+    confirmStripeOrder = async (stripe: string) => {
+        const result = await orderService.confirmStripeOrder(this.salescleckId, this.session, this.productsInCart, this.currentCustomer.Id, this.discount, stripe);
+        if (result) {
+            message.success("Create order successfully!");
+            console.log(result);
+            this.isConfirm = true;
+        }
+    }
+    @action.bound
     fetchCart = async () => {
         return this.productsInCart;
     }

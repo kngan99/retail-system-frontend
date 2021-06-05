@@ -4,8 +4,10 @@ import {
     useStripe,
     useElements
 } from "@stripe/react-stripe-js";
+import { CartStoreContext } from "../../stores/cart.store";
 
 export default function CheckoutForm() {
+    const cartStore = React.useContext(CartStoreContext);
     const [intentId, setIntentId] = useState(" ");
     const [succeeded, setSucceeded] = useState(false);
     const [error, setError] = useState(null);
@@ -16,10 +18,15 @@ export default function CheckoutForm() {
     const stripe = useStripe();
     const elements = useElements();
 
+    const handleConfirmOrder = async () => {
+        await cartStore.confirmOrder();
+    }
+
     useEffect(() => {
+        var total = (cartStore.totalAmount * 1.1).toFixed(2) * 100;
         // Create PaymentIntent as soon as the page loads
         window
-            .fetch("http://localhost:4000/api/orders/create-payment-intent", {
+            .fetch("http://localhost:4000/api/orders/create-payment-intent/"+String(total), {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -79,6 +86,7 @@ export default function CheckoutForm() {
             setError(null);
             setProcessing(false);
             setSucceeded(true);
+            await cartStore.confirmStripeOrder(payload.paymentIntent.id);
         }
     };
 
@@ -99,7 +107,7 @@ export default function CheckoutForm() {
                     {processing ? (
                         <div className="spinner" id="spinner"></div>
                     ) : (
-                        "Pay now"
+                        "Pay $"+String((cartStore.totalAmount * 1.1).toFixed(2))
                     )}
                 </span>
             </button>
