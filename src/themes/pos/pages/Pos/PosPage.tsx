@@ -1,5 +1,6 @@
 import { observer } from "mobx-react";
-import React from "react";
+import React, { useState } from "react";
+import App from "./App";
 import { ProductStoreContext } from "../../../../modules/product/product.store";
 import { CartStoreContext } from "../../stores/cart.store";
 import { Modal, Button, Pagination, Table, Tag, Radio, Space, Tabs, Card, Skeleton, Avatar, List, Spin, Divider, Form, Input, Select, message, Alert } from 'antd';
@@ -15,7 +16,7 @@ import Clock from 'react-live-clock';
 import { CommonStoreContext } from '../../../../common/common.store';
 import CreateCustomerModal from "../../components/CreateCustomerModal";
 import { Table as BootstrapTable } from 'react-bootstrap';
-
+import StripeCheckout from "react-stripe-checkout";
 interface Product {
   Id: number;
   ProductName: string;
@@ -33,6 +34,11 @@ const { confirm } = Modal;
 const { Option } = Select;
 
 const PosPage = () => {
+  const [product, setProduct] = useState({
+    name: "React from FB",
+    price: 10,
+    productBy: "facebook"
+  });
   const commonStore = React.useContext(CommonStoreContext);
   const productStore = React.useContext(ProductStoreContext);
   const cartStore = React.useContext(CartStoreContext);
@@ -172,6 +178,28 @@ const PosPage = () => {
 
   const onCustomerChange = (value: number) => {
     cartStore.changeCustomer(value);
+  };
+
+  const makePayment = token => {
+    const body = {
+      token,
+      product
+    };
+    const headers = {
+      "Content-Type": "application/json"
+    };
+
+    return fetch(`http://localhost:4000/api/orders/payment`, {
+      method: "POST",
+      headers,
+      body: JSON.stringify(body)
+    })
+      .then(response => {
+        console.log("RESPONSE ", response);
+        const { status } = response;
+        console.log("STATUS ", status);
+      })
+      .catch(error => console.log(error));
   };
 
   return (
@@ -370,10 +398,16 @@ const PosPage = () => {
                 </Form>
               </TabPane>
               <TabPane tab="Credit card" key="2">
-                <Alert message="This payment method is currently not supported. Please try again later!" type="warning" />
+                {/* <Alert message="This payment method is currently not supported. Please try again later!" type="warning" /> */}
+                <App></App>
               </TabPane>
               <TabPane tab="E-Wallet" key="3">
                 <Alert message="This payment method is currently not supported. Please try again later!" type="warning" />
+                {/* <StripeCheckout stripeKey="pk_test_51IxOkDGizvfJJVTjv7mn0Nxb9uZDBOVBYdxncXN4WBetXM8ypXaJ1ptyvA9XrgFDjS5bp1KtQ28Sukq94toUFAzR00SOLYwrFI" token={makePayment} name="Buy React" amount={product.price * 100}>
+                  <button className="btn-large blue">
+                    Buy react is just {product.price} $
+          </button>
+                </StripeCheckout> */}
               </TabPane>
             </Tabs>
           </Col>}
