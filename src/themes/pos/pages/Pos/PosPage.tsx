@@ -44,12 +44,12 @@ const PosPage = () => {
   const cartStore = React.useContext(CartStoreContext);
   const [total, setTotal] = React.useState<number>();
   const [returnCash, setReturnCash] = React.useState<number>(0);
+  const [totalpay, setTotalpay] = React.useState<number>(0);
   React.useEffect(() => {
   }, [returnCash, cartStore.loading]);
   React.useEffect(() => {
     productStore.startSearch();
   }, []);
-
   const showTotal = (total: number) => {
     return `Total ${total} items`;
   }
@@ -402,12 +402,25 @@ const PosPage = () => {
                 <App></App>
               </TabPane>
               <TabPane tab="E-Wallet" key="3">
-                <Alert message="This payment method is currently not supported. Please try again later!" type="warning" />
+                {/* <Alert message="This payment method is currently not supported. Please try again later!" type="warning" /> */}
+                {/* <iframe id="iframe_a" name="iframe_a" style={{ width: '100%', height: "700px", border: 'none' }} src="http://localhost:8888/order/create_payment_url/20000000" /> */}
                 {/* <StripeCheckout stripeKey="pk_test_51IxOkDGizvfJJVTjv7mn0Nxb9uZDBOVBYdxncXN4WBetXM8ypXaJ1ptyvA9XrgFDjS5bp1KtQ28Sukq94toUFAzR00SOLYwrFI" token={makePayment} name="Buy React" amount={product.price * 100}>
                   <button className="btn-large blue">
                     Buy react is just {product.price} $
           </button>
                 </StripeCheckout> */}
+                {!cartStore.isConfirm && <Form.Item style={{ textAlign: 'center' }}>
+                  <Alert message="This payment method is currently supported VND currency only!" type="warning" />
+                  <br />
+                  <a id="vnpaylink" href={"http://localhost:8888/order/create_payment_url/" + String((Number((cartStore.totalAmount * 1.1).toFixed(2))*100*23100))} target="_blank">Go to payment page!</a>
+                  <br />
+                  <br/>
+                  <Alert message="Please remember to create payment before confirming the order!" type="warning" />
+                  <br/>
+                  <Button loading={cartStore.loading} onClick={async () => await handleConfirmOrderClick()} type="primary" htmlType="submit">
+                    Confirm payment and process order
+                    </Button>
+                </Form.Item>}
               </TabPane>
             </Tabs>
           </Col>}
