@@ -2,7 +2,7 @@ import { observer } from "mobx-react";
 import React from "react";
 import { CartStoreContext } from "../../stores/cart.store";
 import { HistoryStoreContext } from "../../stores/history.store";
-import { Layout, Menu, Breadcrumb, PageHeader, Button, Descriptions, Collapse } from 'antd';
+import { Layout, Menu, Breadcrumb, PageHeader, Button, Descriptions, Collapse, Tag } from 'antd';
 import PosPage from '../Pos/PosPage';
 import PosHistoryPage from '../Pos/PosHistoryPage';
 import "antd/dist/antd.css";
@@ -53,7 +53,9 @@ const HistoryPage = (props) => {
                         ]}
                     >
                         {orderStore.order && <Collapse defaultActiveKey={['1']}>
-                            <Panel header={<strong style={{ color: '#8c8c8c' }}>Detail info</strong>} key="1">
+                            <Panel header={<strong style={{ color: '#8c8c8c' }}>Detail info       {(orderStore.order.Stripe) ? <Tag color="#108ee9">Credit Card</Tag> : ((orderStore.order.Vnpay) ? <Tag color="#f50">E-Wallet</Tag> : <Tag color="yellow">Cash</Tag>)}
+                                {(orderStore.order.Stripe) ? <Tag color="blue">Payment ID: {orderStore.order.Stripe}</Tag> : ((orderStore.order.Vnpay) ? <Tag color="red">Payment ID: {orderStore.order.Vnpay}</Tag> : <Tag color="yellow">USD</Tag>)}</strong>} key="1">
+                                
                                 <Descriptions size="small" column={2}>
                                     <Descriptions.Item label="Session Id">
                                         <a>{orderStore.order.SessionId}</a>
@@ -89,7 +91,7 @@ const HistoryPage = (props) => {
                 </div >
                 <Layout style={{ background: "linear-gradient(90deg, #fab91a 0, #ffd424 100%)" }} className="layout">
                     <Content style={{ padding: '0 1px' }}>
-
+                            
                         <div className="site-layout-content"><PosHistoryOrderDetail props={props} /></div>
                     </Content>
                     <Footer style={{ textAlign: 'center', background: "linear-gradient(90deg, #fab91a 0, #ffd424 100%)" }}></Footer>

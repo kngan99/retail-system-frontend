@@ -287,7 +287,7 @@ const OrderGrid = (props: ComponentProps) => {
                           {item.Id}
                         </span>
                       </td>
-                      <td>{item.Warehouse.ShortName}</td>
+                      {/* <td>{item.Warehouse.ShortName}</td> */}
                       <td>{item.CreatedByAccount.LName}</td>
                       <td>
                         {item.CreatedAt

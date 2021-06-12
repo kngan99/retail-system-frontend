@@ -32,12 +32,12 @@ const SummaryOrderSection = (props: ComponentProps) => {
           </Col>
           <Col xs={12} className="block-item">
             <Row>
-              <Col xs={12} xl={7}>
+              {/* <Col xs={12} xl={7}>
                 <span className="block-label">Warehouse</span>
                 <span className="block-value">
                   {orderData.Warehouse.ShortName}
                 </span>
-              </Col>
+              </Col> */}
               {
                 <Col xs={12} xl={5}>
                   <span className="block-label">Phone number</span>

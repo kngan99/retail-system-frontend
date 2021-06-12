@@ -4,7 +4,7 @@ import { OrderListDto } from "./list.dto";
 import { prepareGetQuery } from "../../../common/utils/routes.util";
 
 class VNPService {
-    vnpPrefix: string = "http://localhost:8888/order";
+    vnpPrefix: string = "https://retailvnpay.herokuapp.com/order";
 
     public async createUrl(amount: number) {
         const result = await http.post(`${this.vnpPrefix}/create_payment_url/${amount}`, {

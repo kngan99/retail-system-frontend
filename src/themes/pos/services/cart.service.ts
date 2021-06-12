@@ -43,6 +43,7 @@ class CartService {
   public async getSessionDetail(id: string) {
     const result = await http.get(`${this.sessionPrefix}/${id}`, {
     });
+    return result.data;
   }
   
   public async createCargoRequest(model: any) {

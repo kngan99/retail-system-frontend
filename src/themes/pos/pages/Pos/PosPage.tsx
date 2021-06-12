@@ -412,7 +412,7 @@ const PosPage = () => {
                 {!cartStore.isConfirm && <Form.Item style={{ textAlign: 'center' }}>
                   <Alert message="This payment method is currently supported VND currency only!" type="warning" />
                   <br />
-                  <a id="vnpaylink" href={"http://localhost:8888/order/create_payment_url/" + String((Number((cartStore.totalAmount * 1.1).toFixed(2))*100*23100))} target="_blank">Go to payment page!</a>
+                  <a id="vnpaylink" href={"https://retailvnpay.herokuapp.com/order/create_payment_url/" + String((Number((cartStore.totalAmount * 1.1).toFixed(2))*23100))} target="_blank">Go to payment page!</a>
                   <br />
                   <br/>
                   <Alert message="Please remember to create payment before confirming the order!" type="warning" />

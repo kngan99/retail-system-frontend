@@ -141,6 +141,12 @@ const PosHistoryPage = () => {
       render: (record, row) => ((record.reduce((accumulator, current) => accumulator + (current.Price * (current.Quantity - current.ReturnedQuantity)), 0) - row.Discount) * 1.1).toFixed(2),
     },
     {
+      title: "Payment",
+      dataIndex: "Payment",
+      render: (_,row) =>
+        (row.Stripe) ? <Tag color="blue">Credit Card</Tag> : ((row.Vnpay) ? <Tag color="red">E-Wallet</Tag> : <Tag color="yellow">Cash</Tag>),
+    },
+    {
       title: "Action",
       key: "action",
       render: (_, record) => (
