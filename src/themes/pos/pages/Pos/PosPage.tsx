@@ -202,6 +202,11 @@ const PosPage = () => {
       .catch(error => console.log(error));
   };
 
+  const onFinish = async (values: any) => {
+    console.log('Received values of form: ', values);
+    await cartStore.confirmVnpayOrder(values.orderId);
+  };
+
   return (
     <>
       {cartStore.session && <div style={{
@@ -416,10 +421,22 @@ const PosPage = () => {
                   <br />
                   <br/>
                   <Alert message="Please remember to create payment before confirming the order!" type="warning" />
-                  <br/>
-                  <Button loading={cartStore.loading} onClick={async () => await handleConfirmOrderClick()} type="primary" htmlType="submit">
-                    Confirm payment and process order
+                  <br />
+                  <Form
+                    labelCol={{ span: 4 }}
+                    wrapperCol={{ span: 14 }}
+                    layout="horizontal"
+                    onFinish={onFinish}
+                  >
+                    <Form.Item label="OrderId" name="orderId" rules={[{ required: true, message: 'Please input the order Id created by VNPay!' }]}>
+                      <Input placeholder="Order ID"/>
+                    </Form.Item>
+                    <Form.Item style={{ textAlign: 'right' }}>
+                      <Button loading={cartStore.loading} type="primary" htmlType="submit">
+                        Confirm payment and process order
                     </Button>
+                    </Form.Item>
+                  </Form>
                 </Form.Item>}
               </TabPane>
             </Tabs>

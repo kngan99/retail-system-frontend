@@ -70,7 +70,6 @@ const HistoryPage = (props) => {
                 </div >
                 <Layout style={{ background: "linear-gradient(90deg, #fab91a 0, #ffd424 100%)" }} className="layout">
                     <Content style={{ padding: '0 1px' }}>
-
                         <div className="site-layout-content"><PosHistorySessionDetail props={props} /></div>
                     </Content>
                     <Footer style={{ textAlign: 'center', background: "linear-gradient(90deg, #fab91a 0, #ffd424 100%)" }}></Footer>

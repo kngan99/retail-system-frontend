@@ -53,6 +53,21 @@ class OrderService {
         return result.data;
     }
 
+    public async confirmVnpayOrder(SalescleckId: number, SessionId: string, cartproducts: CartProduct[], CustomerId: number, Discount: number, Vnpay: string) {
+        const result = await http.post(`${this.orderPrefix}`, {
+            order: {
+                orderDate: moment().format("DD-MM-YYYY hh:mm:ss"),
+                saleClerkId: SalescleckId,
+                sessionId: SessionId,
+                customerId: CustomerId,
+                discount: Discount,
+                vnpay: Vnpay,
+            },
+            cartproducts: cartproducts
+        });
+        return result.data;
+    }
+
     public async getPastSessions(skip: number, take: number, key: string) {
         const result = await http.get(`${this.orderPrefix}/paginateOrdersBySession`, {
             params: {

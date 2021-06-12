@@ -287,6 +287,15 @@ class CartStore {
         }
     }
     @action.bound
+    confirmVnpayOrder = async (vnpay: string) => {
+        const result = await orderService.confirmVnpayOrder(this.salescleckId, this.session, this.productsInCart, this.currentCustomer.Id, this.discount, vnpay);
+        if (result) {
+            message.success("Create order successfully!");
+            console.log(result);
+            this.isConfirm = true;
+        }
+    }
+    @action.bound
     fetchCart = async () => {
         return this.productsInCart;
     }
