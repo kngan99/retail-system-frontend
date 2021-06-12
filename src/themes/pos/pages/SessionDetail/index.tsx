@@ -59,6 +59,9 @@ const HistoryPage = (props) => {
                                     <Descriptions.Item label="Session start:">{new Date(historyStore.currentDetailSession.data.Start).toLocaleString()}</Descriptions.Item>
                                     <Descriptions.Item label="Session end:">{new Date(historyStore.currentDetailSession.data.End).toLocaleString()}</Descriptions.Item>
                                     {historyStore.currentDetailSession.total && <Descriptions.Item label="Total:">{historyStore.currentDetailSession.total[0].FinalTotal}</Descriptions.Item>}
+                                    {historyStore.currentDetailSession.totalCash && <Descriptions.Item label="Total Cash:">{historyStore.currentDetailSession.totalCash[0].FinalTotal}</Descriptions.Item>}
+                                    {historyStore.currentDetailSession.totalCredit && <Descriptions.Item label="Total Credit:">{historyStore.currentDetailSession.totalCredit[0].FinalTotal}</Descriptions.Item>}
+                                    {historyStore.currentDetailSession.totalVnpay && <Descriptions.Item label="Total Vnpay:">{historyStore.currentDetailSession.totalVnpay[0].FinalTotal}</Descriptions.Item>}
                                     <Descriptions.Item label="Current time:"><Clock format={commonStore.hourMinusFormat} ticking={true} /></Descriptions.Item>
                                 </Descriptions>
                             </Panel>
