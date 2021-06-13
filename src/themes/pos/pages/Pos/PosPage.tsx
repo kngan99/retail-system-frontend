@@ -3,14 +3,14 @@ import React, { useState } from "react";
 import App from "./App";
 import { ProductStoreContext } from "../../../../modules/product/product.store";
 import { CartStoreContext } from "../../stores/cart.store";
-import { Modal, Button, Pagination, Table, Tag, Radio, Space, Tabs, Card, Skeleton, Avatar, List, Spin, Divider, Form, Input, Select, message, Alert } from 'antd';
+import { Modal, Button, Pagination, Table, Tag, Radio, Space, Tabs, Card, Skeleton, Avatar, List, Spin, Divider, Form, Input, Select, message, Alert, Row, Col} from 'antd';
 import { ExclamationCircleOutlined, AudioOutlined, EditOutlined, EllipsisOutlined, SettingOutlined, DeleteOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import { ColumnsType } from "antd/es/table";
 import UpdateProductModal from "../../../../modules/product/components/ManageProduct/UpdateProductModal";
 import CreateProductModal from "../../../../modules/product/components/ManageProduct/CreateProductModal";
 import { makeAutoObservable, autorun, observable, toJS } from "mobx"
 import Cart from "../../components/Cart";
-import { Jumbotron, Container, Breadcrumb, Navbar, Nav, Row, Col } from 'react-bootstrap';
+import { Jumbotron, Container, Breadcrumb, Navbar, Nav,  } from 'react-bootstrap';
 import '../../../../modules/product/components/ManageProduct/style.css';
 import Clock from 'react-live-clock';
 import { CommonStoreContext } from '../../../../common/common.store';
@@ -214,7 +214,7 @@ const PosPage = () => {
         margin: "auto", padding: "10px",
       }}>
         <Row>
-          <Col className="printable" xs={{ span: 12, offset: 1 }} sm={{ span: 10, offset: 1 }} xl={{ span: 6, offset: 0 }}><Cart productsInCart={cartStore.productsInCart} totalNum={cartStore.totalNum} totalAmount={cartStore.subtotalAmount} isCheckout={cartStore.isCheckout} />
+          <Col className="printable" xs={{ span: 22, offset: 1 }} sm={{ span: 22, offset: 1 }} xl={{ span: 22, offset: 1 }} xxl={{ span: 10, offset: 0 }}><Cart productsInCart={cartStore.productsInCart} totalNum={cartStore.totalNum} totalAmount={cartStore.subtotalAmount} isCheckout={cartStore.isCheckout} />
             {/* {cartStore.discount !== 0 && <Alert message={"Order Discount: -" + cartStore.discount} type="error" />}
             {(cartStore.isCheckout) && <Alert message={"Tax(10%): " + (cartStore.totalAmount * 0.1).toFixed(2)} type="warning" />}
             {(cartStore.isCheckout) && <Alert message={"Total: " + (cartStore.totalAmount * 1.1).toFixed(2)} type="success" />} */}
@@ -248,16 +248,16 @@ const PosPage = () => {
               </tbody>
             </BootstrapTable>}
           </Col>
-          {(!cartStore.isCheckout) && <Col xs={{ span: 10, offset: 1 }} sm={{ span: 10, offset: 1 }} xl={{ span: 6, offset: 0 }}>
+          {(!cartStore.isCheckout) && <Col xs={{ span: 22, offset: 1 }} sm={{ span: 22, offset: 1 }} xl={{ span: 22, offset: 1 }} xxl={{ span: 11, offset: 2 }}>
             <Breadcrumb style={{ backgroundColor: '#ffe58f' }} className="mb-0 pb-0">
               <h5>Products</h5>
             </Breadcrumb>
             <Row>
-              <Col xs={{ span: 5 }} sm={{ span: 5 }}>
+              <Col xs={{ span: 10 }} sm={{ span: 10 }}>
                 <Input placeholder="Enter product Id to add to cart immediately" onPressEnter={async (e) => await onPressEnterAdd(e)} />
               </Col>
-              <Col xs={{ span: 3 }} sm={{ span: 3 }}></Col>
-              <Col xs={{ span: 4 }} sm={{ span: 4 }}>
+              <Col xs={{ span: 6 }} sm={{ span: 6 }}></Col>
+              <Col xs={{ span: 8 }} sm={{ span: 8 }}>
                 <Search
                   placeholder="input id or name"
                   onSearch={(value: any) => search(value)}
@@ -314,7 +314,7 @@ const PosPage = () => {
             </Tabs>
             <br />
             <Row>
-              <Col xs={{ span: 10, offset: 1 }} sm={{ span: 10, offset: 1 }}>
+              <Col xs={{ span: 20, offset: 1 }} sm={{ span: 20, offset: 1 }} xl={{ span: 20, offset: 1 }} xxl={{ span: 20, offset: 1 }}>
                 <Pagination
                   size="small"
                   showQuickJumper
@@ -327,7 +327,7 @@ const PosPage = () => {
               </Col>
             </Row>
           </Col>}
-          {(cartStore.isCheckout) && <Col className="no-print" xs={{ span: 12, offset: 1 }} sm={{ span: 10, offset: 1 }} xl={{ span: 6, offset: 0 }}>
+          {(cartStore.isCheckout) && <Col className="no-print" xs={{ span: 22, offset: 1 }} sm={{ span: 22, offset: 1 }} xl={{ span: 22, offset: 1 }} xxl={{ span: 11, offset: 2 }}>
             <Breadcrumb className="mb-0 pb-0">
               <h5>Promotion</h5>
             </Breadcrumb>
