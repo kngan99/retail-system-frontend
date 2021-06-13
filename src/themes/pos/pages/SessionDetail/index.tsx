@@ -2,7 +2,7 @@ import { observer } from "mobx-react";
 import React from "react";
 import { CartStoreContext } from "../../stores/cart.store";
 import { HistoryStoreContext } from "../../stores/history.store";
-import { Layout, Menu, Breadcrumb, PageHeader, Button, Descriptions, Collapse } from 'antd';
+import { Layout, Menu, Breadcrumb, PageHeader, Button, Descriptions, Collapse, Tag } from 'antd';
 import PosPage from '../Pos/PosPage';
 import PosHistoryPage from '../Pos/PosHistoryPage';
 import "antd/dist/antd.css";
@@ -53,16 +53,16 @@ const HistoryPage = (props) => {
                         {historyStore.currentDetailSession && <Collapse defaultActiveKey={['1']}>
                             <Panel header={<strong style={{ color: '#8c8c8c' }}>Detail info</strong>} key="1">
                                 <Descriptions size="small" column={2}>
-                                    <Descriptions.Item label="Session Id:">
+                                    <Descriptions.Item label="Session Id">
                                         <a>{historyStore.currentDetailSession.data.SessionId}</a>
                                     </Descriptions.Item>
-                                    <Descriptions.Item label="Session start:">{new Date(historyStore.currentDetailSession.data.Start).toLocaleString()}</Descriptions.Item>
-                                    <Descriptions.Item label="Session end:">{new Date(historyStore.currentDetailSession.data.End).toLocaleString()}</Descriptions.Item>
-                                    {historyStore.currentDetailSession.total && <Descriptions.Item label="Total:">{historyStore.currentDetailSession.total[0].FinalTotal}</Descriptions.Item>}
-                                    {historyStore.currentDetailSession.totalCash && <Descriptions.Item label="Total Cash:">{historyStore.currentDetailSession.totalCash[0].FinalTotal}</Descriptions.Item>}
-                                    {historyStore.currentDetailSession.totalCredit && <Descriptions.Item label="Total Credit:">{historyStore.currentDetailSession.totalCredit[0].FinalTotal}</Descriptions.Item>}
-                                    {historyStore.currentDetailSession.totalVnpay && <Descriptions.Item label="Total Vnpay:">{historyStore.currentDetailSession.totalVnpay[0].FinalTotal}</Descriptions.Item>}
-                                    <Descriptions.Item label="Current time:"><Clock format={commonStore.hourMinusFormat} ticking={true} /></Descriptions.Item>
+                                    <Descriptions.Item label="Session start">{new Date(historyStore.currentDetailSession.data.Start).toLocaleString()}</Descriptions.Item>
+                                    <Descriptions.Item label="Session end">{new Date(historyStore.currentDetailSession.data.End).toLocaleString()}</Descriptions.Item>
+                                    {historyStore.currentDetailSession.total && <Descriptions.Item label="Total"><Tag color="cyan">${historyStore.currentDetailSession.total[0].FinalTotal}</Tag></Descriptions.Item>}
+                                    {historyStore.currentDetailSession.totalCash && <Descriptions.Item label="Total Cash"><Tag color="yellow">${historyStore.currentDetailSession.totalCash[0].FinalTotal}</Tag></Descriptions.Item>}
+                                    {historyStore.currentDetailSession.totalCredit && <Descriptions.Item label="Total Credit"><Tag color="blue">${historyStore.currentDetailSession.totalCredit[0].FinalTotal}</Tag></Descriptions.Item>}
+                                    {historyStore.currentDetailSession.totalVnpay && <Descriptions.Item label="Total Vnpay"><Tag color="red">${historyStore.currentDetailSession.totalVnpay[0].FinalTotal}</Tag></Descriptions.Item>}
+                                    <Descriptions.Item label="Current time"><Clock format={commonStore.hourMinusFormat} ticking={true} /></Descriptions.Item>
                                 </Descriptions>
                             </Panel>
                         </Collapse>}
