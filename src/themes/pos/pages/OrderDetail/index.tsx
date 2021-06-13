@@ -46,10 +46,6 @@ const HistoryPage = (props) => {
                         onBack={() => window.history.back()}
                         extra={[
                             <Button key="3">Help?</Button>,
-                            <Button onClick={() => { history.push('/pos') }} key="2">Return to sale page</Button>,
-                            <Button key="5" type="primary" onClick={() => handleLogout()}>
-                                Log out
-                        </Button>,
                         ]}
                     >
                         {orderStore.order && <Collapse defaultActiveKey={['1']}>
