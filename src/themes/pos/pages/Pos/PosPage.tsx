@@ -214,7 +214,7 @@ const PosPage = () => {
         margin: "auto", padding: "10px",
       }}>
         <Row>
-          <Col className="printable" xs={{ span: 22, offset: 1 }} sm={{ span: 22, offset: 1 }} xl={{ span: 22, offset: 1 }} xxl={{ span: 10, offset: 0 }}><Cart productsInCart={cartStore.productsInCart} totalNum={cartStore.totalNum} totalAmount={cartStore.subtotalAmount} isCheckout={cartStore.isCheckout} />
+          <Col className="printable" xs={{ span: 22, offset: 1 }} sm={{ span: 22, offset: 1 }} xl={{ span: 22, offset: 1 }} xxl={{ span: 10, offset: 0 }}><Cart productsInCart={cartStore.productsInCart} totalNum={cartStore.totalNum} totalAmount={cartStore.subtotalAmount} isCheckout={cartStore.isCheckout}/>
             {/* {cartStore.discount !== 0 && <Alert message={"Order Discount: -" + cartStore.discount} type="error" />}
             {(cartStore.isCheckout) && <Alert message={"Tax(10%): " + (cartStore.totalAmount * 0.1).toFixed(2)} type="warning" />}
             {(cartStore.isCheckout) && <Alert message={"Total: " + (cartStore.totalAmount * 1.1).toFixed(2)} type="success" />} */}
@@ -404,7 +404,7 @@ const PosPage = () => {
               </TabPane>
               <TabPane tab="Credit card" key="2">
                 {/* <Alert message="This payment method is currently not supported. Please try again later!" type="warning" /> */}
-                <App></App>
+                {!cartStore.isConfirm && <App></App>}
               </TabPane>
               <TabPane tab="E-Wallet" key="3">
                 {/* <Alert message="This payment method is currently not supported. Please try again later!" type="warning" /> */}
@@ -417,7 +417,7 @@ const PosPage = () => {
                 {!cartStore.isConfirm && <Form.Item style={{ textAlign: 'center' }}>
                   <Alert message="This payment method is currently supported VND currency only!" type="warning" />
                   <br />
-                  <a id="vnpaylink" href={"https://retailvnpay.herokuapp.com/order/create_payment_url/" + String((Number((cartStore.totalAmount * 1.1).toFixed(2))*23100))} target="_blank">Go to payment page!</a>
+                  <a id="vnpaylink" href={"https://retailvnpay.herokuapp.com/order/create_payment_url/" + String((Number((cartStore.totalAmount * 1.1).toFixed(1))*23100))} target="_blank">Go to payment page!</a>
                   <br />
                   <br/>
                   <Alert message="Please remember to create payment before confirming the order!" type="warning" />

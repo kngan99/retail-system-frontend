@@ -88,6 +88,10 @@ const HomePage = () => {
                                         <Descriptions.Item label="Store's Email">
                                             {cartStore.salescleckStore.Email}
                                         </Descriptions.Item>}
+                                    {cartStore.isConfirm &&
+                                        <Descriptions.Item label="Order's Id">
+                                            {cartStore.orderId}
+                                        </Descriptions.Item>}
                                 </Descriptions>
                             </Panel>
                         </Collapse>

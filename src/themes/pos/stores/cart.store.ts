@@ -66,6 +66,7 @@ class CartStore {
     @observable salescleckStore: any = undefined;
     @observable isCheckout: boolean = false;
     @observable isConfirm: boolean = false;
+    @observable orderId: number = 0;
     @observable cargoRequest: CargoRequest = {
         ProductId: [],
         Quantity: [],
@@ -274,6 +275,7 @@ class CartStore {
         if (result) {
             message.success("Create order successfully!");
             console.log(result);
+            this.orderId = result.result.Id;
             this.isConfirm = true;
         }
     }
@@ -282,7 +284,7 @@ class CartStore {
         const result = await orderService.confirmStripeOrder(this.salescleckId, this.session, this.productsInCart, this.currentCustomer.Id, this.discount, stripe);
         if (result) {
             message.success("Create order successfully!");
-            console.log(result);
+            this.orderId = result.result.Id;
             this.isConfirm = true;
         }
     }
@@ -291,7 +293,7 @@ class CartStore {
         const result = await orderService.confirmVnpayOrder(this.salescleckId, this.session, this.productsInCart, this.currentCustomer.Id, this.discount, vnpay);
         if (result) {
             message.success("Create order successfully!");
-            console.log(result);
+            this.orderId = result.result.Id;
             this.isConfirm = true;
         }
     }
