@@ -4,6 +4,7 @@ import { List, message, Avatar, Spin } from 'antd';
 import { Button, ListGroup, Badge } from 'react-bootstrap';
 import InfiniteScroll from 'react-infinite-scroller';
 import http from "../../../../common/sevices";
+import moment from "moment";
 import './style.css';
 
 /*
@@ -19,17 +20,26 @@ const NotificationSummary = (props: ComponentProps) => {
    */
   const { className } = props;
 
+  
+
+
   /*
    * Setting show/hide Notification
    */
   const [showNotification, setShowNotification] = React.useState<boolean>(
     false
   );
+  const [num, setNum] = React.useState<number>(0);
   const [data, setData] = React.useState<any[]>([]);
   const [loading, setLoading] = React.useState<boolean>(false);
   const [hasMore, setHasMore] = React.useState<boolean>(true);
   const domain = "http://localhost:4000";
   const [url, setUrl] = React.useState<string>(domain + "/api/notifications/pagination?page=1&limit=10");
+  React.useEffect(() => {
+    http.get(domain + "/api/notifications/count").then((res) => {
+      setNum(res.data.count);
+    })
+  }, []);
 
   const handleInfiniteOnLoad = () => {
     setLoading(true);
@@ -57,7 +67,7 @@ const NotificationSummary = (props: ComponentProps) => {
           onClick={() => setShowNotification(!showNotification)}
         >
           <i className="ico ico-noti"></i>
-          <Badge variant="light">3</Badge>
+          <Badge variant="light">{num}</Badge>
         </Button>
         {showNotification && (
           <>
@@ -75,7 +85,7 @@ const NotificationSummary = (props: ComponentProps) => {
                       item.IsRead ?
                     <List.Item key={item.id} className="notification is-read">
                       <List.Item.Meta
-                            title={<a href="#">{item.Title}  <small>{item.CreatedAt}</small></a>}
+                            title={<a href="#">{item.Title}  <small>{moment(new Date(item.CreatedAt)).fromNow()}</small></a>}
                         description={item.Message}
                       />
                       {/* <div>{item.CreatedAt}</div> */}
@@ -83,7 +93,7 @@ const NotificationSummary = (props: ComponentProps) => {
                         :
                         <List.Item key={item.id} className="notification not-read">
                           <List.Item.Meta
-                            title={<a href="#">{item.Title}  <small>{item.CreatedAt}</small></a>}
+                            title={<a href="#">{item.Title}  <small>{moment(new Date(item.CreatedAt)).fromNow()}</small></a>}
                             description={item.Message}
                           />
                           {/* <div>{item.CreatedAt}</div> */}
