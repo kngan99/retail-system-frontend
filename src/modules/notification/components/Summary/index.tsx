@@ -4,6 +4,7 @@ import { List, message, Avatar, Spin } from 'antd';
 import { Button, ListGroup, Badge } from 'react-bootstrap';
 import InfiniteScroll from 'react-infinite-scroller';
 import http from "../../../../common/sevices";
+import './style.css';
 
 /*
  * Props of Component
@@ -28,7 +29,7 @@ const NotificationSummary = (props: ComponentProps) => {
   const [loading, setLoading] = React.useState<boolean>(false);
   const [hasMore, setHasMore] = React.useState<boolean>(true);
   const domain = "http://localhost:4000";
-  const [url, setUrl] = React.useState<string>(domain + "/api/notifications/pagination?page=1&limit=1");
+  const [url, setUrl] = React.useState<string>(domain + "/api/notifications/pagination?page=1&limit=10");
 
   const handleInfiniteOnLoad = () => {
     setLoading(true);
@@ -37,10 +38,11 @@ const NotificationSummary = (props: ComponentProps) => {
       setData(pastData.concat(res.data.items));
       if (res.data.links.next && res.data.links.next !== "") {
         setHasMore(true);
-        setUrl(res.data.links.next);
+        setUrl(domain + res.data.links.next);
       }
       else {
         setHasMore(false);
+        setUrl(domain + res.data.links.next);
       }
       setLoading(false);
     });
@@ -55,32 +57,37 @@ const NotificationSummary = (props: ComponentProps) => {
           onClick={() => setShowNotification(!showNotification)}
         >
           <i className="ico ico-noti"></i>
-          <Badge variant="light">3</Badge> 
+          <Badge variant="light">3</Badge>
         </Button>
         {showNotification && (
           <>
             <ListGroup as="ul" className="box-noti-list">
-                <ListGroup.Item
-                  as="li"
-                >
-                </ListGroup.Item>
+              <div className="demo-infinite-container">
               <InfiniteScroll
                 initialLoad={true}
-                pageStart={0}
                 loadMore={handleInfiniteOnLoad}
                 hasMore={!loading && hasMore}
                 useWindow={false}
               >
                 <List
                   dataSource={data}
-                  renderItem={item => (
-                    <List.Item key={item.id}>
+                    renderItem={item => (
+                      item.IsRead ?
+                    <List.Item key={item.id} className="notification is-read">
                       <List.Item.Meta
-                        title={<a href="https://ant.design">{item.Title}</a>}
+                            title={<a href="#">{item.Title}  <small>{item.CreatedAt}</small></a>}
                         description={item.Message}
                       />
-                      <div>{item.CreatedAt}</div>
-                    </List.Item>
+                      {/* <div>{item.CreatedAt}</div> */}
+                        </List.Item>
+                        :
+                        <List.Item key={item.id} className="notification not-read">
+                          <List.Item.Meta
+                            title={<a href="#">{item.Title}  <small>{item.CreatedAt}</small></a>}
+                            description={item.Message}
+                          />
+                          {/* <div>{item.CreatedAt}</div> */}
+                        </List.Item>
                   )}
                 >
                   {loading && hasMore && (
@@ -89,15 +96,14 @@ const NotificationSummary = (props: ComponentProps) => {
                     </div>
                   )}
                 </List>
-              </InfiniteScroll>
-                <ListGroup.Item className="buttons">
-                  <Button
-                  >
-                    <span>Load more</span>
-                    <i className="ico ico-next"></i>
-                  </Button>
-                </ListGroup.Item>
-              )
+                </InfiniteScroll>
+              </div>
+              {/* <ListGroup.Item className="buttons">
+                <Button className="mark-as-read-btn">
+                  <span>Mark all as read</span>
+                  <i className="ico ico-next"></i>
+                </Button>
+              </ListGroup.Item> */}
             </ListGroup>
             {/* <div className="demo-infinite-container"> */}
             {/* </div> */}
