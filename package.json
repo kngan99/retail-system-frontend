@@ -33,12 +33,14 @@
         "react-toastify": "^7.0.3",
         "react-webcam-barcode-scanner": "^0.0.2-rc2",
         "sass": "^1.32.8",
+        "serve": "^12.0.0",
         "typescript": "^4.2.3",
         "web-vitals": "^1.0.1",
         "yup": "^0.32.9"
     },
     "scripts": {
-        "start": "react-scripts start",
+        "start": "serve -s build",
+        "dev": "react-script start",
         "build": "react-scripts build",
         "test": "react-scripts test",
         "eject": "react-scripts eject"
