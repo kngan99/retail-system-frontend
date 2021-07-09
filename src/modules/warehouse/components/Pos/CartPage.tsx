@@ -20,6 +20,7 @@ import { CartStoreContext } from "../../../../themes/pos/stores/cart.store";
 import CartItem from "./CartItem";
 import { Link } from "react-router-dom";
 import { AuthenticationStoreContext } from "../../../authenticate/authentication.store";
+import { retrieveFromStorage } from '../../../../common/utils/storage.util';
 
 const CartPage = observer(
   ({ productsInCart, totalNum, totalAmount, isCheckout }) => {
@@ -35,7 +36,7 @@ const CartPage = observer(
       } else {
         await cartStore.setCargoRequest(
           warehouseId,
-          authStore.loggedUser.StoreId,
+          parseInt(retrieveFromStorage('storeId')!),
           'Create'
         );
         await cartStore.checkoutCart();
@@ -63,7 +64,7 @@ const CartPage = observer(
         return;
       }
       else{
-      cartStore.setCargoRequest(warehouseId, authStore.loggedUser.StoreId, 'Create');
+      cartStore.setCargoRequest(warehouseId, parseInt(retrieveFromStorage('storeId')!), 'Create');
       const result = await cartStore.sendCargoRequest();
       if (result) message.success('Create Cargo Request successfully!');
       return result;

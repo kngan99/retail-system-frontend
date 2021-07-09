@@ -22,6 +22,7 @@ import { Link, useParams } from "react-router-dom";
 import { AuthenticationStoreContext } from "../../../authenticate/authentication.store";
 import { Breadcrumb, Container, Dropdown, Table } from "react-bootstrap";
 import "antd/dist/antd.css";
+import { retrieveFromStorage } from "../../../../common/utils/storage.util";
 
 const OrderStatus = [
   {
@@ -75,7 +76,7 @@ const CartPageEdit = observer(
       } else {
         await cartStore.setCargoRequest(
           warehouseId,
-          authStore.loggedUser.StoreId,
+          parseInt(retrieveFromStorage('storeId')!),
           "Edit",
           status === undefined ? null : status,
           notes === undefined ? null : notes
@@ -106,7 +107,7 @@ const CartPageEdit = observer(
       } else {
         cartStore.setCargoRequest(
           warehouseId,
-          authStore.loggedUser.StoreId,
+          parseInt(retrieveFromStorage('storeId')!),
           "Edit"
         );
         const result = await cartStore.updateCargoRequest(orderID);

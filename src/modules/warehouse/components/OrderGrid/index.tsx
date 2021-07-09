@@ -202,10 +202,13 @@ const OrderGrid = (props: ComponentProps) => {
      */
     let tmpItems: any[] = [];
     setItems(orderStore.orders);
+    
+    console.log(orderStore.orders);
     items.map((item: any) => {
       tmpItems.push({ id: item.Id, checked: false });
       return items;
     });
+    console.log(orderStore.orders);
     setSelectedStatus(tmpItems);
     setTotalPage(Math.ceil(totals / +pageSizeOptions[0]));
   }, [items, orderStore.orders, totals]);
@@ -213,7 +216,7 @@ const OrderGrid = (props: ComponentProps) => {
   // @ts-ignore
   return (
     <>
-      {items && (
+      {orderStore.orders && (
         <Container
           fluid
           className={`block-orders block-table ${className ? className : ''}`}
@@ -264,7 +267,7 @@ const OrderGrid = (props: ComponentProps) => {
                   </tr>
                 </thead>
                 <tbody>
-                  {items.map((item: any, index: number) => (
+                  {orderStore.orders.map((item: any, index: number) => (
                     <tr key={item.Id}>
                       <td className="col-selected">
                         <Form.Check
@@ -287,7 +290,7 @@ const OrderGrid = (props: ComponentProps) => {
                           {item.Id}
                         </span>
                       </td>
-                      <td>{item.Warehouse.ShortName}</td>
+                      <td>{'item.Warehouse.ShortName'}</td>
                       <td>{item.CreatedByAccount.LName}</td>
                       <td>
                         {item.CreatedAt
