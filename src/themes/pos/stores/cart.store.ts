@@ -67,6 +67,7 @@ class CartStore {
     @observable salescleckStore: any = undefined;
     @observable isCheckout: boolean = false;
     @observable isConfirm: boolean = false;
+    @observable orderId: number = 0;
     @observable cargoRequest: CargoRequest = {
         ProductId: [],
         Quantity: [],
@@ -136,6 +137,24 @@ class CartStore {
             message.error(err.response);
         });
     }
+
+    @action.bound
+    addToCartByBarcode = async (barcode: string) => {
+        const id = await productService.getProductIdByBarcode(barcode);
+        const promise = productService.getOne(id);
+        promise.then((res: any) => {
+            if (res.data != "") {
+                this.addToCart(res.data);
+            }
+            else {
+                message.error("Invalid ID!");
+            }
+        });
+        promise.catch((err: any) => {
+            message.error(err.response);
+        });
+    }
+
     @action.bound
     updateQuantity = async (product: Product, quantity: number) => {
         await this.productsInCart.map(item => {
@@ -275,6 +294,25 @@ class CartStore {
         if (result) {
             message.success("Create order successfully!");
             console.log(result);
+            this.orderId = result.result.Id;
+            this.isConfirm = true;
+        }
+    }
+    @action.bound
+    confirmStripeOrder = async (stripe: string) => {
+        const result = await orderService.confirmStripeOrder(this.salescleckId, this.session, this.productsInCart, this.currentCustomer.Id, this.discount, stripe);
+        if (result) {
+            message.success("Create order successfully!");
+            this.orderId = result.result.Id;
+            this.isConfirm = true;
+        }
+    }
+    @action.bound
+    confirmVnpayOrder = async (vnpay: string) => {
+        const result = await orderService.confirmVnpayOrder(this.salescleckId, this.session, this.productsInCart, this.currentCustomer.Id, this.discount, vnpay);
+        if (result) {
+            message.success("Create order successfully!");
+            this.orderId = result.result.Id;
             this.isConfirm = true;
         }
     }

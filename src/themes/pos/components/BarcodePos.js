@@ -21,9 +21,9 @@ const BarCodePos = (pros) => {
     setVisible(false);
   };
 
-  const addProduct = (id) => {
+  const addProduct = (barcode) => {
     setTimeout(function () {
-      cartStore.addToCartById(Number(id));
+      cartStore.addToCartByBarcode((barcode));
     }, 500);
   }
 
@@ -49,9 +49,9 @@ const BarCodePos = (pros) => {
             if (result && result !== "Not Found" && flag) {
                 setFlag(false);
                 setData(result.text);
+                setTimeout(function () {
                 addProduct(result.text);
                 message.info(`Barcode ${result.text}`);
-                setTimeout(function () {
                   result.text = "Not Found";
                 }, 2000);
                 //setVisible(false);

@@ -37,6 +37,7 @@ class HistoryStore {
         this.totalCount = 0;
         const data = await cartService.getSessionDetail(id);
         const ordersdata = await orderService.getPastSessions(this.pageNum, this.pageSize, id);
+        console.log(data);
         this.currentDetailSession = data;
         this.orders = ordersdata.items;
         this.totalCount = ordersdata.meta.totalItems;

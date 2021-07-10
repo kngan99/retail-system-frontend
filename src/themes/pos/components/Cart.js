@@ -50,7 +50,7 @@ const Cart = observer(({ productsInCart, totalNum, totalAmount, isCheckout }) =>
                         <th>Quantity</th>
                         <th>Price</th>
                         <th>Discount</th>
-                        <th class="text-right pr-5">Total</th>
+                        <th>Total</th>
                         <th>Action</th>
                     </tr>
                 </thead>

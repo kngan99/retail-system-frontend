@@ -86,7 +86,7 @@ const AdminMenu = (props: ComponentProps) => {
       setIsDisplayIconArray([true,true,true, true, true]);
     }
     else if(authenticationStore.loggedUser && retrieveFromStorage('role')==='StoresManager'){
-      setIsDisplayIconArray([false,true,false, true, false, false, true, true, true ]);
+      setIsDisplayIconArray([false,true,true, true, false, false, true, true, true ]);
     }
     else{
       setIsDisplayIconArray([false,false,false, false, false, true, true, true, true ]);

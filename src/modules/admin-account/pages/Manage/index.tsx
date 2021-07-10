@@ -57,6 +57,7 @@ const ManageAccountAdminPage = () => {
   });
 
   const handleCreate = () => {
+    setMode("create");
     setShowPopup(true);
   };
 

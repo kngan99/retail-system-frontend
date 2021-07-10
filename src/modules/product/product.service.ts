@@ -9,9 +9,14 @@ class ProductService {
     await console.log("is before sending");
     await console.log(id);
     const result = await http.get(`${this.productPrefix}/${id}`, {
-
     });
     return result.data;
+  }
+
+  public async getProductIdByBarcode(barcode: string) {
+    const result = await http.get(`${this.productPrefix}/getByBarcode/${barcode}`, {
+    });
+    return result.data.Id;
   }
 
   public async getProductForecast(id: number) {
