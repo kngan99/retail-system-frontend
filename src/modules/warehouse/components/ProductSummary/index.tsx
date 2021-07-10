@@ -33,7 +33,7 @@ const ProductSummary = (props: ComponentProps) => {
                 return (
                   <tr>
                     <td className="pr-0">
-                    <Avatar shape="square" size={64} src={"http://127.0.0.1:4000/api/products/img/thumbnails-" + String(item.PhotoURL ? item.PhotoURL : "default.png")} />
+                    <Avatar shape="square" size={64} src={"https://warehouse-retail.herokuapp.com/api/products/img/thumbnails-" + String(item.PhotoURL ? item.PhotoURL : "default.png")} />
                     </td>
                     <td>
                         {item.ProductName}

@@ -279,7 +279,7 @@ const PreCartPageEdit = (props: ComponentProps) => {
                                           size={48}
                                           shape="square"
                                           src={
-                                            "http://127.0.0.1:4000/api/products/img/thumbnails-" +
+                                            "https://warehouse-retail.herokuapp.com/api/products/img/thumbnails-" +
                                             String(
                                               product.PhotoURL
                                                 ? product.PhotoURL

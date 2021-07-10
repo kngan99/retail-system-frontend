@@ -21,7 +21,7 @@ const UploadAvatarDynamic = (record) => {
     const onChange = async ({ file: newFile, fileList: newFileList }) => {
         setFileList(newFileList);
         if (newFile.status === 'done') {
-            setImageUrl("http://127.0.0.1:4000/api/products/img/" + String(newFile.response.filename));
+            setImageUrl("https://warehouse-retail.herokuapp.com/api/products/img/" + String(newFile.response.filename));
         }
     };
 
@@ -55,7 +55,7 @@ const UploadAvatarDynamic = (record) => {
     }
 
     return (<ImgCrop beforeCrop={beforeUpload} rotate>
-        <Upload action={"http://127.0.0.1:4000/" + "api/products/avatar/" + record.record.Id}
+        <Upload action={"https://warehouse-retail.herokuapp.com/" + "api/products/avatar/" + record.record.Id}
         headers={{'Authorization':'Bearer ' + localStorage.getItem('token')}}
             fileList={fileList}
             onChange={onChange}
@@ -65,7 +65,7 @@ const UploadAvatarDynamic = (record) => {
                     style={
                         { padding: 0 }
                     }
-                    src={"http://127.0.0.1:4000/api/products/img/" + String(imageUrl)}
+                    src={"https://warehouse-retail.herokuapp.com/api/products/img/" + String(imageUrl)}
                 />)} </Upload > </ImgCrop>
     );
 };
