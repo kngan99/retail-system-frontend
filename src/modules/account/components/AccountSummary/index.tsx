@@ -6,6 +6,7 @@ import { AuthenticationStoreContext } from '../../../authenticate/authentication
 import { I18N } from '../../../../i18n.enum';
 import { DEFAULT_ROUTERS } from '../../router.enum';
 import { normalizeName } from '../../../../common/utils/normalize.ulti';
+import { retrieveFromSession, retrieveFromStorage } from '../../../../common/utils/storage.util';
 
 /*
  * Props of Component
@@ -36,12 +37,8 @@ const AccountSummary = (props: ComponentProps) => {
           }}
         >
           <>
-              {normalizeName(
-                authStore.loggedUser?.firstName ?? '',
-                authStore.loggedUser?.lastName ?? '',
-                TOPMENU_WELCOME
-              )}
-            </>
+              Welcome {retrieveFromStorage('fullname')} the {retrieveFromStorage('role')}
+          </>
         </span>
         <div
           className="info-avatar"

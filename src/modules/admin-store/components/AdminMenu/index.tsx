@@ -11,6 +11,7 @@ import { adminMenu } from '../../../theme/theme.constrants';
 import { CommonStoreContext } from '../../../../common/common.store';
 import { AuthenticationStoreContext } from '../../../authenticate/authentication.store';
 import { DEFAULT_ROUTERS } from '../../../account/router.enum';
+import { retrieveFromStorage } from '../../../../common/utils/storage.util';
 
 /*
  * Props of Component
@@ -84,8 +85,11 @@ const AdminMenu = (props: ComponentProps) => {
     if(authenticationStore.loggedUser && authenticationStore.loggedUser.Type==='StoreManager'){
       setIsDisplayIconArray([true,true,true, true, true]);
     }
+    else if(authenticationStore.loggedUser && retrieveFromStorage('role')==='StoresManager'){
+      setIsDisplayIconArray([false,true,false, true, false, false, true, true, true ]);
+    }
     else{
-    setIsDisplayIconArray([false,false,true, true, true]);
+      setIsDisplayIconArray([false,false,false, false, false, true, true, true, true ]);
     }
   },[]);
 

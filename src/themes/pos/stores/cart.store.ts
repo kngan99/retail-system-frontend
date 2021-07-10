@@ -8,6 +8,7 @@ import { message } from 'antd';
 // import { Product } from '../../../modules/product/product.dto';
 import { removeUnusedProps } from '../../../common/utils/apis.util';
 import { OrderListDto } from '../services/list.dto';
+import { retrieveFromStorage } from '../../../common/utils/storage.util';
 
 interface CartProduct {
     Id: number;
@@ -46,7 +47,7 @@ interface Session {
 interface CargoRequest {
     ProductId : number[];
     Quantity: number[];
-    WarehouseId: number;
+    warehouseId: number;
     StoreId: number;
     Status?: string | null;
     Notes?: string | null;
@@ -69,7 +70,7 @@ class CartStore {
     @observable cargoRequest: CargoRequest = {
         ProductId: [],
         Quantity: [],
-        WarehouseId: -1,
+        warehouseId: -1,
         StoreId: -1,
     };
     @computed get totalNum() {
@@ -294,7 +295,7 @@ class CartStore {
             this.cargoRequest = {
                 ProductId: prodId,
                 Quantity: quan,
-                WarehouseId: warehouseId,
+                warehouseId: warehouseId,
                 StoreId: storeId,
             }
         }
@@ -302,7 +303,7 @@ class CartStore {
             this.cargoRequest = {
                 ProductId: prodId,
                 Quantity: quan,
-                WarehouseId: warehouseId,
+                warehouseId: warehouseId,
                 StoreId: storeId,
                 Status: status,
                 Notes: notes,
@@ -315,7 +316,7 @@ class CartStore {
         this.cargoRequest = {
             ProductId: [],
             Quantity: [],
-            WarehouseId: -1,
+            warehouseId: -1,
             StoreId: -1,
             Status: null,
             Notes: null,
@@ -324,8 +325,9 @@ class CartStore {
 
     @action.bound
     sendCargoRequest = async () => {
-        console.log(this.cargoRequest);
-        const result = await cartService.createCargoRequest(this.cargoRequest);
+        const addedUserCargoRequest = {...this.cargoRequest, UserId: retrieveFromStorage('loggedId')};
+        console.log(addedUserCargoRequest);
+        const result = await cartService.createCargoRequest(addedUserCargoRequest);
         return result;
     }
 

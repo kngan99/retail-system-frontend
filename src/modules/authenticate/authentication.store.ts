@@ -51,7 +51,7 @@ export default class AuthenticationStore {
       else if (data.Type === "StoresManager") {
         this._redirectAfterLogin(history, "/product/manage");
       }
-      else if (data.Type == "StoreWarehouseManager") {
+      else if (data.Type === "StoreWarehouseManager") {
         this._redirectAfterLogin(history, "/warehouse/new-request-goods-note");
       }
       else {
@@ -85,6 +85,7 @@ export default class AuthenticationStore {
 
   private _setCurrentInfo(data: any) {
     this.loggedUser = data;
+    localStorage.setItem('fullname', data.FName + ' ' + data.LName);
     localStorage.setItem('role', data.Type);
     saveToStorage('token', data.token);
   }

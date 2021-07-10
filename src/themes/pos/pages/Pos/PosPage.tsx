@@ -15,6 +15,7 @@ import Clock from 'react-live-clock';
 import { CommonStoreContext } from '../../../../common/common.store';
 import CreateCustomerModal from "../../components/CreateCustomerModal";
 import { Table as BootstrapTable } from 'react-bootstrap';
+import  BarCodePos  from '../../components/BarcodePos';
 
 interface Product {
   Id: number;
@@ -223,7 +224,9 @@ const PosPage = () => {
               <Col xs={{ span: 5 }} sm={{ span: 5 }}>
                 <Input placeholder="Enter product Id to add to cart immediately" onPressEnter={async (e) => await onPressEnterAdd(e)} />
               </Col>
-              <Col xs={{ span: 3 }} sm={{ span: 3 }}></Col>
+              <Col xs={{ span: 3 }} sm={{ span: 3 }}>
+                <BarCodePos />
+              </Col>
               <Col xs={{ span: 4 }} sm={{ span: 4 }}>
                 <Search
                   placeholder="input id or name"
