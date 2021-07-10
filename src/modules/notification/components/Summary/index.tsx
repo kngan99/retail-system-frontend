@@ -33,7 +33,7 @@ const NotificationSummary = (props: ComponentProps) => {
   const [data, setData] = React.useState<any[]>([]);
   const [loading, setLoading] = React.useState<boolean>(false);
   const [hasMore, setHasMore] = React.useState<boolean>(true);
-  const domain = "http://localhost:4000";
+  const domain = "https://warehouse-retail.herokuapp.com";
   const [url, setUrl] = React.useState<string>(domain + "/api/notifications/pagination?page=1&limit=10");
   React.useEffect(() => {
     http.get(domain + "/api/notifications/count").then((res) => {

@@ -191,7 +191,7 @@ const PosPage = () => {
       "Content-Type": "application/json"
     };
 
-    return fetch(`http://localhost:4000/api/orders/payment`, {
+    return fetch(`https://warehouse-retail.herokuapp.com/api/orders/payment`, {
       method: "POST",
       headers,
       body: JSON.stringify(body)

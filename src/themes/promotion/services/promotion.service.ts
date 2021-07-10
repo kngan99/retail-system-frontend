@@ -22,7 +22,7 @@ interface CartProduct {
 }
 
 class PromotionService {
-    orderdiscountPrefix: string = "http://localhost:4000/api/orderdiscounts";
+    orderdiscountPrefix: string = "https://warehouse-retail.herokuapp.com/api/orderdiscounts";
 
     // public async confirmOrder(SalescleckId: number, SessionId: string, cartproducts: CartProduct[], CustomerId: number, Discount: number) {
     //     const result = await http.post(`${this.orderPrefix}`, {

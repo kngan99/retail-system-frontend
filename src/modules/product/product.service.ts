@@ -3,7 +3,7 @@ import { Product } from "./product.dto";
 import { message } from 'antd';
 
 class ProductService {
-  productPrefix: string = "http://localhost:4000/api/products";
+  productPrefix: string = "https://warehouse-retail.herokuapp.com/api/products";
 
   public async getOneProduct(id: number) {
     await console.log("is before sending");
