@@ -49,8 +49,8 @@ const BarCodePos = (pros) => {
             if (result && result !== "Not Found" && flag) {
                 setFlag(false);
                 setData(result.text);
-                setTimeout(function () {
                 addProduct(result.text);
+                setTimeout(function () {
                 message.info(`Barcode ${result.text}`);
                   result.text = "Not Found";
                 }, 2000);
