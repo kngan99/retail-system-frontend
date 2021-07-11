@@ -59,7 +59,7 @@ class CartStore {
     @observable discount: number = 0;
     @observable loading: boolean = true;
     @observable customers: any[] = [];
-    @observable currentCustomer: any = { Id: 0, Phone: "", Address: "", City: "", Country: "" };
+    @observable currentCustomer: any = { Id: 0, Phone: "", Address: "", City: "", Country: "", ContactName:"" };
     @observable session: string = '';
     @observable sessionStart: string = '';
     @observable salescleckId: number = 0;
@@ -99,6 +99,12 @@ class CartStore {
     @observable totalCount: number = 0;
     @observable selectedOrder: any = null;
     @observable editingAdminOrder: any = null;
+
+    @action.bound
+    resetCurrentCustomer = async () => {
+        this.currentCustomer = { Id: 0, Phone: "", Address: "", City: "", Country: "", ContactName:"" };
+        this.customers = [];
+    }
 
     @action.bound
     addToCart = async (product: Product) => {
@@ -204,6 +210,7 @@ class CartStore {
         this.loading = true;
         this.emptyCart();
         this.resetPromotion();
+        this.resetCurrentCustomer();
         this.isConfirm = false;
         this.isCheckout = false;
         this.loading = false;

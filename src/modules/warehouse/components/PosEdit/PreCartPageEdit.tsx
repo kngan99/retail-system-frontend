@@ -217,7 +217,8 @@ const PreCartPageEdit = (props: ComponentProps) => {
                       onSearch={(value: any) => search(value)}
                       enterButton
                       autoFocus={true}
-                      style={{textAlign: 'right', marginRight: '5px'}}
+                      style={{ textAlign: 'right', marginRight: '5px' }}
+                      defaultValue={productStore.searchKey}
                     />
                   </Col>
                 </Row>

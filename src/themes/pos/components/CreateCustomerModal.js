@@ -187,6 +187,9 @@ const CreateCustomerModal = (pros) => {
         await cartStore.createCustomer(values);
         setVisible(false);
     };
+    const unsetCustomer = async () => {
+        await cartStore.resetCurrentCustomer();
+    }
 
     return (
         <div>
@@ -199,6 +202,16 @@ const CreateCustomerModal = (pros) => {
                 }}
             >
                 Create New Customer
+      </Button>&nbsp;
+            <Button
+                type="primary"
+                style={{ background: "#fab91a", border: "none", "border-radius": "10px" }}
+                className="p-2 h-100"
+                onClick={() => {
+                    unsetCustomer();
+                }}
+            >
+                Unset customer
       </Button>
             <CollectionCreateForm
                 visible={visible}

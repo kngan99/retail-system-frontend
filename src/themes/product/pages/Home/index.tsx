@@ -307,6 +307,7 @@ const HomePage = () => {
                 onSearch={(value: any) => search(value)}
                 enterButton
                 autoFocus={true}
+                defaultValue={productStore.searchKey}
               />
             </Row>
             <br />
@@ -337,6 +338,7 @@ const HomePage = () => {
                 onSearch={(value: any) => search(value)}
                 enterButton
                 autoFocus={true}
+                defaultValue={productStore.searchKey}
               />
             </Row>
             <br />
@@ -402,6 +404,7 @@ const HomePage = () => {
                 onSearch={(value: any) => searchNotAdded(value)}
                 enterButton
                 autoFocus={true}
+                defaultValue={productStore.searchKey}
               />
             </Row>
             <br />

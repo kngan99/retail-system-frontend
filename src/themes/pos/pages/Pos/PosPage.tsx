@@ -144,8 +144,8 @@ const PosPage = () => {
     width: '50%',
     border: "none",
   };
-  const onChangePay = async (e: any) => {
-    setReturnCash(Number(e.target.value) - Number(cartStore.totalAmount));
+  const onChangePay = async (e: any, total: number) => {
+    setReturnCash(Number(e.target.value) - total);
     console.log('Change:', e.target.value);
   };
   const onPressEnterAdd = async (e: any) => {
@@ -173,14 +173,14 @@ const PosPage = () => {
   const { Search } = Input;
 
   const onSearch = (val: string) => {
-    cartStore.getCustomers(val);
+      cartStore.getCustomers(val);
   }
 
 
 
   const onCustomerChange = (value: number) => {
     cartStore.changeCustomer(value);
-  };
+  }
 
   const makePayment = token => {
     const body = {
@@ -258,15 +258,16 @@ const PosPage = () => {
               <Col xs={{ span: 10 }} sm={{ span: 10 }}>
                 <Input placeholder="Enter product Id to add to cart immediately" onPressEnter={async (e) => await onPressEnterAdd(e)} />
               </Col>
-              <Col xs={{ span: 3 }} sm={{ span: 3 }}>
-                <BarCodePos />
-              </Col>
               <Col xs={{ span: 4 }} sm={{ span: 4 }}>
+                &nbsp;&nbsp;<BarCodePos />
+              </Col>
+              <Col xs={{ span: 10 }} sm={{ span: 10 }}>
                 <Search
                   placeholder="input id or name"
                   onSearch={(value: any) => search(value)}
                   enterButton
                   autoFocus={true}
+                  defaultValue={productStore.searchKey}
                 />
               </Col>
             </Row>
@@ -365,7 +366,7 @@ const PosPage = () => {
                   optionFilterProp="children"
                   onSearch={onSearch}
                   onChange={onCustomerChange}
-                  defaultValue={cartStore.currentCustomer.ContactName}
+                  value={cartStore.currentCustomer.ContactName}
                 >
                   {cartStore.customers && cartStore.customers.map(function (item) {
                     return (<Option value={item['Id']}>{item['ContactName']}</Option>)
@@ -394,7 +395,7 @@ const PosPage = () => {
                     <Input disabled={cartStore.isCheckout} value={(cartStore.totalAmount * 1.1).toFixed(2)} />
                   </Form.Item>
                   <Form.Item label="Pay">
-                    <Input onChange={async (e) => await onChangePay(e)} />
+                    <Input onChange={async (e) => await onChangePay(e, Number((cartStore.totalAmount * 1.1).toFixed(2)))} />
                   </Form.Item>
                   <Form.Item label="Return">
                     <Input disabled={cartStore.isCheckout} value={returnCash} />

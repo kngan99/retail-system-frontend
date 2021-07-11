@@ -1,6 +1,7 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
 import CartItem from './CartItem';
+import { ProductStoreContext } from "../../../modules/product/product.store"
 import { CartStoreContext } from "../stores/cart.store";
 import { makeAutoObservable, autorun, observable } from "mobx"
 import { Table, Breadcrumb } from 'react-bootstrap';
@@ -10,6 +11,7 @@ import { PlusOutlined, MinusOutlined, DeleteOutlined, CheckOutlined, ArrowLeftOu
 
 const Cart = observer(({ productsInCart, totalNum, totalAmount, isCheckout }) => {
     const cartStore = React.useContext(CartStoreContext);
+    const productStore = React.useContext(ProductStoreContext);
     const handleEmptyClick = async () => {
         await cartStore.emptyCart();
     }
@@ -26,6 +28,7 @@ const Cart = observer(({ productsInCart, totalNum, totalAmount, isCheckout }) =>
     }
     const handleNewOrderClick = async () => {
         await cartStore.newOrder();
+        await productStore.startSearch();
     }
     const handleConfirmPrintClick = async () => {
         // var content = document.getElementById("divcontents");
