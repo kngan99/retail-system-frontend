@@ -57,6 +57,8 @@ function SetControlBehaviors() {
     $('#ConfirmButton').click(function () {
         _db = [];
         let dbArray = $('#DBTextBox').val().split('\n');
+        alert("Hello! I am an alert box!!");
+        alert(dbArray);
         console.log('Db Array: ');
         console.log(dbArray);
         _db = dbArray;

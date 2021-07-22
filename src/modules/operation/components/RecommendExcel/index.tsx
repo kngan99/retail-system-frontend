@@ -147,7 +147,7 @@ const dataSourceOrderApriori = cartStore.transactions.map((transaction, index) =
         ></script>
         <script
           type="text/javascript"
-          src="https://cdn.jsdelivr.net/gh/kngan99/retail-system-frontend/src/modules/operation/components/AprioriJS/Apriori.js"
+          src="https://cdn.jsdelivr.net/gh/kngan99/retail-system-frontend/src/modules/operation/components/AprioriJS/Apriori2.js"
         ></script>
       </Helmet>
       <div id="AprioriContainer">
