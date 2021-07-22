@@ -53,12 +53,13 @@ function SetControlBehaviors() {
         $('#DBTextBox').val(_db.join('\n'));
     });
 
-    // Set reset-db-button behavior
-    $('#ResetDBButton').click(function () {
+    // Set confirm-db-button behavior
+    $('#ConfirmButton').click(function () {
         _db = [];
-        _testDB.forEach(i => _db.push(i));
-
-        $('#DBTextBox').val(_db.join('\n'));
+        let dbArray = $('#DBTextBox').val().split('\n');
+        console.log('Db Array: ');
+        console.log(dbArray);
+        _db = dbArray;
     });
 
     // Set apriori-button behavior
