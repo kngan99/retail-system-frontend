@@ -53,18 +53,20 @@ function SetControlBehaviors() {
         $('#DBTextBox').val(_db.join('\n'));
     });
 
-    // Set reset-db-button behavior
-    $('#ResetDBButton').click(function () {
+    // Set confirm-db-button behavior
+    $('#ConfirmButton').click(function () {
         _db = [];
-        _testDB.forEach(i => _db.push(i));
-
-        $('#DBTextBox').val(_db.join('\n'));
+        let dbArray = $('#DBTextBox').val().split('\n');
+        console.log('Db Array: ');
+        console.log(dbArray);
+        _db = dbArray;
     });
 
     // Set apriori-button behavior
     $('#AprioriButton').click(function () {
         // Create ItemsetCollection for current db
         let db = new ItemsetCollection();
+        console.log(_db);
         for (var i in _db) {
             let items = _db[i].split(', ');
             db.push(Itemset.from(items));
