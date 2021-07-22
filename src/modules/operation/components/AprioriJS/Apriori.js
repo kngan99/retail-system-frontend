@@ -57,8 +57,6 @@ function SetControlBehaviors() {
     $('#ConfirmButton').click(function () {
         _db = [];
         let dbArray = $('#DBTextBox').val().split('\n');
-        alert("Hello! I am an alert box!!");
-        alert(dbArray);
         console.log('Db Array: ');
         console.log(dbArray);
         _db = dbArray;
@@ -68,6 +66,8 @@ function SetControlBehaviors() {
     $('#AprioriButton').click(function () {
         // Create ItemsetCollection for current db
         let db = new ItemsetCollection();
+        alert("Hello! I am an alert box!!");
+        alert(dbArray);
         console.log(_db);
         for (var i in _db) {
             let items = _db[i].split(', ');
