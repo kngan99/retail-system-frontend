@@ -14,6 +14,7 @@ import { Spin } from 'antd';
 import WarehouseLayout from "./themes/warehouse/layout";
 import StoreLayout from "./themes/store/layout";
 import OperationLayout from "./themes/operation/layout";
+import { WaveLoading } from 'react-loadingg';
 
 const Zoom = cssTransition({
   enter: 'zoomIn',
@@ -26,7 +27,7 @@ const Zoom = cssTransition({
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
-      <Suspense fallback={<div><Spin /></div>}>
+      <Suspense fallback={<div><WaveLoading style={{color: 'white'}}/></div>}>
         <Switch>
           <Route
             path="/account"

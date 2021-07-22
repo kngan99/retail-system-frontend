@@ -200,6 +200,7 @@ const dataSourceOrderApriori = cartStore.transactions.map((transaction, index) =
               <Button
                 id="GetTransactionBtn"
                 onClick={() => handleGetTransactions()}
+                loading={cartStore.loading2}
               >
                 Get Transactions
               </Button>
@@ -208,7 +209,7 @@ const dataSourceOrderApriori = cartStore.transactions.map((transaction, index) =
                 Generate DB
               </button>
               &nbsp;&nbsp;
-              <button id="ConfirmButton" style={{ width: "100px" }}>
+              <button id="ConfirmButton" style={{ width: "100px", padding: "4px", borderRadius: "7px"}}>
                 Confirm
               </button>
               &nbsp;&nbsp;
@@ -273,7 +274,7 @@ const dataSourceOrderApriori = cartStore.transactions.map((transaction, index) =
                 onChange={(e) => setConf(parseInt(e.target.value))}
               />
               &nbsp;&nbsp;
-              <button id="AprioriButton" style={{ width: "100px" }}>
+              <button id="AprioriButton" style={{ width: "100px", padding: "4px", borderRadius: "7px"}}>
                 Apriori
               </button>
             </td>

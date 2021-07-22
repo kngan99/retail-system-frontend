@@ -211,7 +211,8 @@ const PreCartPage = () => {
                       onSearch={(value: any) => search(value)}
                       enterButton
                       autoFocus={true}
-                      style={{textAlign: 'right', marginRight: '5px'}}
+                      style={{ textAlign: 'right', marginRight: '5px' }}
+                      defaultValue={productStore.searchKey}
                     />
                   </Col>
                 </Row>
@@ -273,7 +274,7 @@ const PreCartPage = () => {
                                           size={48}
                                           shape="square"
                                           src={
-                                            "http://localhost:4000/api/products/img/thumbnails-" +
+                                            "https://warehouse-retail.herokuapp.com/api/products/img/thumbnails-" +
                                             String(
                                               product.PhotoURL
                                                 ? product.PhotoURL

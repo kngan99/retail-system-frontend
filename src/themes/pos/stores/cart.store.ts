@@ -65,8 +65,9 @@ class CartStore {
     @observable coupon: number = 0;
     @observable discount: number = 0;
     @observable loading: boolean = true;
+    @observable loading2: boolean = false;
     @observable customers: any[] = [];
-    @observable currentCustomer: any = { Id: 0, Phone: "", Address: "", City: "", Country: "" };
+    @observable currentCustomer: any = { Id: 0, Phone: "", Address: "", City: "", Country: "", ContactName:"" };
     @observable session: string = '';
     @observable sessionStart: string = '';
     @observable salescleckId: number = 0;
@@ -154,6 +155,7 @@ class CartStore {
 
     @action.bound
     getTransactions = async () => {
+        this.loading2 = true;
         const res = await orderService.getTransactions(this.productsAprioriId);
         this.transactions = res[0];
         for (let i = 0; i < res[1]; i++){
@@ -161,6 +163,13 @@ class CartStore {
         }
         this.transactionStr = this.transactionArray.join('\n');
         this.noTransactions = res[1];
+        this.loading2 = false;
+    }
+
+    @action.bound
+    resetCurrentCustomer = async () => {
+        this.currentCustomer = { Id: 0, Phone: "", Address: "", City: "", Country: "", ContactName:"" };
+        this.customers = [];
     }
 
     @action.bound
@@ -267,6 +276,7 @@ class CartStore {
         this.loading = true;
         this.emptyCart();
         this.resetPromotion();
+        this.resetCurrentCustomer();
         this.isConfirm = false;
         this.isCheckout = false;
         this.loading = false;
