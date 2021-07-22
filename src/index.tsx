@@ -13,6 +13,7 @@ import { cssTransition, ToastContainer } from "react-toastify";
 import { Spin } from 'antd';
 import WarehouseLayout from "./themes/warehouse/layout";
 import StoreLayout from "./themes/store/layout";
+import OperationLayout from "./themes/operation/layout";
 
 const Zoom = cssTransition({
   enter: 'zoomIn',
@@ -50,6 +51,10 @@ ReactDOM.render(
           <Route
             path="/store"
             render={(props: any) => <StoreLayout {...props} exact />}
+          />
+          <Route
+            path="/operation"
+            render={(props: any) => <OperationLayout {...props} exact />}
           />
           <Route path="/" render={(props: any) => <App />} />
         </Switch>

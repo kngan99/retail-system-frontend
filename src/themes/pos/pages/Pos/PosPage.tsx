@@ -191,7 +191,7 @@ const PosPage = () => {
       "Content-Type": "application/json"
     };
 
-    return fetch(`https://warehouse-retail.herokuapp.com/api/orders/payment`, {
+    return fetch(`http://localhost:4000/api/orders/payment`, {
       method: "POST",
       headers,
       body: JSON.stringify(body)
@@ -301,7 +301,7 @@ const PosPage = () => {
 
                           <Skeleton loading={false} avatar active>
                             <Meta
-                              avatar={<Avatar size={48} shape="square" src={"https://warehouse-retail.herokuapp.com/api/products/img/thumbnails-" + String(product.PhotoURL ? product.PhotoURL : "default.png")} />
+                              avatar={<Avatar size={48} shape="square" src={"http://localhost:4000/api/products/img/thumbnails-" + String(product.PhotoURL ? product.PhotoURL : "default.png")} />
                               }
                               title={product.ProductName}
                               description={!product.Discontinued ? <Tag color="green">In stock</Tag> : <Tag color="red">Out of stock</Tag>}

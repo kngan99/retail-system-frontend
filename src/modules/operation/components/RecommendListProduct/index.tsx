@@ -1,18 +1,20 @@
 import { observer } from "mobx-react";
 import React from "react";
-import { ProductStoreContext } from "../../../../modules/product/product.store";
-import { AddProductStoreContext } from "../../../../modules/product/addproduct.store";
+import { ProductStoreContext } from "../../../product/product.store";
+import { AddProductStoreContext } from "../../../product/addproduct.store";
 import { Input, Row, Modal, Col, Button, Pagination, Table, Tag, Radio, Space, Tabs, Card, Skeleton, Avatar, List, Spin } from 'antd';
 import { ExclamationCircleOutlined, AudioOutlined, EditOutlined, EllipsisOutlined, SettingOutlined, DeleteOutlined, PlusCircleOutlined } from "@ant-design/icons";
 import { ColumnsType } from "antd/es/table";
 import "antd/dist/antd.css";
-import UpdateProductModal from "../../../../modules/product/components/ManageProduct/UpdateProductModal";
-import UpdateProductModalAdmin from "../../../../modules/product/components/ManageProduct/UpdateProductModalAdmin";
-import CreateProductModal from "../../../../modules/product/components/ManageProduct/CreateProductModal";
+import UpdateProductModal from "../../../product/components/ManageProduct/UpdateProductModal";
+import UpdateProductModalAdmin from "../../../product/components/ManageProduct/UpdateProductModalAdmin";
+import CreateProductModal from "../../../product/components/ManageProduct/CreateProductModal";
 import { makeAutoObservable, autorun, observable } from "mobx"
-import App from "../../../../modules/product/components/ManageProduct/SalesAnalysis";
-import BarCode from "../../../../modules/product/components/ManageProduct/Barcode";
-import { AuthenticationStoreContext } from "../../../../modules/authenticate/authentication.store";
+import App from "../../../product/components/ManageProduct/SalesAnalysis";
+import BarCode from "../../../product/components/ManageProduct/Barcode";
+import { AuthenticationStoreContext } from "../../../authenticate/authentication.store";
+import {ShoppingCartOutlined } from "@ant-design/icons";
+import { CartStoreContext } from "../../../../themes/pos/stores/cart.store";
 
 interface Product {
   Id: number;
@@ -29,13 +31,14 @@ const { confirm } = Modal;
 
 
 
-const HomePage = () => {
+const RecommendListProduct = () => {
   const productStore = React.useContext(ProductStoreContext);
   const addProductStore = React.useContext(AddProductStoreContext);
   const authenticationStore = React.useContext(AuthenticationStoreContext);
+  const cartStore = React.useContext(CartStoreContext);
   React.useEffect(() => {
     productStore.startSearch();
-    if (localStorage.getItem('role') != 'StoresManager') {
+    if (localStorage.getItem('role') != 'OperationStaff') {
       addProductStore.startSearch();
     }
   }, []);
@@ -138,10 +141,15 @@ const HomePage = () => {
       key: "action",
       render: (_, record) => (
         <Space size="middle">
-          <UpdateProductModalAdmin record={record} />
-          <DeleteOutlined onClick={() => showPromiseConfirm(record)} />
-          <App record={record} />
-          <BarCode record={record} />
+          <Button
+            style={{}}
+            icon={<PlusCircleOutlined />}
+            className=""
+            type="primary"
+            onClick={() => handleClick(record)}
+          >
+            Add
+          </Button>
         </Space>
       ),
     },
@@ -175,12 +183,6 @@ const HomePage = () => {
       sorter: false,
     },
     {
-      title: "Quantity",
-      dataIndex: "StoreProducts",
-      sorter: false,
-      render: (record) => (record[0].Quantity)
-    },
-    {
       title: "ReorderLevel",
       dataIndex: "ReorderLevel",
       sorter: false,
@@ -202,13 +204,23 @@ const HomePage = () => {
       key: "action",
       render: (_, record) => (
         <Space size="middle">
-          <UpdateProductModal record={record} />
-          <DeleteOutlined onClick={() => showPromiseConfirm(record)} />
-          <App record={record} />
+          <Button
+            style={{}}
+            icon={<PlusCircleOutlined />}
+            className=""
+            type="primary"
+            onClick={() => handleClick(record)}
+          >
+            Add
+          </Button>
         </Space>
       ),
     },
   ];
+
+  const handleClick = (e: any) => {
+    cartStore.addApriori(e);
+  }
 
   const newcolumns: ColumnsType<Product> = [
     {
@@ -281,9 +293,6 @@ const HomePage = () => {
   const search = async (key: string) => {
     await productStore.changeSearchKey(key);
   }
-  const searchNotAdded = async (key: string) => {
-    await addProductStore.changeSearchKey(key);
-  }
 
   const { TabPane } = Tabs;
   const { Meta } = Card;
@@ -297,8 +306,6 @@ const HomePage = () => {
     <>
       <div style={{ background: "white" }}>
         {console.log(productStore.products)}
-        {localStorage.getItem('role') == 'StoresManager' && <CreateProductModal />}
-        {localStorage.getItem('role') == 'StoresManager' && <br />}
         <Tabs defaultActiveKey="1" onChange={callback}>
           <TabPane tab="Table" key="1">
             <Row>
@@ -357,9 +364,6 @@ const HomePage = () => {
                     <Card
                       style={{ width: 300, marginTop: 16 }}
                       actions={[
-                        localStorage.getItem('role') == 'StoresManager' && <UpdateProductModalAdmin record={product} />,
-                        localStorage.getItem('role') != 'StoresManager' && <UpdateProductModal record = { product }/>,
-                        <DeleteOutlined onClick={() => showPromiseConfirm(product)} />,
                         localStorage.getItem('role') == 'StoresManager' && <App record={product} />
                       ]}
                     >
@@ -394,38 +398,10 @@ const HomePage = () => {
               </Row>
             </Spin>
           </TabPane>
-          {localStorage.getItem('role') != 'StoresManager' && <TabPane tab="Add products" key="3">
-            <br />
-            <Row>
-              <Search
-                placeholder="input id or name"
-                onSearch={(value: any) => searchNotAdded(value)}
-                enterButton
-                autoFocus={true}
-              />
-            </Row>
-            <br />
-            <Spin spinning={addProductStore.loading}>
-              <Table<Product> columns={newcolumns} dataSource={addProductStore.products} rowKey={(record) => record.Id} pagination={false} />
-              <br />
-              <Row>
-                <Col span={18} offset={6}>
-                  <Pagination
-                    showQuickJumper
-                    defaultCurrent={1}
-                    total={addProductStore.totalCount}
-                    showTotal={showTotal}
-                    defaultPageSize={10}
-                    onChange={onChangeNew}
-                  />
-                </Col>
-              </Row>
-            </Spin>
-          </TabPane>}
         </Tabs>
       </div>
     </>
   );
 };
 
-export default observer(HomePage);
+export default observer(RecommendListProduct);

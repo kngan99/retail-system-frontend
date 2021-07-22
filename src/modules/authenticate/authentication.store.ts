@@ -54,6 +54,9 @@ export default class AuthenticationStore {
       else if (data.Type === "StoreWarehouseManager") {
         this._redirectAfterLogin(history, "/warehouse/new-request-goods-note");
       }
+      else if (data.Type === "OperationStaff") {
+        this._redirectAfterLogin(history, "/operation/recommend-products-position");
+      }
       else {
         this._redirectAfterLogin(history, redirectUrl);
       }

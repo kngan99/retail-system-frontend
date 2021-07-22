@@ -55,6 +55,11 @@ interface CargoRequest {
 
 class CartStore {
     @observable productsInCart: CartProduct[] = [];
+    @observable productsApriori: Product[] = [];
+    @observable productsAprioriId: number[] = [];
+    @observable productsAprioriIdStr: string = '';
+    @observable transactions: any[] = [];
+    @observable noTransactions: number = 0;
     @observable coupon: number = 0;
     @observable discount: number = 0;
     @observable loading: boolean = true;
@@ -74,6 +79,8 @@ class CartStore {
         warehouseId: -1,
         StoreId: -1,
     };
+    @observable firstApriori: boolean = true;
+
     @computed get totalNum() {
         let total = 0;
         for (let item of this.productsInCart) {
@@ -99,6 +106,55 @@ class CartStore {
     @observable totalCount: number = 0;
     @observable selectedOrder: any = null;
     @observable editingAdminOrder: any = null;
+
+
+    @action.bound
+    addApriori = async (product: Product) => {
+        let found = false;
+        await this.productsApriori.map(item => {
+            if (item.Discontinued) {
+                message.error("Selected item is out of stock now!");
+            }
+            if (item.Id === product.Id) {
+                message.error("This product has been added");
+                found = true;
+            }
+        });
+        console.log(product.Id + '' + found);
+        if (!found) {
+            await this.productsApriori.push({ ...product });
+            if (this.firstApriori) {
+                this.productsAprioriIdStr += product.Id;
+                this.firstApriori = false;
+            }
+            else {
+                this.productsAprioriIdStr += ', ' + product.Id;
+            }
+            this.productsAprioriId.push(product.Id);
+        } 
+    }
+
+    @action.bound
+    removeApriori = async (product: Product) => {
+        const index = this.productsApriori.findIndex(({ Id }) => Id === product.Id);
+        if (index >= 0) {
+            this.productsApriori.splice(index, 1);
+            this.productsAprioriId.splice(index, 1);
+            this.productsAprioriIdStr = this.productsAprioriId.join(', ');
+        }
+    }
+
+    @action.bound
+    emptyApriori = async () => {
+        this.productsApriori.splice(0, this.productsInCart.length);
+    }
+
+    @action.bound
+    getTransactions = async () => {
+        const res = await orderService.getTransactions(this.productsAprioriId);
+        this.transactions = res[0];
+        this.noTransactions = res[1];
+    }
 
     @action.bound
     addToCart = async (product: Product) => {
