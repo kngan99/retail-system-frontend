@@ -1,4 +1,4 @@
-﻿// Apriori.js
+// Apriori.js
 
 var _testDB = [
     'cheese, diaper, water, bread, umbrella',
@@ -66,6 +66,7 @@ function SetControlBehaviors() {
     $('#AprioriButton').click(function () {
         // Create ItemsetCollection for current db
         let db = new ItemsetCollection();
+        console.log(_db);
         for (var i in _db) {
             let items = _db[i].split(', ');
             db.push(Itemset.from(items));
