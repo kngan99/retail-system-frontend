@@ -204,12 +204,12 @@ const dataSourceOrderApriori = cartStore.transactions.map((transaction, index) =
                 Get Transactions
               </Button>
               &nbsp;&nbsp;
-              <button id="GenerateDBButton" style={{ width: "100px" }}>
+              <button id="GenerateDBButton" style={{ width: "100px", display: 'none' }}>
                 Generate DB
               </button>
               &nbsp;&nbsp;
-              <button id="ResetDBButton" style={{ width: "100px" }}>
-                Reset DB
+              <button id="ConfirmButton" style={{ width: "100px" }}>
+                Confirm
               </button>
               &nbsp;&nbsp;
             </td>
@@ -223,7 +223,8 @@ const dataSourceOrderApriori = cartStore.transactions.map((transaction, index) =
                 id="DBTextBox"
                 cols={73}
                 style={{ height: "120px", /*display: "none"*/ }}
-                readOnly={true}
+                /*readOnly={true}*/
+                value={cartStore.transactionStr}
               ></textarea>
             </td>
           </tr>

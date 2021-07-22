@@ -94,6 +94,11 @@ const RecommendListProduct = () => {
 
   const admincolumns: ColumnsType<Product> = [
     {
+      title: "Id",
+      dataIndex: "Id",
+      sorter: false,
+    },
+    {
       title: "ProductName",
       dataIndex: "ProductName",
       sorter: false,
@@ -156,6 +161,11 @@ const RecommendListProduct = () => {
   ];
 
   const columns: ColumnsType<Product> = [
+    {
+      title: "Id",
+      dataIndex: "Id",
+      sorter: false,
+    },
     {
       title: "ProductName",
       dataIndex: "ProductName",

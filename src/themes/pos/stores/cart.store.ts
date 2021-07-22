@@ -1,5 +1,5 @@
 import React from 'react';
-import { observable, action, computed, reaction, makeObservable, autorun } from 'mobx';
+import { observable, action, computed, reaction, makeObservable, autorun, transaction } from 'mobx';
 import productService from '../../../modules/product/product.service';
 import cartService from '../services/cart.service'
 import orderService from '../services/order.service'
@@ -60,6 +60,8 @@ class CartStore {
     @observable productsAprioriIdStr: string = '';
     @observable transactions: any[] = [];
     @observable noTransactions: number = 0;
+    @observable transactionStr: string = '';
+    @observable transactionArray: any[] = [];
     @observable coupon: number = 0;
     @observable discount: number = 0;
     @observable loading: boolean = true;
@@ -131,6 +133,7 @@ class CartStore {
                 this.productsAprioriIdStr += ', ' + product.Id;
             }
             this.productsAprioriId.push(product.Id);
+            message.success("Added product " + product.ProductName);
         } 
     }
 
@@ -153,6 +156,10 @@ class CartStore {
     getTransactions = async () => {
         const res = await orderService.getTransactions(this.productsAprioriId);
         this.transactions = res[0];
+        for (let i = 0; i < res[1]; i++){
+            this.transactionArray.push(res[0][i].ProductIds.join(', '));
+        }
+        this.transactionStr = this.transactionArray.join('\n');
         this.noTransactions = res[1];
     }
 
