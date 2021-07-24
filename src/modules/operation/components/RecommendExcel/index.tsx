@@ -151,7 +151,7 @@ const dataSourceOrderApriori = cartStore.transactions.map((transaction, index) =
         ></script>
       </Helmet>
       <div id="AprioriContainer">
-        <table id="AprioriTable" cellPadding="0" cellSpacing="0">
+        <table id="AprioriTable" cellPadding="0" cellSpacing="0" width="100%">
           <tr>
             <td>Selected Item Ids:</td>
             <td>
@@ -223,9 +223,9 @@ const dataSourceOrderApriori = cartStore.transactions.map((transaction, index) =
               <textarea
                 id="DBTextBox"
                 cols={73}
-                style={{ height: "120px", /*display: "none"*/ }}
+                style={{ height: "120px", /*display: "none"*/ width: "100%" }}
                 /*readOnly={true}*/
-                value={cartStore.transactionStr}
+                value={cartStore.transactionStrName}
               ></textarea>
             </td>
           </tr>
@@ -287,7 +287,7 @@ const dataSourceOrderApriori = cartStore.transactions.map((transaction, index) =
               <textarea
                 id="ResultTextBox"
                 cols={73}
-                style={{ height: "180px" }}
+                style={{ minHeight: "180px", width: "100%"}}
                 readOnly={true}
               ></textarea>
             </td>

@@ -57,11 +57,17 @@ class CartStore {
     @observable productsInCart: CartProduct[] = [];
     @observable productsApriori: Product[] = [];
     @observable productsAprioriId: number[] = [];
+    @observable productsAprioriName: string[] = [];
     @observable productsAprioriIdStr: string = '';
+    @observable productsAprioriNameStr: string = '';
     @observable transactions: any[] = [];
     @observable noTransactions: number = 0;
     @observable transactionStr: string = '';
     @observable transactionArray: any[] = [];
+    @observable transactionArrayName: any[] = [];
+    @observable transactionStrName: string = '';
+    @observable transactionStrOneOrderProductsName: string[] = [];
+    @observable j: number = 0;
     @observable coupon: number = 0;
     @observable discount: number = 0;
     @observable loading: boolean = true;
@@ -128,12 +134,15 @@ class CartStore {
             await this.productsApriori.push({ ...product });
             if (this.firstApriori) {
                 this.productsAprioriIdStr += product.Id;
+                this.productsAprioriNameStr += product.ProductName;
                 this.firstApriori = false;
             }
             else {
                 this.productsAprioriIdStr += ', ' + product.Id;
+                this.productsAprioriNameStr += ', ' + product.ProductName;
             }
             this.productsAprioriId.push(product.Id);
+            this.productsAprioriName.push(product.ProductName);
             message.success("Added product " + product.ProductName);
         } 
     }
@@ -145,6 +154,8 @@ class CartStore {
             this.productsApriori.splice(index, 1);
             this.productsAprioriId.splice(index, 1);
             this.productsAprioriIdStr = this.productsAprioriId.join(', ');
+            this.productsAprioriName.splice(index, 1);
+            this.productsAprioriNameStr = this.productsAprioriName.join(', ');
         }
     }
 
@@ -160,8 +171,15 @@ class CartStore {
         this.transactions = res[0];
         for (let i = 0; i < res[1]; i++){
             this.transactionArray.push(res[0][i].ProductIds.join(', '));
+            for (this.j = 0; this.j < res[0][i].Products[1]; this.j++) {
+                this.transactionStrOneOrderProductsName.push(res[0][i].Products[0][this.j].Product.ProductName);
+            }
+            this.transactionArrayName.push(this.transactionStrOneOrderProductsName.join(', '));
+            this.j = 0;
+            this.transactionStrOneOrderProductsName = [];
         }
         this.transactionStr = this.transactionArray.join('\n');
+        this.transactionStrName = this.transactionArrayName.join('\n');
         this.noTransactions = res[1];
         this.loading2 = false;
     }
