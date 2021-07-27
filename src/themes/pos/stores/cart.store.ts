@@ -82,6 +82,7 @@ class CartStore {
     @observable isCheckout: boolean = false;
     @observable isConfirm: boolean = false;
     @observable orderId: number = 0;
+    @observable orderStatus: string = '';
     @observable cargoRequest: CargoRequest = {
         ProductId: [],
         Quantity: [],
@@ -468,14 +469,47 @@ class CartStore {
     }
 
     @action.bound
-    setProductInCart = (productsInCart: any[]) => {
+    setProductInCart = (productsInCart: CartProduct[]) => {
        this.productsInCart = productsInCart;
+    }
+
+    @action.bound
+    setOrderStatus = (status: string) => {
+       this.orderStatus = status;
     }
 
     @action.bound
     async adminDeleteOrder(id: number) {
         const data = await cartService.adminDeleteOrder(id);
         return data;
+    }
+
+    @action.bound
+    async cancelCargoReq(id: number) {
+        const data = await cartService.cancelCargoReq(id);
+        return data;
+    }
+
+    @action.bound
+    async updateStatusCargoReq(id: number, curStatus: string) {
+        let nextStatus = curStatus;
+        if (curStatus === "Created") {
+            nextStatus = "Confirmed";
+        }
+        else if (curStatus === "Confirmed") {
+            nextStatus = "Delivering";
+        }
+        else if (curStatus === "Delivering") {
+            nextStatus = "Success";
+        }
+        const data = await cartService.updateStatusCargoReq(id, nextStatus);
+        return data;
+    }
+
+    @action.bound
+    async getCargoReqStatus(id: number) {
+        const res = await cartService.getCargoReqStatus(id);
+        return res.data;
     }
 
     @action.bound
@@ -512,6 +546,7 @@ class CartStore {
     @action.bound
     async setProductsInCartQuantity() {
         const result = await this.selectedOrder.quantities.map((item, idx) => { this.productsInCart[idx].Quantity = item })
+        console.log(this.productsInCart);
         return result;
     }
 

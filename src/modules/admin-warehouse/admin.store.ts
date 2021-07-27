@@ -9,6 +9,8 @@ class WarehouseStore {
     @observable totalCount: number = 0;
     @observable adminForm: any = newAdminFormInit;
     @observable currentWarehouse: any;
+    @observable warehouseAllDb: any[] = [];
+    @observable totalCountwarehouseAllDb: number = 0;
   
     @action.bound
     async getAccounts(skip: number, take: number) {
@@ -16,6 +18,14 @@ class WarehouseStore {
         data = await adminService.getAccounts(skip, take);
         this.accounts = data[0];
         this.totalCount = data[1];
+    }
+
+    @action.bound
+    async getWarehousesAllDb() {
+        let data: any = [];
+        data = await adminService.getWarehousesAllDb();
+        this.warehouseAllDb = data[0];
+        this.totalCountwarehouseAllDb = data[1];
     }
 
     @action.bound

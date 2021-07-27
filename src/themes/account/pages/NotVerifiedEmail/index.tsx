@@ -24,15 +24,14 @@ const VerifiedEmailPage = () => {
 
   return (
     <>
-      <OnePage className="thank-you-page" title='Retail System'>
+      <OnePage className="thank-you-page" title="Retail System">
         <ThankYouContent
-          title={'One more step'}
-          subTitle={'Your account has not been verified. Please check your registered email and follow the instructions first and then login again.'}
+          title={"One more step"}
+          subTitle={`Your account has not been verified. Please check your registered email and follow the instructions first and then login again. If you have verified your email, please contact the admin to verify your identity`}
           iconSuccess={IconThankYou}
-          btnText={(BUTTONS_LOGIN)}
-          handleBtn={() => history.push('/account/login')}
-        >
-          </ThankYouContent>
+          btnText={BUTTONS_LOGIN}
+          handleBtn={() => history.push("/account/login")}
+        ></ThankYouContent>
       </OnePage>
     </>
   );

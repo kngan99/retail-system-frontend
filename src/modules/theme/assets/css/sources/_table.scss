@@ -18,6 +18,15 @@
     }
   }
 
+  .account-status-verified {
+    color: #5e73e7;
+    font-weight: 600;
+  }
+
+  .account-status-unverified {
+    color: #d11141;
+  }  
+
   thead {
     th {
       border: 0;

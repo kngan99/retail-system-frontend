@@ -2,7 +2,15 @@ import React from "react";
 import { inject, observer } from "mobx-react";
 import { makeAutoObservable, autorun, observable } from "mobx";
 import { Table, Breadcrumb } from "react-bootstrap";
-import { Input, Tooltip, Button, message, Row, Col } from "antd";
+import {
+  Input,
+  Tooltip,
+  Button,
+  message,
+  Row,
+  Col,
+  Select,
+} from "antd";
 import {
   PlusOutlined,
   MinusOutlined,
@@ -14,33 +22,40 @@ import {
   ShoppingCartOutlined,
   InfoCircleOutlined,
   HomeOutlined,
-  UnorderedListOutlined
+  UnorderedListOutlined,
 } from "@ant-design/icons";
 import { CartStoreContext } from "../../../../themes/pos/stores/cart.store";
 import CartItem from "./CartItem";
 import { Link } from "react-router-dom";
 import { AuthenticationStoreContext } from "../../../authenticate/authentication.store";
-import { retrieveFromStorage } from '../../../../common/utils/storage.util';
+import { retrieveFromStorage } from "../../../../common/utils/storage.util";
+import { WarehouseStoreContext } from "../../../admin-warehouse/admin.store";
 
 const CartPage = observer(
   ({ productsInCart, totalNum, totalAmount, isCheckout }) => {
     const cartStore = React.useContext(CartStoreContext);
     const authStore = React.useContext(AuthenticationStoreContext);
-    const [warehouseId, setWarehouseId] = React.useState<number>(-1);
+    const warehouseStore = React.useContext(WarehouseStoreContext);
+    const [warehouseId, setWarehouseId] = React.useState<number>(1);
+    const { Option } = Select;
     const handleEmptyClick = async () => {
       await cartStore.emptyCart();
     };
     const handleCheckoutClick = async () => {
-      if (totalNum == 0) {
+      if (totalNum === 0) {
         message.error("Cart is empty");
-      } else {
+        return;
+      } 
+      if (warehouseId === -1){
+        message.error("Please choose warehouse");
+        return;
+      }
         await cartStore.setCargoRequest(
           warehouseId,
-          parseInt(retrieveFromStorage('storeId')!),
-          'Create'
+          parseInt(retrieveFromStorage("storeId")!),
+          "Create"
         );
         await cartStore.checkoutCart();
-      }
     };
     const handleModifyClick = async () => {
       await cartStore.returnToCart();
@@ -60,16 +75,36 @@ const CartPage = observer(
     };
     const handleSendCargoRequest = async () => {
       if (warehouseId === -1) {
-        message.warning('Please choose Warehouse!');
+        message.warning("Please choose Warehouse!");
         return;
+      } else {
+        cartStore.setCargoRequest(
+          warehouseId,
+          parseInt(retrieveFromStorage("storeId")!),
+          "Create"
+        );
+        const result = await cartStore.sendCargoRequest();
+        if (result) { 
+          message.success("Create Cargo Request successfully!");
+        }
+        else {
+          message.error("Create Cargo Request fail! Please try again later");
+        }
+        window.location.href = window.location.pathname.replace('new-request-goods-note-cart','request-goods-note-cart/manage')
+        return result;
       }
-      else{
-      cartStore.setCargoRequest(warehouseId, parseInt(retrieveFromStorage('storeId')!), 'Create');
-      const result = await cartStore.sendCargoRequest();
-      if (result) message.success('Create Cargo Request successfully!');
-      return result;
+    };
+
+    React.useEffect(() => {
+      const getAllWarehouse = async() => {
+        const res = await warehouseStore.getWarehousesAllDb();
+        return res;
       }
-    }
+
+      getAllWarehouse();
+      setWarehouseId(-1);
+    }, [warehouseStore]);
+
     return (
       <div className="mr-2">
         <Breadcrumb>
@@ -80,23 +115,30 @@ const CartPage = observer(
           <Row style={{ marginBottom: "15px", marginLeft: "15px" }}>
             {!cartStore.isCheckout ? (
               <>
-            <PlusCircleTwoTone
-              style={{ marginTop: "5px", marginRight: "5px" }}
-            />
-            <Link to="/warehouse/new-request-goods-note">
-              I want to choose more products
-            </Link>
-            </>
+                <PlusCircleTwoTone
+                  style={{ marginTop: "5px", marginRight: "5px" }}
+                />
+                <Link to="/warehouse/new-request-goods-note">
+                  I want to choose more products
+                </Link>
+              </>
             ) : (
               <>
-              <UnorderedListOutlined style={{color: '#40a9ff', marginRight: '10px', fontSize: '22px'}}/>
-              <span style={{color: '#40a9ff', fontWeight: 400}}>Request Summary</span>
+                <UnorderedListOutlined
+                  style={{
+                    color: "#40a9ff",
+                    marginRight: "10px",
+                    fontSize: "22px",
+                  }}
+                />
+                <span style={{ color: "#40a9ff", fontWeight: 400 }}>
+                  Request Summary
+                </span>
               </>
-            )
-            }
+            )}
           </Row>
           <Row>
-            <Input
+            {/* <Input
               placeholder="Enter Warehouse Id"
               prefix={<HomeOutlined className="site-form-item-icon" />}
               suffix={
@@ -108,7 +150,32 @@ const CartPage = observer(
               onChange={(e) => {
                 setWarehouseId(parseInt(e.target.value));
               }}
-            />
+            /> */}
+            <p>Choose warehouse</p>
+            <Select
+              showSearch
+              style={{ width: "100%", marginBottom: "20px" }}
+              placeholder="Select a warehouse"
+              optionFilterProp="value"
+              onChange={(value) => {
+                //console.log(value);
+                setWarehouseId(parseInt(value.split(' - ')[0]));
+              }}
+              defaultValue={`Select warehouse`}
+              filterOption={(input, option) =>
+                option?.value.indexOf(input.toLowerCase()) >= 0
+              }
+            >
+              {warehouseStore.warehouseAllDb.map((warehouse) => (
+                <Option key={warehouse.Id} value={`${warehouse.Id} - ${warehouse.ShortName}`}>
+                  <p>
+                    {warehouse.Id} - {warehouse.ShortName}
+                    <br />
+                    {warehouse.Address}
+                  </p>
+                </Option>
+              ))}
+            </Select>
           </Row>
         </div>
         {!isCheckout && (
@@ -228,9 +295,12 @@ const CartPage = observer(
                 </tr>
               </tbody>
             </Table>
-            <br/>
+            <br />
             <Button
-              type="primary" shape='round' icon={<ShoppingCartOutlined />} size='large'
+              type="primary"
+              shape="round"
+              icon={<ShoppingCartOutlined />}
+              size="large"
               onClick={async () => await handleSendCargoRequest()}
             >
               Send Request
@@ -242,4 +312,3 @@ const CartPage = observer(
   }
 );
 export default CartPage;
-

@@ -17,6 +17,7 @@ interface ComponentProps {
   createdByData?: any;
   id?: string;
   notes?: any;
+  storeInfo?: any;
 }
 
 const SummaryOrder = (props: ComponentProps) => {
@@ -34,6 +35,7 @@ const SummaryOrder = (props: ComponentProps) => {
     createdByData,
     id,
     notes,
+    storeInfo,
   } = props;
 
 
@@ -64,6 +66,7 @@ const SummaryOrder = (props: ComponentProps) => {
               <Row>
                 <SummaryOrderSection
                   orderData={orderItem}
+                  storeInfo={storeInfo}
                   createdByTitle={createdByTitle}
                   createdByData={createdByData}
                   notes={notes}

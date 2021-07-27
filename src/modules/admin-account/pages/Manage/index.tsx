@@ -10,6 +10,7 @@ import AdminAccountFormModal from "../../components/AdminAccountFormModal";
 import AdminAccountGrid from "../../components/AccountGrid";
 import ActionBar from "../../../theme/components/ActionBar";
 import { message } from "antd";
+import ConfirmModal from "../../../../common/components/ConfirmModal";
 
 const ManageAccountAdminPage = () => {
   const history = useHistory();
@@ -45,6 +46,25 @@ const ManageAccountAdminPage = () => {
       },
     },
   ]);
+
+  const [showConfirmPopup, setShowConfirmPopup] = React.useState<boolean>(
+    false
+  );
+
+  /*Confirm modal*/
+  const handleOk = async () => {
+    setShowConfirmPopup(false);
+    const res = await adminStore.adminVerifyAccount(id);
+    if (res) {
+      message.info("Verify successfully!");
+      setId(-1);
+    }
+  };
+
+  const handleCancel = () => {
+    setShowConfirmPopup(false);
+  };
+  /*End Confirm modal*/
 
   const handleRestore = () => {
     history.push("/account/deleted");
@@ -89,6 +109,11 @@ const ManageAccountAdminPage = () => {
         setShowPopup(false);
   };
 
+  const handleAdminVerify = async (id: number) => {
+    setShowConfirmPopup(true);
+    setId(id);
+  };
+
   const handleEdit = async (id: number) => {
     const admin = await adminStore.getAccountById(id);
     if (admin) {
@@ -122,6 +147,7 @@ const ManageAccountAdminPage = () => {
         <ActionBar actions={actionsBar} />
         <AdminAccountGrid
           handleChangePageItem={handleChangePageItem}
+          handleAdminVerify={handleAdminVerify}
           handleEdit={handleEdit}
           handleDelete={handleDelete}
           currentId={id}
@@ -133,6 +159,12 @@ const ManageAccountAdminPage = () => {
           handleSubmit={handleSubmit}
           mode={mode}
         />
+        <ConfirmModal
+            show={showConfirmPopup}
+            handleCancel={handleCancel}
+            handleOk={handleOk}
+            children={<strong>Do you want to verify this account?</strong>}
+          ></ConfirmModal>
       </AdminWrapper>
     </>
   );

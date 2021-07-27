@@ -27,6 +27,12 @@ class AdminStore {
     }
 
     @action
+    async adminVerifyAccount(id: number) {
+        const result = await adminService.adminVerifyAccount(id);
+        return result;
+    }
+
+    @action
     async setAdminForm(data: any) {
         this.adminForm = data;
     }

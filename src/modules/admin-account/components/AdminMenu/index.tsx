@@ -82,19 +82,25 @@ const AdminMenu = (props: ComponentProps) => {
 
   React.useEffect(() => {
     if (localStorage.getItem('role') === 'StoreManager') {
-      setIsDisplayIconArray([false, false, true, true, true, false, false, false, true]);
+      setIsDisplayIconArray([false, true, true, true, true, true, false, false, false]);
     }
     else if (localStorage.getItem('role') === 'StoreStaff') {
-      setIsDisplayIconArray([false, false, true, false, false, false, false, false,true]);
+      setIsDisplayIconArray([false, false, true, false, false, false, false, false,false]);
     }
     else if (localStorage.getItem('role') === 'StoresManager') {
-      setIsDisplayIconArray([false,true,true, true, false, false, true, true, true ]);
+      setIsDisplayIconArray([false,true,true, true, false, false, true, true, false ]);
     }
     else if (localStorage.getItem('role') === 'Salescleck') {
-      setIsDisplayIconArray([true, false, false, false, true, false, false, false,true]);
+      setIsDisplayIconArray([true, false, false, false, true, false, false, false, false]);
+    }
+    else if (localStorage.getItem('role') === 'StoreWarehouseManager') {
+      setIsDisplayIconArray([false, false, true, false, false, true, false, false, false]);
+    }
+    else if (localStorage.getItem('role') === 'WarehouseStaff') {
+      setIsDisplayIconArray([false, false, false, false, false, true, false, false, false]);
     }
     else {
-      setIsDisplayIconArray([false, false, false, false, false, true, true, true, true]);
+      setIsDisplayIconArray([false, false, false, false, false, true, true, true, false]);
     }
     // if(authenticationStore.loggedUser && authenticationStore.loggedUser.Type==='StoreManager'){
     //   setIsDisplayIconArray([true,true,true, true, true]);

@@ -1,10 +1,10 @@
 import { action, observable } from 'mobx';
 import { createContext } from 'react';
 const HCMCity = { lat: 10.82302, lng: 106.62965 };
-const truckIcon = {
-  url: 'https://www.flaticon.com/svg/static/icons/svg/726/726455.svg',
-  scaledSize: new google.maps.Size(50, 50),
-};
+// const truckIcon = {
+//   url: 'https://www.flaticon.com/svg/static/icons/svg/726/726455.svg',
+//   scaledSize: new google.maps.Size(50, 50),
+// };
 
 // const location = {
 //   url: 'https://www.flaticon.com/svg/static/icons/svg/815/815062.svg',
@@ -65,19 +65,19 @@ export default class GoogleMapStore {
   @action
   setMarkers(markers: any[]) {
     this.markers.map((m) => m.setMap(null));
-    this.markers = markers.map((x, index) =>
-      index < 2
-        ? new google.maps.Marker({
-            position: x,
-            map: this.map,
-            // icon: location,
-          })
-        : new google.maps.Marker({
-            position: x,
-            map: this.map,
-            icon: truckIcon,
-          })
-    );
+    // this.markers = markers.map((x, index) =>
+    //   index < 2
+    //     ? new google.maps.Marker({
+    //         position: x,
+    //         map: this.map,
+    //         // icon: location,
+    //       })
+    //     : new google.maps.Marker({
+    //         position: x,
+    //         map: this.map,
+    //         icon: truckIcon,
+    //       })
+    // );
   }
 
   @action

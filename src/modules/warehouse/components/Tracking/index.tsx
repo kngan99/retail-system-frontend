@@ -67,7 +67,7 @@ const TrackingOrder = (props: ComponentProps) => {
             <GoogleMap markers={markers} />
           </Col>
         </Row>
-        {selectedOrder?.status === "Cancel" ? (
+        {/* {selectedOrder?.status === "Cancel" ? (
           <ProgressOrder
             orderStatus={selectedOrder?.beforeCancel ?? ''}
             verifiedDelivery={selectedOrder?.verifiedDelivery ?? false}
@@ -79,7 +79,7 @@ const TrackingOrder = (props: ComponentProps) => {
             verifiedDelivery={selectedOrder?.verifiedDelivery ?? false}
             verifiedPickup={selectedOrder?.verifiedPickup ?? false}
           />
-        )}
+        )} */}
         {children}
       </Container>
     </>

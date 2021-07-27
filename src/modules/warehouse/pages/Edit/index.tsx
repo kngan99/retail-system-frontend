@@ -50,16 +50,16 @@ const EditOrderAdminPage = () => {
    * @param void
    * @return void
    */
-  const handleDelete = () => {
+  const handleCancelRequest = () => {
     setShowConfirmPopup(true);
   };
 
   const handleOk = async () => {
     setShowConfirmPopup(false);
     if (orderID) {
-      const result = await orderStore.adminDeleteOrder(orderID);
+      const result = await orderStore.cancelCargoReq(orderID);
       if (result) {
-        message.success("Delete successfully");
+        message.success("Cancel successfully");
         history.push("/warehouse/request-goods-note-cart/manage");
       }
     }
@@ -92,7 +92,7 @@ const EditOrderAdminPage = () => {
           handleCancel={handleCancel}
           handleOk={handleOk}
         >
-          <p>Are you sure want to delete? </p>
+          <p>Are you sure want to cancel this request? </p>
         </ConfirmModal>
         <Row style={{ marginBottom: "15px", marginLeft: "15px" }}>
             {!cartStore.isCheckout ? (
@@ -119,8 +119,8 @@ const EditOrderAdminPage = () => {
               </>
             )}
         </Row>
-        <Button type="primary" onClick={handleDelete} style={{ marginTop: 16 }}>
-          Delete this request
+        <Button type="primary" onClick={handleCancelRequest} style={{ marginTop: 16 }}>
+          Cancel this request
         </Button>
       </AdminWrapper>
     </>

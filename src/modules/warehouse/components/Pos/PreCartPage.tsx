@@ -36,7 +36,17 @@ import Card from "antd/lib/card";
 import Modal from "antd/lib/modal";
 import Button from "antd/lib/button";
 import Input from "antd/lib/input";
-import { Avatar, Form, List, message, Pagination, Skeleton, Spin, Table } from "antd";
+import {
+  Avatar,
+  Form,
+  List,
+  message,
+  Pagination,
+  Skeleton,
+  Spin,
+  Table,
+  Badge,
+} from "antd";
 import { Link, Redirect, useHistory } from "react-router-dom";
 import { AuthenticationStoreContext } from "../../../authenticate/authentication.store";
 
@@ -64,7 +74,7 @@ const PreCartPage = () => {
   React.useEffect(() => {
     productStore.startSearch();
   }, []);
-  
+
   const showTotal = (total: number) => {
     return `Total ${total} items`;
   };
@@ -133,7 +143,7 @@ const PreCartPage = () => {
       render: (_, record) => (
         <Space size="middle">
           <Button
-            style={{color: 'rgb(24, 144, 255)'}}
+            style={{ color: "rgb(24, 144, 255)" }}
             icon={<PlusCircleTwoTone />}
             className=""
             onClick={() => handleClick(record)}
@@ -206,22 +216,45 @@ const PreCartPage = () => {
                   </Col>
                   <Col xs={{ span: 4 }} sm={{ span: 4 }} xl={{ span: 4 }}></Col>
                   <Col xs={{ span: 4 }} sm={{ span: 4 }} xl={{ span: 4 }}>
-                  <Search
+                    <Search
                       placeholder="input id or name"
                       onSearch={(value: any) => search(value)}
                       enterButton
                       autoFocus={true}
-                      style={{ textAlign: 'right', marginRight: '5px' }}
+                      style={{ textAlign: "right", marginRight: "5px" }}
                       defaultValue={productStore.searchKey}
                     />
                   </Col>
                 </Row>
                 <Row>
-                <Col xs={{ span: 2 }} sm={{ span: 2 }} xl={{ span: 2 }} 
-                      style={{margin: '15px 0'}}>
+                  <Col
+                    xs={{ span: 2 }}
+                    sm={{ span: 2 }}
+                    xl={{ span: 2 }}
+                    style={{ margin: "15px 0" }}
+                  >
                     <Button
-                      type="primary" shape='round' icon={<ShoppingCartOutlined />} size='large'>
-                      <Link to='/warehouse/new-request-goods-note-cart'  style={{color: 'white', marginTop: '5px', marginLeft: '5px'}}>Go to cart</Link>
+                      type="primary"
+                      shape="round"
+                      icon={<ShoppingCartOutlined />}
+                      size="large"
+                    >
+                      <Link
+                        to="/warehouse/new-request-goods-note-cart"
+                        style={{
+                          color: "white",
+                          marginTop: "5px",
+                          marginLeft: "5px",
+                        }}
+                      >
+                        Go to cart
+                        <Badge
+                          count={cartStore.totalNum}
+                          style={{
+                            margin: "auto -6px 3px 7px",
+                          }}
+                        ></Badge>
+                      </Link>
                     </Button>
                   </Col>
                 </Row>
@@ -233,15 +266,15 @@ const PreCartPage = () => {
                   >
                     <Tabs defaultActiveKey="1" onChange={callback}>
                       <TabPane tab="Table" key="1">
-                            <Spin spinning={productStore.loading}>
-                              <Table<Product>
-                                columns={columns}
-                                dataSource={productStore.products}
-                                rowKey={(record) => record.Id}
-                                pagination={false}
-                                style={{width: '100%'}}
-                              />
-                            </Spin>
+                        <Spin spinning={productStore.loading}>
+                          <Table<Product>
+                            columns={columns}
+                            dataSource={productStore.products}
+                            rowKey={(record) => record.Id}
+                            pagination={false}
+                            style={{ width: "100%" }}
+                          />
+                        </Spin>
                       </TabPane>
                       <TabPane tab="Cards" key="2">
                         <Spin spinning={productStore.loading}>
@@ -262,7 +295,7 @@ const PreCartPage = () => {
                                   size="small"
                                   style={{ marginTop: 7 }}
                                   actions={[
-                                    <PlusOutlined 
+                                    <PlusOutlined
                                       onClick={() => handleClick(product)}
                                     />,
                                   ]}
@@ -274,7 +307,7 @@ const PreCartPage = () => {
                                           size={48}
                                           shape="square"
                                           src={
-                                            "https://warehouse-retail.herokuapp.com/api/products/img/thumbnails-" +
+                                            "http://localhost:4000/api/products/img/thumbnails-" +
                                             String(
                                               product.PhotoURL
                                                 ? product.PhotoURL

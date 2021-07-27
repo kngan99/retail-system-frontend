@@ -9,8 +9,8 @@ interface CashierInfo {
 }
 
 class CartService {
-  sessionPrefix: string = "https://warehouse-retail.herokuapp.com/api/sessions";
-  cargoRequestPrefix: string = "https://warehouse-retail.herokuapp.com/api/cargo-requests"
+  sessionPrefix: string = "http://localhost:4000/api/sessions";
+  cargoRequestPrefix: string = "http://localhost:4000/api/cargo-requests"
 
   public async startNewSession() {
     const result = await http.post(`${this.sessionPrefix}`, {
@@ -58,6 +58,21 @@ class CartService {
 
   public async adminDeleteOrder(id: number) {
     const result = await http.delete(`${this.cargoRequestPrefix}/${id}`);
+    return result;
+  }
+
+  public async cancelCargoReq(id: number) {
+    const result = await http.put(`${this.cargoRequestPrefix}/${id}/Cancelled`);
+    return result;
+  }
+
+  public async updateStatusCargoReq(id: number, status: string) {
+    const result = await http.put(`${this.cargoRequestPrefix}/${id}/${status}`);
+    return result;
+  }
+
+  public async getCargoReqStatus(id: number) {
+    const result = await http.get(`${this.cargoRequestPrefix}/${id}/status`);
     return result;
   }
 

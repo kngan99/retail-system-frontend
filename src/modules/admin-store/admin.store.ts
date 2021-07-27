@@ -25,7 +25,7 @@ class StoreStore {
             this.setAdminForm(result);
             this.currentStore = result;
         }
-        return true;
+        return result;
     }
 
     @action.bound

@@ -257,11 +257,11 @@ const OrderGrid = (props: ComponentProps) => {
                           </OverlayTrigger>
                         )}
                     </th>
-                    <th>{"Warehouse"}</th>
+                    {/* <th>{"Warehouse"}</th> */}
                     <th>{"Created By"}</th>
                     <th>{"Created At"}</th>
-                    <th>{"Updated By"}</th>
-                    <th>{"Updated At"}</th>
+                    {/* <th>{"Updated By"}</th>
+                    <th>{"Updated At"}</th> */}
                     <th>{"Status"}</th>
                     <th className="col-actions"></th>
                   </tr>
@@ -290,8 +290,8 @@ const OrderGrid = (props: ComponentProps) => {
                           {item.Id}
                         </span>
                       </td>
-                      <td>{item.Warehouse && item.Warehouse.Shortname ? item.Warehouse.Shortname : '-' }</td>
-                      <td>{item.CreatedByAccount.LName}</td>
+                      {/* <td>{item.Warehouse && item.Warehouse.Shortname ? item.Warehouse.Shortname : '-' }</td> */}
+                      <td>{`${item.CreatedByAccount.FName} ${item.CreatedByAccount.LName}`}</td>
                       <td>
                         {item.CreatedAt
                           ? toTimeFormat(
@@ -300,7 +300,7 @@ const OrderGrid = (props: ComponentProps) => {
                             )
                           : '-'}
                       </td>
-                      <td>{item.UpdatedBy}</td>
+                      {/* <td>{item.UpdatedBy}</td>
                       <td>
                         {item.UpdatedAt
                           ? toTimeFormat(
@@ -308,7 +308,7 @@ const OrderGrid = (props: ComponentProps) => {
                               commonStore.dateTimeFormat
                             )
                           : '-'}
-                      </td>
+                      </td> */}
                       <td
                         data-th={`${item.Status}: `}
                         className="col-order-status"
@@ -329,7 +329,6 @@ const OrderGrid = (props: ComponentProps) => {
                                     action.action(item.Id);
                                   }}
                                   key={`order-action-${index}`}
-                                  disabled={handleStatus(action, item.status)}
                                 >
                                   {action.label}
                                 </Dropdown.Item>

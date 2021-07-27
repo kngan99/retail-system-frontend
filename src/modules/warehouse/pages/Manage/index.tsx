@@ -4,7 +4,7 @@ import { useHistory } from "react-router-dom";
 
 
 import { AdminStoreContext } from "../../../../modules/admin-account/admin.store";
-import { CartStoreContext } from "../../../../themes/pos/stores/cart.store";
+import cartStore, { CartStoreContext } from "../../../../themes/pos/stores/cart.store";
 import { pageSizeOptions } from '../../../../common/constants/paging.constants';
 import { message } from 'antd';
 import OrderGrid from "../../components/OrderGrid";
@@ -132,6 +132,19 @@ const ManageOrderAdminPage = () => {
     setFiltered(false);
   };
 
+  const setNextStep = (currentStep: string) => {
+    let nextStatus = currentStep;
+        if (currentStep === "Created") {
+            nextStatus = "Confirmed";
+        }
+        else if (currentStep === "Confirmed") {
+            nextStatus = "Delivering";
+        }
+        else if (currentStep === "Delivering") {
+            nextStatus = "Success";
+        }
+        setNextStatus(nextStatus);
+  }
   // -----------------------------
   // Grid Process
   // -----------------------------
@@ -141,10 +154,16 @@ const ManageOrderAdminPage = () => {
    */
   const [deleteID, setDeleteID] = React.useState<number>(-1);
 
+  const [progressID, setProgressID] = React.useState<number>(-1);
+
   /*
    * show hide new/edit driver popup
    */
   const [showConfirmPopup, setShowConfirmPopup] = React.useState<boolean>(
+    false
+  );
+
+  const [showConfirmProgressPopup, setShowConfirmProgressPopup] = React.useState<boolean>(
     false
   );
 
@@ -162,9 +181,32 @@ const ManageOrderAdminPage = () => {
    * @param number id
    * @return void
    */
-  const handleDelete = async (id: number) => {
+  const handleCancelReq = async (id: number) => {
+    const res = await cartStore.getCargoReqStatus(id);
+    setCurrentStatus(res[0][0].Status);
+    setNextStep(res[0][0].Status);
+    if (currentStatus === "Cancelled" || res[0][0].Status === "Cancelled"){
+      message.error("This request has been cancelled!");
+      return;
+    }
     setShowConfirmPopup(true);
     setDeleteID(id);
+  };
+
+  const handleProgress = async (id: number) => {
+    const res = await cartStore.getCargoReqStatus(id);
+    setCurrentStatus(res[0][0].Status);
+    setNextStep(res[0][0].Status);
+    if (currentStatus === "Cancelled" || res[0][0].Status === "Cancelled"){
+      message.error("This request has been cancelled!");
+      return;
+    }
+    if (currentStatus === "Success" || res[0][0].Status === "Success"){
+      message.error("This request has been done!");
+      return;
+    }
+    setShowConfirmProgressPopup(true);
+    setProgressID(id);
   };
 
   /*
@@ -199,16 +241,68 @@ const ManageOrderAdminPage = () => {
   };
 
   const handleOk = async () => {
+    if (currentStatus === "Delivering") {
+      setShowConfirmPopup(false);
+      return;
+    }
     setShowConfirmPopup(false);
     if (deleteID !== -1) {
-      const result = await orderStore.adminDeleteOrder(deleteID);
+      const result = await orderStore.cancelCargoReq(deleteID);
       if (result) {
         setDeleteID(-1);
-        message.success("Deleted successfully");
-        orderStore.getOrderListByAdmin({ ...criteriaDto, ...{userId: retrieveFromStorage("loggedId")} });
+        message.success("Cancel successfully");
+        if (retrieveFromStorage("role") === "WarehouseStaff") {
+          orderStore.getOrderListByAdmin({
+            ...criteriaDto,
+            ...{ userId: retrieveFromStorage("loggedId") },
+            ...{ warehouseId: retrieveFromStorage("warehouseId") },
+          });
+        } else {
+          orderStore.getOrderListByAdmin({
+            ...criteriaDto,
+            ...{ userId: retrieveFromStorage("loggedId") },
+            ...{ storeId: retrieveFromStorage("storeId") },
+          });
+        }
       }
     }
   };
+
+  const handleOkProgress = async () => {
+    if (currentStatus === "Delivering" && retrieveFromStorage('role')==='WarehouseStaff') {
+      setShowConfirmProgressPopup(false);
+      return;
+    }
+    else if (retrieveFromStorage('role') !=='WarehouseStaff' &&(currentStatus === "Created" || currentStatus === "Confirmed")) {
+      setShowConfirmProgressPopup(false);
+      return;
+    }
+    setShowConfirmProgressPopup(false);
+    if (progressID !== -1) {
+      const result = await orderStore.updateStatusCargoReq(progressID,currentStatus);
+      if (result) {
+        setProgressID(-1);
+        message.success("Process successfully to the next step!");
+        if (retrieveFromStorage("role") === "WarehouseStaff") {
+          orderStore.getOrderListByAdmin({
+            ...criteriaDto,
+            ...{ userId: retrieveFromStorage("loggedId") },
+            ...{ warehouseId: retrieveFromStorage("warehouseId") },
+          });
+        } else {
+          orderStore.getOrderListByAdmin({
+            ...criteriaDto,
+            ...{ userId: retrieveFromStorage("loggedId") },
+            ...{ storeId: retrieveFromStorage("storeId") },
+          });
+        }
+      }
+    }
+  };
+
+  const handleDetail = (id) => {
+    message.info("Click on Id to see Detail");
+  }
 
   /*
    * Selected tracking order
@@ -217,22 +311,41 @@ const ManageOrderAdminPage = () => {
 
   const [currentStore, setCurrentStore] = React.useState<any>();
 
+  const [currentStatus, setCurrentStatus] = React.useState<any>();
+
+  const [nextStatus, setNextStatus] = React.useState<any>();
+
+
   /*
    * Setting actions in grid
    */
   const actions: any[] = [
+    // {
+    //   label: "Edit",
+    //   status: "",
+    //   action: (id: string) => {
+    //     handleEdit(id);
+    //   },
+    // },
     {
-      label: "Edit",
+      label: "Progress",
       status: "",
-      action: (id: string) => {
-        handleEdit(id);
+      action: (id: number) => {
+        handleProgress(id);
       },
     },
     {
-      label: "Delete",
+      label: "Detail",
       status: "",
       action: (id: number) => {
-        handleDelete(id);
+        handleDetail(id);
+      },
+    },
+    {
+      label: "Cancel",
+      status: "",
+      action: (id: number) => {
+        handleCancelReq(id);
       },
     },
     // {
@@ -247,26 +360,22 @@ const ManageOrderAdminPage = () => {
     // },
 
     {
-      label: "Tracking",
+      label: "Places on Map",
       status: "",
       action: (id: number) => {
         handleTracking(id);
         scrollToElement("order-tracking");
       },
     },
-    {
-      label: "Show secret code",
-      status: "",
-      action: (id: number) => {
-        const orderById = orderStore.orders.filter((item) => item.Id === id);
-        setSelectedOrder(orderById[0]);
-        setShowPopup(true);
-      },
-    },
   ];
+  
 
   const handleCancel = () => {
     setShowConfirmPopup(false);
+  };
+
+  const handleCancelProgress = () => {
+    setShowConfirmProgressPopup(false);
   };
 
   const handleOrderSummary = async (id: number) => {
@@ -318,7 +427,19 @@ const ManageOrderAdminPage = () => {
 
   React.useEffect(() => {
     async function getOrders() {
-      orderStore.getOrderListByAdmin({ ...criteriaDto, ...{ userId: retrieveFromStorage("loggedId") } });
+      if (retrieveFromStorage("role") === "WarehouseStaff") {
+        orderStore.getOrderListByAdmin({
+          ...criteriaDto,
+          ...{ userId: retrieveFromStorage("loggedId") },
+          ...{ warehouseId: retrieveFromStorage("warehouseId") },
+        });
+      } else {
+        orderStore.getOrderListByAdmin({
+          ...criteriaDto,
+          ...{ userId: retrieveFromStorage("loggedId") },
+          ...{ storeId: retrieveFromStorage("storeId") },
+        });
+      }
       setCurrentStore(retrieveFromStorage("storeId"));
     }
     getOrders();
@@ -333,12 +454,14 @@ const ManageOrderAdminPage = () => {
   return (
     <>
       <AdminWrapper pageTitle={"Manage Goods Requests"}>
-        <ActionBar actions={actionsBar} />
+        {retrieveFromStorage("role") !== "WarehouseStaff" && (
+          <ActionBar actions={actionsBar} />
+        )}
         <OrderGrid
           totals={orderStore.totalCount}
           selectedIds={ids}
           handleSelectedItems={handleSelectedItems}
-          handleDelete={handleDelete}
+          handleDelete={handleCancelReq}
           handleEdit={handleEdit}
           handleChangePageItem={handleChangePageItem}
           current={currentPage}
@@ -368,7 +491,33 @@ const ManageOrderAdminPage = () => {
           handleCancel={handleCancel}
           handleOk={handleOk}
         >
-          <p>{"Are you sure want to delete?"}</p>
+          {currentStatus === "Delivering" ? (
+            <p>
+              {
+                "This request order is delivering. You cannot cancel a delivering request"
+              }
+            </p>
+          ) : (
+            <p>{"Are you sure want to cancel this request?"}</p>
+          )}
+        </ConfirmModal>
+        <ConfirmModal
+          show={showConfirmProgressPopup}
+          handleCancel={handleCancelProgress}
+          handleOk={handleOkProgress}
+        >
+          {(retrieveFromStorage("role") === "WarehouseStaff") ? (
+            !(currentStatus === "Created" || currentStatus === "Confirmed") ? (
+              <p>{"Only Store Manager and Store Warehouse Manager can process on this step. Please contact the Store (You can find the contact in request detail)"}</p>
+            ) : (
+              <p>{`Are you sure want to process this request to step ${nextStatus}?`}</p>
+            )
+          ) : (
+            !(currentStatus === "Delivering") ? (
+              <p>{"Only Branch Warehouse Staff can process on this step. Please contact the Warehouse (You can find the contact in request detail)"}</p>            ) : (
+              <p>{`Are you sure want to process this request to step ${nextStatus}?`}</p>
+            )
+          )}
         </ConfirmModal>
       </AdminWrapper>
     </>

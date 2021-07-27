@@ -59,6 +59,21 @@ const OrderStatus = [
   },
 ];
 
+interface CartProduct {
+  Id: number;
+  ProductName: string;
+  CategoryId: number;
+  QuantityPerUnit: string;
+  UnitPrice: number;
+  UnitsInStock: number;
+  ReorderLevel: number;
+  Discontinued: boolean;
+  Quantity: number;
+  Discount: number;
+  Total: number;
+  RawTotal: number;
+}
+
 const CartPageEdit = observer(
   ({ productsInCart, totalNum, totalAmount, isCheckout }) => {
     const cartStore = React.useContext(CartStoreContext);
@@ -140,15 +155,34 @@ const CartPageEdit = observer(
     const init = async () => {
       await cartStore.getOrderById(orderID);
       await setStatus(cartStore.selectedOrder.Status);
+      cartStore.setOrderStatus(cartStore.selectedOrder.Status);
       await setWarehouseId(cartStore.selectedOrder.warehouseId);
       await setNotes(cartStore.selectedOrder.Notes);
+      let productsInCart: CartProduct[] = [];
+      cartStore.selectedOrder.products.forEach((product) => {
+        return productsInCart.push({
+          Id: product.Id,
+          ProductName: product.ProductName,
+          CategoryId: product.CategoryId,
+          QuantityPerUnit: product.QuantityPerUnit,
+          UnitPrice: product.UnitPrice,
+          UnitsInStock: product.UnitsInStock,
+          ReorderLevel: product.ReorderLevel,
+          Discontinued: product.Discontinued,
+          Quantity: 0,
+          Discount: 0,
+          Total: 0,
+          RawTotal: 0,
+        });
+      })
+      await cartStore.setProductInCart(productsInCart);
       await cartStore.setProductsInCartQuantity();
       await cartStore.setProductsInCartTotal();
     };
 
     React.useEffect(() => {
       init();
-    }, []);
+    },[]);
 
     return (
       <div className="mr-2">
@@ -160,7 +194,12 @@ const CartPageEdit = observer(
             <Row>
               <Col xs={12} md={24}>
                 <Container fluid className={`block order-summary-item`}>
-                  <Col xs={12} md={24} className="block-item" style={{borderTop: 'none !important'}}>
+                  <Col
+                    xs={12}
+                    md={24}
+                    className="block-item"
+                    style={{ borderTop: "none !important" }}
+                  >
                     <Row>
                       <span
                         style={{
@@ -170,7 +209,18 @@ const CartPageEdit = observer(
                       >
                         Status
                       </span>
-                      <Dropdown>
+                      <span
+                        style={{
+                          borderRadius: "12px",
+                          background: "#fee589",
+                          border: "1px solid #e9b91f",
+                          fontSize: "16px",
+                          fontWeight: 600,
+                          padding: "10px 20px 10px 20px",
+                          minWidth: "96px",
+                        }}
+                      >{cartStore.orderStatus}</span>
+                      {/* <Dropdown>
                         <Dropdown.Toggle className="col-select-actions">
                           {status}
                         </Dropdown.Toggle>
@@ -187,7 +237,7 @@ const CartPageEdit = observer(
                             </Dropdown.Item>
                           ))}
                         </Dropdown.Menu>
-                      </Dropdown>
+                      </Dropdown> */}
                     </Row>
                   </Col>
                   <Col xs={12} md={24} className="block-item">
@@ -236,7 +286,7 @@ const CartPageEdit = observer(
                           <UnorderedListOutlined className="site-form-item-icon" />
                         }
                         suffix={
-                          <Tooltip title="Extra information">
+                          <Tooltip title="Please enter some extra note here">
                             <InfoCircleOutlined
                               style={{ color: "rgba(0,0,0,.45)" }}
                             />
@@ -269,6 +319,8 @@ const CartPageEdit = observer(
             <tbody>
               {productsInCart &&
                 productsInCart.map((item, idx) => {
+                  console.log(item.Quantity);
+                  
                   return (
                     <tr>
                       <td className="pr-0">{item.Id}</td>
@@ -358,6 +410,7 @@ const CartPageEdit = observer(
                 </tr>
               </thead>
               <tbody>
+                {console.log(productsInCart)}
                 {productsInCart.map((item, idx) => {
                   return (
                     <tr key={idx}>

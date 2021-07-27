@@ -30,13 +30,13 @@ const ManageAccountAdminPage = () => {
   const [id, setId] = React.useState<number>(-1);
 
   const [actionsBar] = React.useState<ActionBarDto[]>([
-    {
-      label: BUTTONS_RESTORE,
-      type: "primary",
-      action: () => {
-        handleRestore();
-      },
-    },
+    // {
+    //   label: BUTTONS_RESTORE,
+    //   type: "primary",
+    //   action: () => {
+    //     handleRestore();
+    //   },
+    // },
     {
       label: BUTTONS_ADD_NEW,
       type: "primary",
