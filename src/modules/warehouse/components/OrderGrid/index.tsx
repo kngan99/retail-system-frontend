@@ -1,11 +1,21 @@
-import React from 'react';
-import { observer } from 'mobx-react-lite';
-import { Container, Row, Col, Table, Form, Dropdown, OverlayTrigger, Tooltip } from 'react-bootstrap';
-import { CommonStoreContext } from '../../../../common/common.store';
-import { CartStoreContext } from '../../../../themes/pos/stores/cart.store';
-import { pageSizeOptions } from '../../../../common/constants/paging.constants';
-import { toTimeFormat } from '../../../../common/utils/time.util';
-import Paging from '../../../../common/components/Paging';
+import React from "react";
+import { observer } from "mobx-react-lite";
+import {
+  Container,
+  Row,
+  Col,
+  Table,
+  Form,
+  Dropdown,
+  OverlayTrigger,
+  Tooltip,
+} from "react-bootstrap";
+import { CommonStoreContext } from "../../../../common/common.store";
+import { CartStoreContext } from "../../../../themes/pos/stores/cart.store";
+import { pageSizeOptions } from "../../../../common/constants/paging.constants";
+import { toTimeFormat } from "../../../../common/utils/time.util";
+import Paging from "../../../../common/components/Paging";
+import { Tag } from "antd";
 
 // Paging
 
@@ -47,7 +57,7 @@ const OrderGrid = (props: ComponentProps) => {
     totals,
     handleChangePageItem,
     current,
-    actionType = 'listing',
+    actionType = "listing",
     actions,
     handleOrderSummary,
   } = props;
@@ -82,9 +92,8 @@ const OrderGrid = (props: ComponentProps) => {
   /*
    * Set frame Page
    */
-  const [currentPageFrame, setCurrentPageFrame] = React.useState<number>(
-    current
-  );
+  const [currentPageFrame, setCurrentPageFrame] =
+    React.useState<number>(current);
 
   /*
    * Set current order
@@ -105,8 +114,8 @@ const OrderGrid = (props: ComponentProps) => {
    * @return void
    */
   const handleSelectedRow = (value: string) => {
-    const checkboxes = document.getElementsByName('orderID[]');
-    const allOrderId = document.getElementsByName('allOrderId'),
+    const checkboxes = document.getElementsByName("orderID[]");
+    const allOrderId = document.getElementsByName("allOrderId"),
       checkItem = ids.find((item) => item === value);
     let checked = 0;
 
@@ -140,7 +149,7 @@ const OrderGrid = (props: ComponentProps) => {
   const handleSelectedAll = (event: any) => {
     let tmpItems: any[] = [],
       tmpIds: any[] = [];
-    const checkboxes = document.getElementsByName('orderID[]');
+    const checkboxes = document.getElementsByName("orderID[]");
     checkboxes.forEach((item: any) => {
       item.checked = event.target.checked;
     });
@@ -156,7 +165,7 @@ const OrderGrid = (props: ComponentProps) => {
       });
       setSelectedStatus(tmpItems);
       setIds(tmpIds);
-      tmpIds = ['-1'];
+      tmpIds = ["-1"];
     }
     console.log(ids);
     handleSelectedItems(tmpIds);
@@ -202,7 +211,7 @@ const OrderGrid = (props: ComponentProps) => {
      */
     let tmpItems: any[] = [];
     setItems(orderStore.orders);
-    
+
     console.log(orderStore.orders);
     items.map((item: any) => {
       tmpItems.push({ id: item.Id, checked: false });
@@ -219,7 +228,7 @@ const OrderGrid = (props: ComponentProps) => {
       {orderStore.orders && (
         <Container
           fluid
-          className={`block-orders block-table ${className ? className : ''}`}
+          className={`block-orders block-table ${className ? className : ""}`}
           style={style}
         >
           <Row>
@@ -243,19 +252,22 @@ const OrderGrid = (props: ComponentProps) => {
                     </th>
                     <th>
                       <span>{"Id"}</span>
-                      {(
-                          <OverlayTrigger
-                            key={'top'}
-                            placement={'top'}
-                            overlay={
-                              <Tooltip id="tooltip-right">Please click on the Id of specific Request to see its Summary</Tooltip>
-                            }
-                          >
-                            <div className="tooltip-icon">
-                              <span className="ico ico-faq"></span>
-                            </div>
-                          </OverlayTrigger>
-                        )}
+                      {
+                        <OverlayTrigger
+                          key={"top"}
+                          placement={"top"}
+                          overlay={
+                            <Tooltip id="tooltip-right">
+                              Please click on the Id of specific Request to see
+                              its Summary
+                            </Tooltip>
+                          }
+                        >
+                          <div className="tooltip-icon">
+                            <span className="ico ico-faq"></span>
+                          </div>
+                        </OverlayTrigger>
+                      }
                     </th>
                     {/* <th>{"Warehouse"}</th> */}
                     <th>{"Created By"}</th>
@@ -298,7 +310,7 @@ const OrderGrid = (props: ComponentProps) => {
                               item.CreatedAt.toLocaleString(),
                               commonStore.dateTimeFormat
                             )
-                          : '-'}
+                          : "-"}
                       </td>
                       {/* <td>{item.UpdatedBy}</td>
                       <td>
@@ -313,10 +325,22 @@ const OrderGrid = (props: ComponentProps) => {
                         data-th={`${item.Status}: `}
                         className="col-order-status"
                       >
-                        <span>{item.Status}</span>
+                        <span>
+                          {item.Status === "Created" ? (
+                            <Tag color="green">{item.Status}</Tag>
+                          ) : item.Status === "Confirmed" ? (
+                            <Tag color="cyan">{item.Status}</Tag>
+                          ) : item.Status === "Delivering" ? (
+                            <Tag color="cyan">{item.Status}</Tag>
+                          ) : item.Status === "Success" ? (
+                            <Tag color="geekblue">{item.Status}</Tag>
+                          ) : (
+                            <Tag color="#b3b4b3">{item.Status}</Tag>
+                          )}
+                        </span>
                       </td>
                       <td className="col-actions col-actions-abs">
-                        {actionType === 'listing' && (
+                        {actionType === "listing" && (
                           <Dropdown>
                             <Dropdown.Toggle className="col-select-actions">
                               <i className="ico ico-setting"></i>
@@ -324,7 +348,7 @@ const OrderGrid = (props: ComponentProps) => {
                             <Dropdown.Menu className="col-select-contents">
                               {actions.map((action: any, index: number) => (
                                 <Dropdown.Item
-                                  className={action.status ? action.status : ''}
+                                  className={action.status ? action.status : ""}
                                   onClick={() => {
                                     action.action(item.Id);
                                   }}

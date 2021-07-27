@@ -59,6 +59,7 @@ const ManageAccountAdminPage = () => {
       message.info("Verify successfully!");
       setId(-1);
     }
+    adminStore.getAccounts(criteriaDto.skip, criteriaDto.take);
   };
 
   const handleCancel = () => {
