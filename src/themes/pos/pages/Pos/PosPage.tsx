@@ -16,7 +16,8 @@ import Clock from 'react-live-clock';
 import { CommonStoreContext } from '../../../../common/common.store';
 import CreateCustomerModal from "../../components/CreateCustomerModal";
 import { Table as BootstrapTable } from 'react-bootstrap';
-import  BarCodePos  from '../../components/BarcodePos';
+import BarCodePos from '../../components/BarcodePos';
+import Dinero from "dinero.js";
 
 import StripeCheckout from "react-stripe-checkout";
 interface Product {
@@ -398,7 +399,7 @@ const PosPage = () => {
                     <Input onChange={async (e) => await onChangePay(e, Number((cartStore.totalAmount * 1.1).toFixed(2)))} />
                   </Form.Item>
                   <Form.Item label="Return">
-                    <Input disabled={cartStore.isCheckout} value={returnCash} />
+                    <Input disabled={cartStore.isCheckout} value={Dinero({ amount: parseInt(""+(returnCash * 100)) }).toFormat('$0,0.00')} />
                   </Form.Item>
                   {!cartStore.isConfirm && <Form.Item style={{ textAlign: 'right' }}>
                     <Button loading={cartStore.loading} onClick={async () => await handleConfirmOrderClick()} type="primary" htmlType="submit">
@@ -422,7 +423,7 @@ const PosPage = () => {
                 {!cartStore.isConfirm && <Form.Item style={{ textAlign: 'center' }}>
                   <Alert message="This payment method is currently supported VND currency only!" type="warning" />
                   <br />
-                  <a id="vnpaylink" href={"https://retailvnpay.herokuapp.com/order/create_payment_url/" + String((Number((cartStore.totalAmount * 1.1).toFixed(1))*23100))} target="_blank">Go to payment page!</a>
+                  <a id="vnpaylink" href={"https://retailvnpay.herokuapp.com/order/create_payment_url/" + String(parseInt(String((Number((cartStore.totalAmount * 1.1).toFixed(1))*23100))))} target="_blank">Go to payment page!</a>
                   <br />
                   <br/>
                   <Alert message="Please remember to create payment before confirming the order!" type="warning" />
