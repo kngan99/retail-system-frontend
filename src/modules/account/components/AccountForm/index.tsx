@@ -179,8 +179,8 @@ const CustomerAccountForm = (props: ComponentProps) => {
                     <Form.Label className="form-label">
                       Account Status
                     </Form.Label>
-                    <div className={authStore.loggedUser.EmailVerified ? 'account-status account-status-verified' : 'account-status account-status-unverified'}>
-                      {authStore.loggedUser.EmailVerified ? 'Verified' : 'Not Verified'}
+                    <div className={(authStore.loggedUser.EmailVerified && authStore.loggedUser.AdminVerified) ? 'account-status account-status-verified' : 'account-status account-status-unverified'}>
+                      {(authStore.loggedUser.EmailVerified && authStore.loggedUser.AdminVerified) ? 'Verified' : 'Not Verified'}
                     </div>
                     <OverlayTrigger
                       key={"top"}
