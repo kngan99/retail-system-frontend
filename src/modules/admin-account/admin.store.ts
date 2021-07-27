@@ -1,5 +1,5 @@
 import React from 'react';
-import { observable, action } from 'mobx';
+import { observable, action, makeObservable } from 'mobx';
 import adminService from './admin.service';
 import { NewAccountDto } from '../account/account.dto';
 import { newAdminFormInit } from './admin.constants';
@@ -7,7 +7,7 @@ import { newAdminFormInit } from './admin.constants';
 class AdminStore {
     @observable accounts: Account[] = [];
     @observable totalCount: number = 0;
-    @observable adminForm: NewAccountDto = newAdminFormInit;
+    @observable adminForm: any = newAdminFormInit;
   
     @action
     async getAccounts(skip: number, take: number) {
@@ -27,12 +27,14 @@ class AdminStore {
     }
 
     @action
+    async adminVerifyAccount(id: number) {
+        const result = await adminService.adminVerifyAccount(id);
+        return result;
+    }
+
+    @action
     async setAdminForm(data: any) {
-        this.adminForm.fName = data.FName;
-        this.adminForm.lName = data.LName;
-        this.adminForm.email = data.Email;
-        this.adminForm.homePhone = data.HomePhone;
-        this.adminForm.type = data.Type;
+        this.adminForm = data;
     }
 
     @action
@@ -56,6 +58,10 @@ class AdminStore {
     async deleteAccount(id: number) {
         const result = await adminService.deleteAccount(id);
         return result.data?.result;
+    }
+
+    constructor() {
+        makeObservable(this);
     }
   }
   

@@ -1,6 +1,5 @@
 import React from "react";
 import { observer } from "mobx-react";
-import { toast } from "react-toastify";
 import { useHistory } from "react-router-dom";
 import { AdminStoreContext } from "../../admin.store";
 import { pageSizeOptions } from "../../../../common/constants/paging.constants";
@@ -10,12 +9,11 @@ import { ActionBarDto } from "../../../theme/theme.dto";
 import AdminAccountFormModal from "../../components/AdminAccountFormModal";
 import AdminAccountGrid from "../../components/AccountGrid";
 import ActionBar from "../../../theme/components/ActionBar";
+import { message } from "antd";
+import ConfirmModal from "../../../../common/components/ConfirmModal";
 
 const ManageAccountAdminPage = () => {
   const history = useHistory();
-  /*
-   * Translation
-   */
   const {
     ADMIN_MANAGE_ACCOUNT,
     BUTTONS_ADD_NEW,
@@ -49,8 +47,28 @@ const ManageAccountAdminPage = () => {
     },
   ]);
 
+  const [showConfirmPopup, setShowConfirmPopup] = React.useState<boolean>(
+    false
+  );
+
+  /*Confirm modal*/
+  const handleOk = async () => {
+    setShowConfirmPopup(false);
+    const res = await adminStore.adminVerifyAccount(id);
+    if (res) {
+      message.info("Verify successfully!");
+      setId(-1);
+    }
+    adminStore.getAccounts(criteriaDto.skip, criteriaDto.take);
+  };
+
+  const handleCancel = () => {
+    setShowConfirmPopup(false);
+  };
+  /*End Confirm modal*/
+
   const handleRestore = () => {
-    history.push("/");
+    history.push("/account/deleted");
   };
 
   const [criteriaDto, setCriteriaDto] = React.useState<any>({
@@ -60,6 +78,7 @@ const ManageAccountAdminPage = () => {
   });
 
   const handleCreate = () => {
+    setMode("create");
     setShowPopup(true);
   };
 
@@ -74,8 +93,7 @@ const ManageAccountAdminPage = () => {
       if (result) {
         adminStore.getAccounts(criteriaDto.skip, criteriaDto.take);
         adminStore.resetAdminForm();
-        toast.dismiss();
-        toast.success(MESSAGES_CREATED_SUCCESS);
+        message.success(MESSAGES_CREATED_SUCCESS);
         setShowPopup(false);
       }
     }
@@ -84,11 +102,17 @@ const ManageAccountAdminPage = () => {
       if (result) {
         adminStore.getAccounts(criteriaDto.skip, criteriaDto.take);
         adminStore.resetAdminForm();
-        toast.dismiss();
-        toast.success(MESSAGES_UPDATE_SUCCESS);
+        message.success(MESSAGES_UPDATE_SUCCESS);
         setShowPopup(false);
       }
     }
+    message.success(MESSAGES_CREATED_SUCCESS);
+        setShowPopup(false);
+  };
+
+  const handleAdminVerify = async (id: number) => {
+    setShowConfirmPopup(true);
+    setId(id);
   };
 
   const handleEdit = async (id: number) => {
@@ -114,12 +138,17 @@ const ManageAccountAdminPage = () => {
     });
   };
 
+  React.useEffect(() => {
+    adminStore.getAccounts(criteriaDto.skip, criteriaDto.take);
+  }, [criteriaDto, adminStore]);
+
   return (
     <>
       <AdminWrapper pageTitle={ADMIN_MANAGE_ACCOUNT}>
         <ActionBar actions={actionsBar} />
         <AdminAccountGrid
           handleChangePageItem={handleChangePageItem}
+          handleAdminVerify={handleAdminVerify}
           handleEdit={handleEdit}
           handleDelete={handleDelete}
           currentId={id}
@@ -131,6 +160,12 @@ const ManageAccountAdminPage = () => {
           handleSubmit={handleSubmit}
           mode={mode}
         />
+        <ConfirmModal
+            show={showConfirmPopup}
+            handleCancel={handleCancel}
+            handleOk={handleOk}
+            children={<strong>Do you want to verify this account?</strong>}
+          ></ConfirmModal>
       </AdminWrapper>
     </>
   );

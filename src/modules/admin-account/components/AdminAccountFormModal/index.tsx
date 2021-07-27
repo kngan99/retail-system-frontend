@@ -102,7 +102,7 @@ const AdminAccountFormModal = (props: ComponentProps) => {
             handleSubmit(values);
           }}
           initialValues={initialValues}
-        >
+        >          
           {({ handleSubmit, handleChange, handleBlur, values, errors }) => (
             <Form
               noValidate
@@ -121,7 +121,7 @@ const AdminAccountFormModal = (props: ComponentProps) => {
                 className="form-group-name"
               >
                 <Form.Label className="form-label-required">
-                  {(ACCOUNT_FNAME)} <span>*</span>
+                  {(ACCOUNT_FNAME)} 
                 </Form.Label>
                 <Form.Control
                   type="text"
@@ -140,7 +140,7 @@ const AdminAccountFormModal = (props: ComponentProps) => {
                 className="form-group-name"
               >
                 <Form.Label className="form-label-required">
-                  {(ACCOUNT_LNAME)} <span>*</span>
+                  {(ACCOUNT_LNAME)} 
                 </Form.Label>
                 <Form.Control
                   type="text"
@@ -159,7 +159,7 @@ const AdminAccountFormModal = (props: ComponentProps) => {
                 className="form-group-email"
               >
                 <Form.Label className="form-label-required">
-                  {(ACCOUNT_EMAIL)} <span>*</span>
+                  {(ACCOUNT_EMAIL)} 
                 </Form.Label>
                 <Form.Control
                   type="text"
@@ -178,7 +178,7 @@ const AdminAccountFormModal = (props: ComponentProps) => {
                 className="form-group-homePhone"
               >
                 <Form.Label className="form-label-required">
-                  {(ACCOUNT_PHONE)} <span>*</span>
+                  {(ACCOUNT_PHONE)} 
                 </Form.Label>
                 <Form.Control
                   type="text"
@@ -197,7 +197,7 @@ const AdminAccountFormModal = (props: ComponentProps) => {
                 className="form-group-type"
               >
                 <Form.Label className="form-label-required">
-                  {(ACCOUNT_ROLE_LABEL)} <span>*</span>
+                  {(ACCOUNT_ROLE_LABEL)} 
                 </Form.Label>
                 <Form.Control
                   as="select"

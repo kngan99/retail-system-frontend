@@ -18,6 +18,7 @@ interface ComponentProps {
   actionType?: string;
   actions?: AccountsActionsDto[];
   handleChangePageItem?: any;
+  handleAdminVerify?: any;
   handleEdit?: any;
   handleDelete?: any;
   currentId: number;
@@ -36,6 +37,7 @@ const AdminAccountGrid = (props: ComponentProps) => {
     children,
     title,
     handleChangePageItem,
+    handleAdminVerify,
     handleEdit,
     handleDelete,
     currentId,
@@ -73,15 +75,21 @@ const AdminAccountGrid = (props: ComponentProps) => {
     handleChangePageItem(page);
   };
 
+  // React.useEffect(() => {
+  //   const getAccounts = async () => {
+  //     await adminStore.getAccounts(0, 10);
+  //     setItems(adminStore.accounts);
+  //     setTotals(adminStore.totalCount);
+  //     setTotalPage(Math.ceil(totals / +pageSizeOptions[0]));
+  //   };
+  //   getAccounts();
+  // }, [adminStore, totals]);
+
   React.useEffect(() => {
-    const getAccounts = async () => {
-      await adminStore.getAccounts(0, 10);
-      setItems(adminStore.accounts);
-      setTotals(adminStore.totalCount);
-      setTotalPage(Math.ceil(totals / +pageSizeOptions[0]));
-    };
-    getAccounts();
-  }, [adminStore, totals]);
+    setItems(adminStore.accounts);
+    setTotals(adminStore.totalCount);
+    setTotalPage(Math.ceil(totals / +pageSizeOptions[0]));
+  }, [adminStore.accounts, adminStore.totalCount, totals]);
 
   /*Confirm modal*/
   const handleOk = async () => {
@@ -119,7 +127,7 @@ const AdminAccountGrid = (props: ComponentProps) => {
                 }}
                 className="order-grid"
               >
-                <Table responsive="lg">
+                <Table responsive="md" style={{marginLeft: "-16px"}}>
                   <thead>
                     <tr>
                       <th>
@@ -129,7 +137,9 @@ const AdminAccountGrid = (props: ComponentProps) => {
                       <th>Email</th>
                       <th>Phone</th>
                       <th>Role</th>
-                      <th className="col-actions"></th>
+                      <th>Email Verified </th>
+                      <th>Admin Verified </th>
+                      <th className="col-actions">Actions</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -142,7 +152,35 @@ const AdminAccountGrid = (props: ComponentProps) => {
                         <td>{item.Email}</td>
                         <td>{item.Homephone}</td>
                         <td>{item.Type}</td>
+                        <td
+                          className={
+                            item.EmailVerified
+                              ? "account-status account-status-verified"
+                              : "account-status account-status-unverified"
+                          }
+                        >
+                          {item.EmailVerified ? "Verified" : "Not Verified"}
+                        </td>
+                        <td
+                          className={
+                            item.AdminVerified
+                              ? "account-status account-status-verified"
+                              : "account-status account-status-unverified"
+                          }
+                        >
+                          {item.AdminVerified ? "Verified" : "Not Verified"}
+                        </td>
                         <td className="col-actions">
+                          <Button
+                            variant="primary"
+                            onClick={() => {
+                              handleAdminVerify(item.Id);
+                            }}
+                            className="btn-icon"
+                            size="lg"
+                          >
+                            <i className="ico ico-checked" style={{fontSize:"medium"}}></i>
+                          </Button>
                           <Button
                             variant="primary"
                             onClick={() => handleEdit(item.Id)}

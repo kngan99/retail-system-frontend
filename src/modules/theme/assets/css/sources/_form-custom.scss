@@ -113,6 +113,14 @@ $form-control-readonly-color: $c-white-300;
     margin: 0;
   }
 
+  .account-status-verified {
+    color: #01cdfe;
+  }
+
+  .account-status-unverified {
+    color: #d11141;
+  }  
+
   .service-info {
     padding: 20px 0 10px;
 

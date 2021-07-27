@@ -18,7 +18,6 @@ const HomePage = () => {
   return (
     <>
       <div style={{ background: "white", minHeight: "1000px"}}>
-        {console.log(accounts)}
         <Row style={{ marginLeft: '10px' }}>Home Page</Row>
         <Row style={{ marginLeft: '10px' }}>Test account</Row>
         <br/>

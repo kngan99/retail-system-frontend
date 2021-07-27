@@ -1,5 +1,5 @@
 import React from 'react';
-import { observable, action } from 'mobx';
+import { observable, action, makeObservable } from 'mobx';
 import authenticateService from './authenticate.service';
 import { removeFromStorage, saveToStorage } from '../../common/utils/storage.util';
 import { LoginDto } from '../account/account.dto';
@@ -7,6 +7,7 @@ import { LoginDto } from '../account/account.dto';
 export default class AuthenticationStore {
   @observable loggedUser: any = null;
   @observable tmpUser: any = null;
+  @observable role: string = '';
   @observable loginFormValue: LoginDto = {
     email: '',
     password: '',
@@ -32,7 +33,55 @@ export default class AuthenticationStore {
     const data = await authenticateService.login(this.loginFormValue);
     if (data) {
       this._setCurrentInfo(data);
-      const redirectUrl = (this.loggedUser.EmailVerified) ? url : urlNotVerified;
+      if (data.Type === "Salescleck") {
+        url = "/pos";
+      }
+      else if (data.Type === "StoreManager") {
+        url = "/pos/past";
+      }
+      else if (data.Type === "StoreStaff") {
+        url = "/product/manage";
+      }
+      else if (data.Type === "StoresManager") {
+        url = "/product/manage";
+      }
+      else if (data.Type === "StoreWarehouseManager") {
+        url = "/warehouse/new-request-goods-note";
+      }
+      else if (data.Type === "WarehouseStaff") {
+        url = "/warehouse/request-goods-note-cart/manage";
+      }
+      else if (data.Type === "OperationStaff") {
+        url = "/operation/recommend-products-position";
+      }
+      let redirectUrl = (this.loggedUser.AdminVerified && this.loggedUser.EmailVerified) ? url : urlNotVerified;
+      saveToStorage('loggedId', this.loggedUser.Id);
+      saveToStorage("storeId", this.loggedUser.StoreId);
+      if (data.Type === "WarehouseStaff") {saveToStorage('warehouseId', this.loggedUser.WarehouseId);}
+      console.log(data);
+      this.role = this.loggedUser.Type;
+      console.log(this.loggedUser.Type);
+      // if (data.Type === "Salescleck") {
+      //   this._redirectAfterLogin(history, "/pos");
+      // }
+      // else if (data.Type === "StoreManager") {
+      //   this._redirectAfterLogin(history, "/pos/past");
+      // }
+      // else if (data.Type === "StoreStaff") {
+      //   this._redirectAfterLogin(history, "/product/manage");
+      // }
+      // else if (data.Type === "StoresManager") {
+      //   this._redirectAfterLogin(history, "/product/manage");
+      // }
+      // else if (data.Type === "StoreWarehouseManager") {
+      //   this._redirectAfterLogin(history, "/warehouse/new-request-goods-note");
+      // }
+      // else if (data.Type === "WarehouseStaff") {
+      //   this._redirectAfterLogin(history, "/warehouse/request-goods-note-cart/manage");
+      // }
+      // else if (data.Type === "OperationStaff") {
+      //   this._redirectAfterLogin(history, "/operation/recommend-products-position");
+      // }
       this._redirectAfterLogin(history, redirectUrl);
     }
   }
@@ -62,6 +111,8 @@ export default class AuthenticationStore {
 
   private _setCurrentInfo(data: any) {
     this.loggedUser = data;
+    localStorage.setItem('fullname', data.FName + ' ' + data.LName);
+    localStorage.setItem('role', data.Type);
     saveToStorage('token', data.token);
   }
 
@@ -87,6 +138,10 @@ export default class AuthenticationStore {
       this.tmpUser = result;
     }
     return result;
+  }
+
+  constructor() {
+    makeObservable(this);
   }
 }
 

@@ -116,7 +116,7 @@ $box-lang-dropdown-width: 90px;
   }
 
   .box-noti {
-    display: inline-block;
+    display: flex;
     position: relative;
   }
 
@@ -217,7 +217,7 @@ $box-lang-dropdown-width: 90px;
   }
 
   .box-info {
-    display: inline-block;
+    display: flex;
     margin-left: 10px;
     position: relative;
     padding: 0 0 0 10px;

@@ -1,0 +1,124 @@
+.site-layout-content {
+    min-height: 280px;
+    padding: 24px;
+    background: #fff;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.ant-layout-content {
+    padding: 0 20px;
+}
+
+.ant-layout-header .logo {
+    float: left;
+    width: 120px;
+    height: 31px;
+    margin: 16px 24px 16px 0;
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.ant-row-rtl #components-layout-demo-top .logo {
+    float: right;
+    margin: 16px 0 16px 24px;
+}
+
+.site-page-header-ghost-wrapper {
+    padding: 24px;
+    background-color: #f5f5f5;
+}
+
+.ant-btn-primary {
+    background: linear-gradient( -90deg, #fab91a 0, #ffd424 100%);
+    border: none;
+}
+
+.ant-btn-primary:hover {
+    background: linear-gradient( -90deg, #fab91a 0, #ffd424 100%);
+    border: none;
+}
+
+h5 {
+    color: '#8c8c8c';
+}
+
+
+/* .breadcrumb {
+    background: #faad14;
+} */
+
+
+/* input::selection {
+    border-color: #d48806;
+} */
+
+.ant-pagination-item-active:active {
+    border-color: #e9b91f;
+    color: #e9b91f;
+}
+
+.ant-tabs-ink-bar {
+    background: #e9b91f;
+}
+
+.ant-btn-primary:hover,
+.ant-btn-primary:focus,
+.ant-btn-primary:active,
+.ant-btn-primary:visited,
+.ant-btn-primary:checked {
+    border-color: #e9b91f;
+    background: #e9b91f;
+    color: whitesmoke;
+}
+
+
+/* .ant-btn-link,
+.abt-btn-link:focus,
+.abt-btn-link:active,
+.abt-btn-link:visited,
+.abt-btn-link:checked {
+    color: #e9b91f;
+    background: transparent;
+} */
+
+a:hover {
+    color: #e9b91f;
+}
+
+.ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+    color: #e9b91f;
+}
+
+.ant-tabs-tab:hover {
+    color: #e9b91f;
+}
+
+@media print {
+    button, .menu-wrapper {
+        display:none;
+    }
+    div.top-menu, div.admin-footer {
+        display:none;
+    }
+    .no-print {
+        display:none;
+    }
+    /* body * {display:none;} */
+}
+
+.ant-layout-footer{
+    padding: 1px;
+}
+
+.site-page-header-ghost-wrapper{
+    padding: 1px;
+}
+
+/* .ant-input,
+.ant-input:hover,
+.ant-input:focus,
+.ant-input:active,
+.ant-input:visited,
+.ant-input:checked {
+    border-color: #e9b91f;
+} */

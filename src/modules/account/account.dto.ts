@@ -35,6 +35,14 @@ export interface UpdateAccountDto {
   companyId?: string;
 }
 
+export interface UpdateAccountRequestDto {
+  phoneNumber?: string;
+  email?: string;
+  firstName?: string;
+  lastName?: string;
+  password?: string;
+}
+
 export interface CreateEmployeeDto {
   email?: string;
   password?: string;
@@ -74,4 +82,13 @@ export interface NewAccountDto {
   lName: string;
   homePhone: string;
   type: any;
+}
+
+export interface AdminFilterDto {
+  skip?: number;
+  take?: number;
+  orderBy?: string;
+  orderDirection?: 'ASC' | 'DESC';
+  searchBy?: string;
+  searchKeyword?: string;
 }

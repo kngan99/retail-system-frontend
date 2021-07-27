@@ -57,6 +57,8 @@ const AdminMenu = (props: ComponentProps) => {
    */
   const [showMenu, setShowMenu] = React.useState<boolean>(false);
 
+  const [isDisplayIconArray, setIsDisplayIconArray] = React.useState<any[]>([true, true, true, true]);
+
   const handleMediaQueryChange = (matches: boolean) => {
     if (matches === false) setShowMenu(matches);
   };
@@ -77,6 +79,36 @@ const AdminMenu = (props: ComponentProps) => {
     history.push(url);
     commonStore.setActiveMenu(url);
   };
+
+  React.useEffect(() => {
+    if (localStorage.getItem('role') === 'StoreManager') {
+      setIsDisplayIconArray([false, true, true, true, true, true, false, false, false]);
+    }
+    else if (localStorage.getItem('role') === 'StoreStaff') {
+      setIsDisplayIconArray([false, false, true, false, false, false, false, false,false]);
+    }
+    else if (localStorage.getItem('role') === 'StoresManager') {
+      setIsDisplayIconArray([false,true,true, true, false, false, true, true, false ]);
+    }
+    else if (localStorage.getItem('role') === 'Salescleck') {
+      setIsDisplayIconArray([true, false, false, false, true, false, false, false, false]);
+    }
+    else if (localStorage.getItem('role') === 'StoreWarehouseManager') {
+      setIsDisplayIconArray([false, false, true, false, false, true, false, false, false]);
+    }
+    else if (localStorage.getItem('role') === 'WarehouseStaff') {
+      setIsDisplayIconArray([false, false, false, false, false, true, false, false, false]);
+    }
+    else {
+      setIsDisplayIconArray([false, false, false, false, false, true, true, true, false]);
+    }
+    // if(authenticationStore.loggedUser && authenticationStore.loggedUser.Type==='StoreManager'){
+    //   setIsDisplayIconArray([true,true,true, true, true]);
+    // }
+    // else{
+    // setIsDisplayIconArray([false,false,true, true, true]);
+    // }
+  },[]);
 
   return (
     <>
@@ -111,6 +143,7 @@ const AdminMenu = (props: ComponentProps) => {
           )}
           <Nav className="menu-items" style={style}>
             {adminMenu.map((item: MenuDto, index) => (
+              ( isDisplayIconArray[index] &&
               <Nav.Link
                 className={`item ${
                   commonStore.activeMenu === item.url ? 'active' : ''
@@ -122,6 +155,7 @@ const AdminMenu = (props: ComponentProps) => {
                 {item.icon && <i className={`ico ${item.icon}`}></i>}
                 <span>{(item.label)}</span>
               </Nav.Link>
+              )
             ))}
             <Nav.Link className="item" onClick={() => handleLogout()}>
               <i className="ico ico-logout"></i>

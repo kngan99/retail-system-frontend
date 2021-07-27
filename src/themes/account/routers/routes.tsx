@@ -63,4 +63,39 @@ export const accountsRoutes = [
     isLayout: false,
     isGuarded: false,
   },
+  {
+    path: '/account/setup',
+    name: 'account.setup',
+    title:'Account setup',
+    exact: true,
+    component: React.lazy(
+      () => import('../../../modules/account/pages/Setup')
+    ),
+    isLayout: false,
+    isGuarded: false,
+  },
+  {
+    path: '/account/edit/:id',
+    name: 'Edit Accounts',
+    title: 'Edit Accounts',
+    exact: true,
+    permission: '',
+    component: React.lazy(
+      () => import('../../../modules/admin-account/pages/EditAccount')
+    ),
+    isLayout: false,
+    isGuarded: false,
+  },
+  {
+    path: '/account/deleted',
+    name: 'Restore Accounts',
+    title: 'Restore Accounts',
+    exact: true,
+    permission: '',
+    component: React.lazy(
+      () => import('../../../modules/admin-account/pages/ManageDeleted')
+    ),
+    isLayout: false,
+    isGuarded: false,
+  },
 ];

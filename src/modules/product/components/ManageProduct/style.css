@@ -1,0 +1,37 @@
+                .ant-modal-content {
+                    border-radius: 20px;
+                }
+                
+                .ant-modal-header {
+                    border-radius: 20px 0px;
+                    background: #fab91a;
+                }
+                
+                .ant-modal-footer {
+                    border-radius: 20px 0px;
+                    padding-right: 4%;
+                }
+                
+                .ant-modal-footer button {
+                    border-radius: 5px;
+                }
+                
+                .ant-modal-footer .ant-btn-primary {
+                    background: #fab91a;
+                    border: none;
+                }
+                
+                .ant-btn-dangerous {
+                    border-radius: 4px;
+                }
+                /* .ant-btn-link {
+                    color: #fab91a;
+                }
+                
+                .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+                    color: #fab91a;
+                }
+                
+                .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn::selection {
+                    color: #fab91a;
+                } */

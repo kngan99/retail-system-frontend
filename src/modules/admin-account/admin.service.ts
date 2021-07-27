@@ -19,9 +19,15 @@ class AdminService {
     return result.data;
   }
 
+  public async adminVerifyAccount(id: number) {
+    const result = await http.put(`${this.accountPrefix}/admin-verify/${id}`);
+    return result;
+  }
+
   public async addAccount(model: any) {
+    console.log(model);
     const result = await http.post(`${this.accountPrefix}/`, model);
-    return result.data?.result;
+    return result.data;
   }
 
   public async updateAccount(id: number, model: any) {
