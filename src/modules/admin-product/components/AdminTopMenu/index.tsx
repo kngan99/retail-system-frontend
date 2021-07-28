@@ -2,7 +2,7 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { useHistory } from 'react-router-dom';
 import { useMediaQuery } from 'react-responsive';
-import logoSvg from '../../../../../src/logo.svg';
+import logoSvg from '../../../../../src/logo1.svg';
 import { LogoDto } from '../../../../common/dto/Logo.dto';
 
 /*

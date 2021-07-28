@@ -8,7 +8,6 @@ class AccountService {
   accountPrefix: string = DEFAULT_API.PREFIX;
 
   public async getAccounts(skip: number, take: number) {
-    console.log("debug");
     const result = await http.get(`${this.accountPrefix}/`, {
       params: {
         skip: skip,

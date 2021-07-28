@@ -3,6 +3,7 @@ import { observable, action, makeObservable } from 'mobx';
 import authenticateService from './authenticate.service';
 import { removeFromStorage, saveToStorage } from '../../common/utils/storage.util';
 import { LoginDto } from '../account/account.dto';
+import accountService from '../account/account.service';
 
 export default class AuthenticationStore {
   @observable loggedUser: any = null;
@@ -58,9 +59,7 @@ export default class AuthenticationStore {
       saveToStorage('loggedId', this.loggedUser.Id);
       saveToStorage("storeId", this.loggedUser.StoreId);
       if (data.Type === "WarehouseStaff") {saveToStorage('warehouseId', this.loggedUser.WarehouseId);}
-      console.log(data);
       this.role = this.loggedUser.Type;
-      console.log(this.loggedUser.Type);
       // if (data.Type === "Salescleck") {
       //   this._redirectAfterLogin(history, "/pos");
       // }
@@ -107,6 +106,13 @@ export default class AuthenticationStore {
     removeFromStorage('token');
     this.loggedUser = null;
     history.push(url);
+  }
+
+  @action
+  async getCurAccountById(id: number) {
+    let data: any;
+    data = await accountService.getAccountInfo(id);
+    this.loggedUser = data;
   }
 
   private _setCurrentInfo(data: any) {

@@ -16,9 +16,7 @@ import { Formik } from "formik";
 import * as yup from "yup";
 import bsCustomFileInput from "bs-custom-file-input";
 import Image from "react-bootstrap/Image";
-import {
-  PHONE_REGEXP,
-} from "../../../../common/constants/rules.constants";
+import { PHONE_REGEXP } from "../../../../common/constants/rules.constants";
 import { AuthenticationStoreContext } from "../../../authenticate/authentication.store";
 import { I18N } from "../../../../i18n.enum";
 import { REFERENCE_TYPE } from "../../referenceType.enum";
@@ -52,11 +50,7 @@ const CustomerAccountForm = (props: ComponentProps) => {
     handleDeleteFiles,
   } = props;
 
-  const {
-    VALIDATE_EMAIL,
-    VALIDATE_PHONE,
-    BUTTONS_UPDATE,
-  } = I18N;
+  const { VALIDATE_EMAIL, VALIDATE_PHONE, BUTTONS_UPDATE } = I18N;
 
   /*
    * Validation
@@ -65,10 +59,7 @@ const CustomerAccountForm = (props: ComponentProps) => {
     FName: yup.string().notRequired(),
     LName: yup.string().notRequired(),
     Email: yup.string().email(VALIDATE_EMAIL).notRequired(),
-    Homephone: yup
-      .string()
-      .matches(PHONE_REGEXP, VALIDATE_PHONE)
-      .notRequired(),
+    Homephone: yup.string().matches(PHONE_REGEXP, VALIDATE_PHONE).notRequired(),
   });
 
   const [avatar, setAvatar] = React.useState<string>("");
@@ -88,6 +79,7 @@ const CustomerAccountForm = (props: ComponentProps) => {
       <Formik
         validationSchema={schema}
         onSubmit={(values) => {
+          console.log("Ngan");
           handleSubmitForm(values);
         }}
         initialValues={initialValues}
@@ -113,9 +105,7 @@ const CustomerAccountForm = (props: ComponentProps) => {
                     controlId="Email"
                     className="form-group-email"
                   >
-                    <Form.Label className="form-label">
-                      Email
-                    </Form.Label>
+                    <Form.Label className="form-label">Email</Form.Label>
                     <Form.Control
                       type="text"
                       name="email"
@@ -137,9 +127,7 @@ const CustomerAccountForm = (props: ComponentProps) => {
                     controlId="FName"
                     className="form-group-firstName"
                   >
-                    <Form.Label className="form-label">
-                      Firstname
-                    </Form.Label>
+                    <Form.Label className="form-label">Firstname</Form.Label>
                     <Form.Control
                       type="text"
                       value={values.FName ?? ""}
@@ -157,9 +145,7 @@ const CustomerAccountForm = (props: ComponentProps) => {
                     controlId="LName"
                     className="form-group-firstName"
                   >
-                    <Form.Label className="form-label">
-                      Lastname
-                    </Form.Label>
+                    <Form.Label className="form-label">Lastname</Form.Label>
                     <Form.Control
                       type="text"
                       value={values.LName ?? ""}
@@ -179,15 +165,26 @@ const CustomerAccountForm = (props: ComponentProps) => {
                     <Form.Label className="form-label">
                       Account Status
                     </Form.Label>
-                    <div className={(authStore.loggedUser.EmailVerified && authStore.loggedUser.AdminVerified) ? 'account-status account-status-verified' : 'account-status account-status-unverified'}>
-                      {(authStore.loggedUser.EmailVerified && authStore.loggedUser.AdminVerified) ? 'Verified' : 'Not Verified'}
+                    <div
+                      className={
+                        authStore.loggedUser.EmailVerified &&
+                        authStore.loggedUser.AdminVerified
+                          ? "account-status account-status-verified"
+                          : "account-status account-status-unverified"
+                      }
+                    >
+                      {authStore.loggedUser.EmailVerified &&
+                      authStore.loggedUser.AdminVerified
+                        ? "Verified"
+                        : "Not Verified"}
                     </div>
                     <OverlayTrigger
                       key={"top"}
                       placement={"top"}
                       overlay={
                         <Tooltip id="tooltip-info">
-                          Contact account owner to vefify or use admin page to verify
+                          Contact account owner to vefify or use admin page to
+                          verify
                         </Tooltip>
                       }
                     >
@@ -197,7 +194,7 @@ const CustomerAccountForm = (props: ComponentProps) => {
                     </OverlayTrigger>
                   </Form.Group>
                 </Row>
-                <Row>
+                {/* <Row>
                   <Form.Group
                     as={Col}
                     xs={12}
@@ -238,7 +235,7 @@ const CustomerAccountForm = (props: ComponentProps) => {
                       {errors.LName}
                     </Form.Control.Feedback>
                   </Form.Group>
-                </Row>
+                </Row> */}
                 <Row>
                   <Form.Group
                     as={Col}
@@ -247,32 +244,29 @@ const CustomerAccountForm = (props: ComponentProps) => {
                     controlId="Type"
                     className="form-group-firstName"
                   >
-                    <Form.Label className="form-label">
-                      Type
-                    </Form.Label>
+                    <Form.Label className="form-label">Type</Form.Label>
                     <Form.Control
                       type="text"
                       value={values.Type ?? ""}
                       onChange={handleChange}
-                      isInvalid={!!errors.LName}
+                      isInvalid={!!errors.FName}
+                      readOnly
                     />
                     <Form.Control.Feedback type="invalid">
-                      {errors.LName}
+                      {errors.FName}
                     </Form.Control.Feedback>
                   </Form.Group>
                   <Form.Group
                     as={Col}
                     xs={12}
                     lg={5}
-                    controlId="HomePhone"
+                    controlId="Homephone"
                     className="form-group-firstName"
                   >
-                    <Form.Label className="form-label">
-                      Phone Number
-                    </Form.Label>
+                    <Form.Label className="form-label">Phone Number</Form.Label>
                     <Form.Control
                       type="text"
-                      value={values.HomePhone ?? ""}
+                      value={values.Homephone ?? ""}
                       onChange={handleChange}
                       isInvalid={!!errors.LName}
                     />
@@ -280,10 +274,14 @@ const CustomerAccountForm = (props: ComponentProps) => {
                       {errors.LName}
                     </Form.Control.Feedback>
                   </Form.Group>
-
-
                 </Row>
-                <Row>
+                <Row
+                  style={{
+                    minHeight: "41px",
+                    marginTop: "14px",
+                    borderTop: "1px #d2cfcf solid",
+                  }}
+                >
                   <Form.Group
                     as={Col}
                     xs={12}
@@ -291,7 +289,7 @@ const CustomerAccountForm = (props: ComponentProps) => {
                     controlId="Password"
                     className="form-group-firstName"
                   >
-                    <Form.Label className="form-label">
+                    {/* <Form.Label className="form-label">
                       Password
                     </Form.Label>
                     <Form.Control
@@ -302,7 +300,7 @@ const CustomerAccountForm = (props: ComponentProps) => {
                     />
                     <Form.Control.Feedback type="invalid">
                       {errors.FName}
-                    </Form.Control.Feedback>
+                    </Form.Control.Feedback> */}
                   </Form.Group>
                 </Row>
                 <Row>
@@ -313,17 +311,15 @@ const CustomerAccountForm = (props: ComponentProps) => {
                     controlId="Birthday"
                     className="form-group-firstName"
                   >
-                    <Form.Label className="form-label">
-                      Birthday
-                    </Form.Label>
+                    <Form.Label className="form-label">Birthday</Form.Label>
                     <Form.Control
                       type="text"
                       value={values.Birthday ?? ""}
                       onChange={handleChange}
-                      isInvalid={!!errors.LName}
+                      isInvalid={!!errors.FName}
                     />
                     <Form.Control.Feedback type="invalid">
-                      {errors.LName}
+                      {errors.FName}
                     </Form.Control.Feedback>
                   </Form.Group>
                   <Form.Group
@@ -333,9 +329,7 @@ const CustomerAccountForm = (props: ComponentProps) => {
                     controlId="HireDate"
                     className="form-group-firstName"
                   >
-                    <Form.Label className="form-label">
-                      Hire Date
-                    </Form.Label>
+                    <Form.Label className="form-label">Hired Date</Form.Label>
                     <Form.Control
                       type="text"
                       value={values.HireDate ?? ""}
@@ -355,9 +349,7 @@ const CustomerAccountForm = (props: ComponentProps) => {
                     controlId="Country"
                     className="form-group-firstName"
                   >
-                    <Form.Label className="form-label">
-                      Country
-                    </Form.Label>
+                    <Form.Label className="form-label">Country</Form.Label>
                     <Form.Control
                       type="text"
                       value={values.Country ?? ""}
@@ -375,17 +367,15 @@ const CustomerAccountForm = (props: ComponentProps) => {
                     controlId="PostalCode"
                     className="form-group-firstName"
                   >
-                    <Form.Label className="form-label">
-                      PostalCode
-                    </Form.Label>
+                    <Form.Label className="form-label">Postal Code</Form.Label>
                     <Form.Control
                       type="text"
                       value={values.PostalCode ?? ""}
                       onChange={handleChange}
-                      isInvalid={!!errors.LName}
+                      isInvalid={!!errors.FName}
                     />
                     <Form.Control.Feedback type="invalid">
-                      {errors.LName}
+                      {errors.FName}
                     </Form.Control.Feedback>
                   </Form.Group>
                 </Row>
@@ -397,9 +387,7 @@ const CustomerAccountForm = (props: ComponentProps) => {
                     controlId="City"
                     className="form-group-firstName"
                   >
-                    <Form.Label className="form-label">
-                      City
-                    </Form.Label>
+                    <Form.Label className="form-label">City</Form.Label>
                     <Form.Control
                       type="text"
                       value={values.City ?? ""}
@@ -417,17 +405,15 @@ const CustomerAccountForm = (props: ComponentProps) => {
                     controlId="Region"
                     className="form-group-firstName"
                   >
-                    <Form.Label className="form-label">
-                      Region
-                    </Form.Label>
+                    <Form.Label className="form-label">Region</Form.Label>
                     <Form.Control
                       type="text"
                       value={values.Region ?? ""}
                       onChange={handleChange}
-                      isInvalid={!!errors.LName}
+                      isInvalid={!!errors.FName}
                     />
                     <Form.Control.Feedback type="invalid">
-                      {errors.LName}
+                      {errors.FName}
                     </Form.Control.Feedback>
                   </Form.Group>
                 </Row>
@@ -439,9 +425,7 @@ const CustomerAccountForm = (props: ComponentProps) => {
                     controlId="Address"
                     className="form-group-firstName"
                   >
-                    <Form.Label className="form-label">
-                      Address
-                    </Form.Label>
+                    <Form.Label className="form-label">Address</Form.Label>
                     <Form.Control
                       type="text"
                       value={values.Address ?? ""}
@@ -461,9 +445,7 @@ const CustomerAccountForm = (props: ComponentProps) => {
                     controlId="Notes"
                     className="form-group-firstName"
                   >
-                    <Form.Label className="form-label">
-                      Notes
-                    </Form.Label>
+                    <Form.Label className="form-label">Notes</Form.Label>
                     <Form.Control
                       type="text"
                       value={values.Notes ?? ""}
@@ -475,95 +457,14 @@ const CustomerAccountForm = (props: ComponentProps) => {
                     </Form.Control.Feedback>
                   </Form.Group>
                 </Row>
-                <Row>
-                  <Form.Group
-                    as={Col}
-                    xs={12}
-                    lg={7}
-                    controlId="avatarUrl"
-                    className="form-group-avatarUrl"
-                  >
-                    <div className="form-image-wrapper">
-                      <Form.Label className="form-label">
-                        Upload Profile Avatar
-                        <span className="image-size">
-                          {"Image size < 3MB"}
-                        </span>
-                      </Form.Label>
-                      {avatar && (
-                        <div className="image">
-                          <a
-                            className="zoom-image"
-                            href={avatar}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            <Image src={`${avatar}`} />
-                          </a>
-                          <Button
-                            className="btn-icon"
-                            onClick={() => {
-                              setAvatar("");
-                              handleDeleteFiles(
-                                REFERENCE_TYPE.PROFILE_IMG
-                              );
-                            }}
-                          >
-                            <i className="ico ico-o-close"></i>
-                          </Button>
-                        </div>
-                      )}
-                      <Form.File
-                        id="iconCompany"
-                        label="Choose an image"
-                        onChange={handleUploadAvatar}
-                        custom
-                      />
-                    </div>
-                  </Form.Group>
-                </Row>
-                {/* <Row>
-                  <Form.Group
-                    as={Col}
-                    xs={12}
-                    controlId="profileUrl"
-                    className="form-group-block form-group-profileUrl"
-                  >
-                    <Form.Label className="form-label">
-                      {(CUSTOMER_PROFILE_PICTURE)}
-                    </Form.Label>
-                    {cardFront && (
-                      <div className="image">
-                        <Image src={`${cardFront}`} />
-                        <Button
-                          className="btn-icon"
-                          onClick={() => {
-                            setCardFront('');
-                            handleDeleteFiles(
-                              REFERENCE_TYPE.
-                            );
-                          }}
-                        >
-                          <i className="ico ico-o-close"></i>
-                        </Button>
-                      </div>
-                    )}
-                    <Form.File
-                      id="profileUrl"
-                      label={(BUTTONS_CHOOSE_IMAGE)}
-                      onChange={handleUploadCardFront}
-                      custom
-                    />
-                  </Form.Group>
-                </Row> */}
-                <ButtonGroup className="form-actions">
-                  <Button variant="primary" type="submit">
-                    <span>{BUTTONS_UPDATE}</span>
-                    <i className="ico ico-update"></i>
-                  </Button>
-                </ButtonGroup>
               </Container>
             </Form.Row>
+            <ButtonGroup className="form-actions">
+              <Button variant="primary" type="submit">
+                <span>{BUTTONS_UPDATE}</span>
+                <i className="ico ico-update"></i>
+              </Button>
+            </ButtonGroup>
           </Form>
         )}
       </Formik>

@@ -8,6 +8,7 @@ import { I18N } from '../../../../i18n.enum';
 import { REFERENCE_TYPE } from '../../referenceType.enum';
 import AccountForm from '../AccountForm';
 import { message } from 'antd';
+import { retrieveFromStorage } from '../../../../common/utils/storage.util';
 
 interface ComponentProps {
   className?: string;
@@ -48,8 +49,8 @@ const MyAccount = (props: ComponentProps) => {
   };
 
   const handleSubmit = async (values: any) => {
-    console.log("Ngan")
     accountStore.setAccountForm(values);
+    console.log("HI ngan");
     const result = await uploadFiles();
     if (true) {
       const data = await accountStore.updateAccount(authStore.loggedUser.Id);
@@ -57,6 +58,7 @@ const MyAccount = (props: ComponentProps) => {
         const user = await accountStore.getAccountInfo(authStore.loggedUser.Id);
         authStore.setLoggedUser(user ?? authStore.loggedUser);
         message.success(MESSAGES_UPDATE_SUCCESS);
+        window.location.reload(false);
       }
     }
   };

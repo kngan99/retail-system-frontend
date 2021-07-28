@@ -1,7 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { useHistory } from 'react-router-dom';
-import logoSvg from '../../../../../src/logo.svg';
+import logoSvg from '../../../../../src/logo1.svg';
 import { AuthenticationStoreContext } from '../../../authenticate/authentication.store';
 import { I18N } from '../../../../i18n.enum';
 import { DEFAULT_ROUTERS } from '../../router.enum';
