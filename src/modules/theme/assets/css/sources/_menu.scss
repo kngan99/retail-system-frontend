@@ -150,6 +150,7 @@ $sidebar-width-xl: 200px;
   .logo-menu {
     display: inline-block;
     width: 130px;
+    width: 53%;
     margin: 0 0 25px;
     cursor: pointer;
     img{
@@ -157,6 +158,7 @@ $sidebar-width-xl: 200px;
     }
 
     @include media-min($lg) {
+      width: 53%;
       position: relative;
       z-index: 1;
     }

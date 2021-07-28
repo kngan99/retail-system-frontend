@@ -93,6 +93,9 @@ const AdminMenu = (props: ComponentProps) => {
     else if (localStorage.getItem('role') === 'Salescleck') {
       setIsDisplayIconArray([true, false, false, false, true, false, false, false,true]);
     }
+    else if (localStorage.getItem('role') === 'OperationStaff') {
+      setIsDisplayIconArray([false, false, false, false, false, false, false, false,false]);
+    }
     else {
       setIsDisplayIconArray([false, false, false, false, false, true, true, true, true]);
     }

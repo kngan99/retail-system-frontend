@@ -76,6 +76,7 @@ const RecommendExcel = (props: ComponentProps) => {
   const [noTransactions, setNoTransactions] = React.useState<number>(5);
   const [sup, setSup] = React.useState<number>(40);
   const [conf, setConf] = React.useState<number>(70);
+  const [isConfirmed, setIsConfirmed] = React.useState<boolean>(false);
 
   const handleRemoveClick = async (e) => {
     await cartStore.removeApriori(e);
@@ -205,15 +206,32 @@ const dataSourceOrderApriori = cartStore.transactions.map((transaction, index) =
                 Get Transactions
               </Button>
               &nbsp;&nbsp;
-              <button id="GenerateDBButton" style={{ width: "100px", display: 'none' }}>
+              <button
+                id="GenerateDBButton"
+                style={{ width: "100px", display: "none" }}
+              >
                 Generate DB
               </button>
               &nbsp;&nbsp;
-              <button id="ConfirmButton" style={{ width: "100px", padding: "4px", borderRadius: "7px"}}>
-                Confirm
-              </button>
-              &nbsp;&nbsp;
             </td>
+          </tr>
+          <tr style={{ height: "80px" }}>
+            <button
+              id="ConfirmButton"
+              style={{
+                width: "100px",
+                padding: "2px",
+                borderRadius: "7px",
+                marginTop: "20px",
+                fontWeight: 600,
+              }}
+              onClick={() => {
+                setIsConfirmed(true);
+                message.success("Confirmed!");
+              }}
+            >
+              Confirm
+            </button>
           </tr>
           <tr style={{ height: "10px" }}>
             <td></td>
@@ -234,7 +252,7 @@ const dataSourceOrderApriori = cartStore.transactions.map((transaction, index) =
               <Table
                 expandable={{
                   expandedRowRender: (record) => (
-                    <ProductItem record={record}/>
+                    <ProductItem record={record} />
                   ),
                 }}
                 dataSource={dataSourceOrderApriori}
@@ -273,8 +291,25 @@ const dataSourceOrderApriori = cartStore.transactions.map((transaction, index) =
                 style={{ width: "80px" }}
                 onChange={(e) => setConf(parseInt(e.target.value))}
               />
-              &nbsp;&nbsp;
-              <button id="AprioriButton" style={{ width: "100px", padding: "4px", borderRadius: "7px"}}>
+              <br />
+              <br />
+              <button
+                id="AprioriButton"
+                style={{
+                  width: "100px",
+                  padding: "2px",
+                  borderRadius: "7px",
+                  marginBottom: "20px",
+                  fontWeight: 600,
+                }}
+                onClick={() => {
+                  if (!isConfirmed) {
+                    message.error("Please check the input and press Confirm");
+                    return;
+                  }
+                  setIsConfirmed(false);
+                }}
+              >
                 Apriori
               </button>
             </td>
@@ -287,7 +322,7 @@ const dataSourceOrderApriori = cartStore.transactions.map((transaction, index) =
               <textarea
                 id="ResultTextBox"
                 cols={73}
-                style={{ minHeight: "180px", width: "100%"}}
+                style={{ minHeight: "180px", width: "100%" }}
                 readOnly={true}
               ></textarea>
             </td>
