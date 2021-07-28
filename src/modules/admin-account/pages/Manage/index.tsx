@@ -106,8 +106,9 @@ const ManageAccountAdminPage = () => {
         setShowPopup(false);
       }
     }
-    message.success(MESSAGES_CREATED_SUCCESS);
-        setShowPopup(false);
+    adminStore.getAccounts(criteriaDto.skip, criteriaDto.take);
+    //message.success(MESSAGES_CREATED_SUCCESS);
+    setShowPopup(false);
   };
 
   const handleAdminVerify = async (id: number) => {

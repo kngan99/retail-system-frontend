@@ -31,7 +31,14 @@ class AdminService {
   }
 
   public async updateAccount(id: number, model: any) {
-    return await http.put(`${this.accountPrefix}/${id}`, model);
+    let data = {
+      Email: model.email,
+      FName: model.fName,
+      LName: model.lName,
+      Homephone: model.homePhone,
+      Type: model.type,
+    }
+    return await http.put(`${this.accountPrefix}/${id}`, data);
   }  
 
   public async deleteAccount(id: number) {

@@ -56,21 +56,18 @@ const AdminAccountFormModal = (props: ComponentProps) => {
     BUTTONS_UPDATE,
   } = I18N;
 
-  const [initialValues, setInitValues] = React.useState<NewAccountDto>(
+  const [initialValues, setInitValues] = React.useState<any>(
     newAdminFormInit
   );
   /*
    * Validation
    */
   const schema = yup.object({
-    fName: yup.string().required((VALIDATE_REQUIRED)),
-    lName: yup.string().required((VALIDATE_REQUIRED)),
-    email: yup.string().required((VALIDATE_REQUIRED)).email((VALIDATE_EMAIL)),
-    homePhone: yup
-      .string()
-      .required()
-      .matches(PHONE_REGEXP, (VALIDATE_PHONE)),
-    type: yup.string().required((VALIDATE_REQUIRED)),
+    fName: yup.string(),
+    lName: yup.string(),
+    email: yup.string().email(VALIDATE_EMAIL),
+    homePhone: yup.string(),
+    type: yup.string().required(VALIDATE_REQUIRED),
   });
 
   React.useEffect(() => {
@@ -78,7 +75,12 @@ const AdminAccountFormModal = (props: ComponentProps) => {
   });
 
   React.useEffect(() => {
-    setInitValues(adminStore.adminForm);
+    setInitValues({
+      email: adminStore.adminForm.Email,
+      fName: adminStore.adminForm.FName,
+      lName: adminStore.adminForm.LName,
+      homePhone: adminStore.adminForm.Homephone,
+    });
   }, [adminStore.adminForm]);
 
   return (
