@@ -38,7 +38,7 @@ export default class AuthenticationStore {
         url = "/pos";
       }
       else if (data.Type === "StoreManager") {
-        url = "/pos/past";
+        url = "/product/manage";
       }
       else if (data.Type === "StoreStaff") {
         url = "/product/manage";
