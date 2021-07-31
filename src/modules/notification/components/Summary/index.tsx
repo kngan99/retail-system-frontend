@@ -1,6 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { List, message, Avatar, Spin } from 'antd';
+import { List, message, Avatar, Spin, Tag } from 'antd';
 import { Button, ListGroup, Badge } from 'react-bootstrap';
 import InfiniteScroll from 'react-infinite-scroller';
 import http from "../../../../common/sevices";
@@ -31,6 +31,7 @@ const NotificationSummary = (props: ComponentProps) => {
   );
   const [num, setNum] = React.useState<number>(0);
   const [data, setData] = React.useState<any[]>([]);
+  const [readNoti, setReadNoti] = React.useState<number[]>([]);
   const [loading, setLoading] = React.useState<boolean>(false);
   const [hasMore, setHasMore] = React.useState<boolean>(true);
   const domain = "https://warehouse-retail.herokuapp.com";
@@ -40,6 +41,11 @@ const NotificationSummary = (props: ComponentProps) => {
       setNum(res.data.count);
     })
   }, []);
+  React.useEffect(() => {
+    http.get(domain + "/api/notifications/count").then((res) => {
+      setNum(res.data.count);
+    })
+  }, [readNoti]);
 
   const handleInfiniteOnLoad = () => {
     setLoading(true);
@@ -56,7 +62,16 @@ const NotificationSummary = (props: ComponentProps) => {
       }
       setLoading(false);
     });
-  };
+  }
+
+  const markAsRead = (id) => {
+    http.get(domain + "/api/notifications/read/" + String(id))
+      .then((res) => {
+        if (res.data) {
+          setReadNoti([...readNoti, id]);
+        }
+    })
+  }
 
   return (
     <>
@@ -86,15 +101,15 @@ const NotificationSummary = (props: ComponentProps) => {
                     <List.Item key={item.id} className="notification is-read">
                       <List.Item.Meta
                             title={<a href="#">{item.Title}  <small>{moment(new Date(item.CreatedAt)).fromNow()}</small></a>}
-                        description={item.Message}
+                            description={item.Title === "Warning: Some product is going to run out soon!" ? item.Message.split("; ").map((detail) => <Tag color="default">{detail}</Tag>) : item.Message}
                       />
                       {/* <div>{item.CreatedAt}</div> */}
                         </List.Item>
                         :
                         <List.Item key={item.id} className="notification not-read">
                           <List.Item.Meta
-                            title={<a href="#">{item.Title}  <small>{moment(new Date(item.CreatedAt)).fromNow()}</small></a>}
-                            description={item.Message}
+                            title={<a href="#">{item.Title}  {!readNoti.includes(item.Id) && <Button type="text" className={"mark-button"} onClick={() => markAsRead(item.Id)}>mark as read</Button>}<small>{moment(new Date(item.CreatedAt)).fromNow()}</small></a>}
+                            description={item.Title === "Warning: Some product is going to run out soon!" ? item.Message.split("; ").map((detail) => readNoti.includes(item.Id) ? <Tag color="default">{detail}</Tag> : <Tag color="gold">{detail}</Tag> ) : item.Message}
                           />
                           {/* <div>{item.CreatedAt}</div> */}
                         </List.Item>

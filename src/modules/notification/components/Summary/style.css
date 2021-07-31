@@ -12,8 +12,25 @@
   width: 100%;
   text-align: center;
 }
+.ant-tag-gold {
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.ant-tag-default {
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+}
 .top-menu .box-noti-list {
     padding: 0;
+}
+.ant-list-split {
+    padding: 24px;
+}
+.mark-button {
+    padding: 0 !important;
+    background: #e9ecef !important;
 }
 .ant-list-item-meta-description{
     color: rgba(0, 0, 0, 0.75) !important;
