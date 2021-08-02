@@ -15,6 +15,7 @@ import WarehouseLayout from "./themes/warehouse/layout";
 import StoreLayout from "./themes/store/layout";
 import OperationLayout from "./themes/operation/layout";
 import { WaveLoading } from 'react-loadingg';
+import ReportLayout from "./themes/report/layout";
 
 const Zoom = cssTransition({
   enter: 'zoomIn',
@@ -56,6 +57,10 @@ ReactDOM.render(
           <Route
             path="/operation"
             render={(props: any) => <OperationLayout {...props} exact />}
+          />
+          <Route
+            path="/report"
+            render={(props: any) => <ReportLayout {...props} exact />}
           />
           <Route path="/" render={(props: any) => <App />} />
         </Switch>

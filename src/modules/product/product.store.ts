@@ -2,6 +2,7 @@ import React from 'react';
 import { observable, action, makeObservable, autorun } from 'mobx';
 import productService from './product.service';
 import { Product } from './product.dto';
+import ProductSummary from '../warehouse/components/ProductSummary/index';
 
 class ProductStore {
     @observable products: Product[] = [];
@@ -13,6 +14,12 @@ class ProductStore {
     @observable refetch: boolean = true;
     @observable searchKey: string = '';
     @observable loading: boolean = true;
+    @observable summaryProducts: any[] = [];
+    @observable noSummaryProducts: number = 0;
+    @observable totalIncome: number = 0;
+    @observable productsLabel: any[] = [];
+    @observable quantity: number[] =  [];
+    @observable income: number[] = [];
 
     @action.bound
     async getProducts(skip: number, take: number) {
@@ -119,6 +126,22 @@ class ProductStore {
     async addBarcode(id: number, code: string) {
         await productService.addBarcode(id, code);
     }
+    @action.bound
+    async getPeriodSummary(start: Date, end: Date) {
+        const res = await productService.getPeriodSummary(start, end);
+        this.totalIncome = res.sum[0].FinalTotal;
+        let i = 0;
+        this.summaryProducts = this.productsLabel = this.income = this.quantity = [];
+        while (res.items[i]) {
+            this.summaryProducts.push(res.items[i]);
+            this.productsLabel.push(res.items[i].ProductName);
+            this.income.push(res.items[i].Price/1000);
+            this.quantity.push(res.items[i].Quantity);
+            i++;
+        }
+        this.noSummaryProducts = i;
+    }
+
 
     constructor() {
         makeObservable(this);

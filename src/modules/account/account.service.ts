@@ -1,7 +1,7 @@
 import http from "../../common/sevices";
 import { removeConfirmationFields } from "../../common/utils/apis.util";
 import { prepareGetQuery } from "../../common/utils/routes.util";
-import { CreateUserDto } from "./account.dto";
+import { CreateUserDto, ResetPasswordDto } from "./account.dto";
 import { DEFAULT_API } from "./router.enum";
 
 class AccountService {
@@ -67,6 +67,21 @@ class AccountService {
   public async getDeletedAccountByAdmin(criteria: any) {
     const result = await http.get(
       `${this.accountPrefix}/deleted${prepareGetQuery({ ...criteria })}`
+    );
+    return result.data;
+  }
+
+  public async forgotPassword(email: string) {
+    const result = await http.get(
+      `${this.accountPrefix}/forgot-password/${email}`
+    );
+    return result.data;
+  }
+
+  public async resetPassword(model: ResetPasswordDto) {
+    const result = await http.post(
+      `${this.accountPrefix}/reset-password`,
+      model
     );
     return result.data;
   }

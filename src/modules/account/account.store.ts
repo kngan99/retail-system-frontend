@@ -4,6 +4,10 @@ import accountService from './account.service';
 import { AdminFilterDto, CreateUserDto } from './account.dto';
 import { number } from 'yup/lib/locale';
 
+export interface ResetPasswordDto {
+  token: string;
+  password: string;
+}
 class AccountStore {
   @observable accounts: Account[] = [];
   @observable totalCount: number = 0;
@@ -87,6 +91,18 @@ class AccountStore {
     const [accounts, count] = data;
     this.deletedAccounts = accounts;
     this.totalDeletedAccounts = count;
+    return data;
+  }
+
+  @action
+  async forgotPassword(email: string) {
+    const data = await accountService.forgotPassword(email);
+    return data;
+  }
+
+  @action
+  async resetPassword(model: ResetPasswordDto) {
+    const data = await accountService.resetPassword(model);
     return data;
   }
 

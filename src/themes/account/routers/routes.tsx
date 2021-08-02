@@ -98,4 +98,28 @@ export const accountsRoutes = [
     isLayout: false,
     isGuarded: false,
   },
+  {
+    path: '/account/forgotpassword',
+    name: 'Forgot Password',
+    title: 'Forgot Password',
+    exact: true,
+    permission: '',
+    component: React.lazy(
+      () => import('../../../themes/account/pages/ForgotPassword')
+    ),
+    isLayout: false,
+    isGuarded: false,
+  },
+  {
+    path: '/account/reset-password/:token',
+    name: 'Reset Password',
+    title: 'Reset Password',
+    exact: true,
+    permission: '',
+    component: React.lazy(
+      () => import('../../../themes/account/pages/ResetPassword')
+    ),
+    isLayout: false,
+    isGuarded: false,
+  },
 ];

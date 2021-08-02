@@ -189,6 +189,10 @@ const ManageOrderAdminPage = () => {
       message.error("This request has been cancelled!");
       return;
     }
+    if (currentStatus === "Success" || res[0][0].Status === "Success"){
+      message.error("This request has been done!");
+      return;
+    }
     setShowConfirmPopup(true);
     setDeleteID(id);
   };

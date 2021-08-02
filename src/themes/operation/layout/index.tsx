@@ -3,7 +3,7 @@ import { Switch, Route } from "react-router-dom";
 import PageNotFound from "../../../modules/no-route";
 import { operationRoutes } from "../routers/routes";
 
-export default function OperayionLayout() {
+export default function OperationLayout() {
   return (
       <Switch>
         {operationRoutes

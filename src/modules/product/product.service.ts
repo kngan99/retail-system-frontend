@@ -1,9 +1,10 @@
 import http from "../../common/sevices";
 import { Product } from "./product.dto";
 import { message } from 'antd';
+import moment from "moment";
 
 class ProductService {
-  productPrefix: string = "https://warehouse-retail.herokuapp.com/api/products";
+  productPrefix: string = "http://localhost:4000/api/products";
 
   public async getOneProduct(id: number) {
     await console.log("is before sending");
@@ -113,6 +114,14 @@ class ProductService {
 
   public async addBarcode(id: number, code: string) {
     const result = await http.post(`${this.productPrefix}/barcode/${id}/${code}`);
+    return result.data;
+  }
+
+  public async getPeriodSummary(start: Date, end: Date) {
+    const result = await http.post(`${this.productPrefix}/period-summary`, {
+        startTime: start,
+        endTime: end,
+    });
     return result.data;
   }
 }

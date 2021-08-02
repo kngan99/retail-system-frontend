@@ -26,7 +26,7 @@
     padding: 0;
 }
 .ant-list-split {
-    padding: 24px;
+    padding: 24px!important;
 }
 .mark-button {
     padding: 0 !important;

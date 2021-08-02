@@ -50,9 +50,15 @@ export const adminMenu: AdminMenuDto[] = [
     isShow: true,
   },
   {
+    url: '/report',
+    label: 'Report',
+    icon: 'ico ico-term',
+    isShow: true,
+  },
+  {
     url: '/',
     label: 'Setting',
     icon: 'ico ico-noti',
-    isShow: true,
+    isShow: false,
   },
 ];

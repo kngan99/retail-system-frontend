@@ -361,7 +361,7 @@ const RecommendListProduct = () => {
                       <Skeleton loading={false} avatar active>
                         <Meta
                           avatar={
-                            <Avatar shape="square" size={64} src={"https://warehouse-retail.herokuapp.com/api/products/img/thumbnails-" + String(product.PhotoURL ? product.PhotoURL : "default.png")} />
+                            <Avatar shape="square" size={64} src={"http://localhost:4000/api/products/img/thumbnails-" + String(product.PhotoURL ? product.PhotoURL : "default.png")} />
                           }
                           title={product.ProductName}
                           description={!product.Discontinued ? <Tag color="green">In stock</Tag> : <Tag color="red">Out of stock</Tag>}

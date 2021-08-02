@@ -243,13 +243,6 @@ const OrderGrid = (props: ComponentProps) => {
               <Table responsive="lg">
                 <thead>
                   <tr>
-                    <th className="col-selected">
-                      <Form.Check
-                        type="checkbox"
-                        onClick={handleSelectedAll}
-                        name="allOrderId"
-                      />
-                    </th>
                     <th>
                       <span>{"Id"}</span>
                       {
@@ -281,16 +274,6 @@ const OrderGrid = (props: ComponentProps) => {
                 <tbody>
                   {orderStore.orders.map((item: any, index: number) => (
                     <tr key={item.Id}>
-                      <td className="col-selected">
-                        <Form.Check
-                          type="checkbox"
-                          onChange={() => handleSelectedRow(item.Id.toString())}
-                          value={item.Id}
-                          className="order-checked-item"
-                          name="orderID[]"
-                          defaultChecked={selectedStatus[index]?.checked}
-                        />
-                      </td>
                       <td className="order-id" data-th={`${"Id"}: `}>
                         <span
                           className="order-summary"
