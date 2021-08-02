@@ -74,6 +74,7 @@ class AddProductStore {
         console.log(this.categories);
         this.products = data.items;
         this.totalCount = data.meta.totalItems;
+        await new Promise(f => setTimeout(f, 100));
         this.loading = false;
     }
 
