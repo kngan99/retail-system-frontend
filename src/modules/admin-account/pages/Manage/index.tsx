@@ -53,6 +53,12 @@ const ManageAccountAdminPage = () => {
 
   /*Confirm modal*/
   const handleOk = async () => {
+    const curUser = await adminStore.getAccountById(id);
+    if (!adminStore.curUser.Type) {
+      message.error("Please set the Account Role before verifying!");
+      setShowConfirmPopup(false);
+      return;
+    }
     setShowConfirmPopup(false);
     const res = await adminStore.adminVerifyAccount(id);
     if (res) {

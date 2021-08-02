@@ -167,18 +167,10 @@ const ReportDiagram = (props: ComponentProps) => {
             title="Looks like in this period we do not have any product sold!"
           />
         )}
-        {summaryProducts && noSummaryProducts > 0 && quantity.length > 0 && income.length > 0 && (
+        {productStore.summaryProducts && productStore.noSummaryProducts > 0 && productStore.quantity.length > 0 && productStore.income.length > 0 && (
           <>
             <div className="header">
-              <h1 className="title">Crazy Chart</h1>
-              <div className="links">
-                <a
-                  className="btn btn-gh"
-                  href="https://github.com/reactchartjs/react-chartjs-2/blob/master/example/src/charts/Crazy.js"
-                >
-                  Github Source
-                </a>
-              </div>
+              <h1 className="title">Product Quantity and Income Chart</h1>
             </div>
             <Bar data={data} options={options} />
           </>

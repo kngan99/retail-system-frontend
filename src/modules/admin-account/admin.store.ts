@@ -8,6 +8,7 @@ class AdminStore {
     @observable accounts: Account[] = [];
     @observable totalCount: number = 0;
     @observable adminForm: any = newAdminFormInit;
+    @observable curUser: any;
   
     @action
     async getAccounts(skip: number, take: number) {
@@ -20,6 +21,7 @@ class AdminStore {
     @action
     async getAccountById(id: number) {
         const result = await adminService.getAccountById(id);
+        this.curUser = result;
         if (result) {
         this.setAdminForm(result);
         }
