@@ -15,7 +15,7 @@ class ProductStore {
     @observable searchKey: string = '';
     @observable loading: boolean = true;
     @observable summaryProducts: any[] = [];
-    @observable noSummaryProducts: number = 0;
+    @observable noSummaryProducts: number = -1;
     @observable totalIncome: number = 0;
     @observable productsLabel: any[] = [];
     @observable quantity: number[] =  [];

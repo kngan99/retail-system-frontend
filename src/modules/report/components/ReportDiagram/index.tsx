@@ -123,6 +123,10 @@ const ReportDiagram = (props: ComponentProps) => {
     console.log(quantity);
   };
 
+  React.useEffect(() => {
+    productStore.noSummaryProducts = -1;
+  }, []);
+
   return (
     <>
       <Row style={{ marginBottom: "12px" }}>
@@ -155,13 +159,13 @@ const ReportDiagram = (props: ComponentProps) => {
         </Button>
       </Row>
       <Row style={{ minHeight: "600px" }}>
-        {noSummaryProducts === -1 && (
+        {(noSummaryProducts === -1 || productStore.noSummaryProducts ===-1) && (
           <Result
             icon={<PandaIcon />}
             title="Please choose the range and press Submit to get the report!"
           />
         )}
-        {noSummaryProducts === 0 && (
+        {productStore.noSummaryProducts === 0 && (
           <Result
             icon={<SmileOutlined />}
             title="Looks like in this period we do not have any product sold!"
