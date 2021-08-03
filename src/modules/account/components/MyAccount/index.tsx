@@ -9,6 +9,7 @@ import { REFERENCE_TYPE } from '../../referenceType.enum';
 import AccountForm from '../AccountForm';
 import { message } from 'antd';
 import { retrieveFromStorage } from '../../../../common/utils/storage.util';
+import { toast } from 'react-toastify';
 
 interface ComponentProps {
   className?: string;
@@ -39,7 +40,7 @@ const MyAccount = (props: ComponentProps) => {
         authStore.loggedUser.Id
       );
       if (result) {
-        message.success(MESSAGES_UPDATE_SUCCESS);
+        toast(MESSAGES_UPDATE_SUCCESS);
         setAvatar({
           file: null,
         });
@@ -57,7 +58,7 @@ const MyAccount = (props: ComponentProps) => {
       if (data) {
         const user = await accountStore.getAccountInfo(authStore.loggedUser.Id);
         authStore.setLoggedUser(user ?? authStore.loggedUser);
-        message.success(MESSAGES_UPDATE_SUCCESS);
+        toast(MESSAGES_UPDATE_SUCCESS);
         window.location.reload(false);
       }
     }
@@ -78,7 +79,7 @@ const MyAccount = (props: ComponentProps) => {
       if (result) {
         authStore.loggedUser.avatarUrl = '';
         bsCustomFileInput.init();
-        message.success(MESSAGES_DELETE_SUCCESS);
+        toast(MESSAGES_DELETE_SUCCESS);
       }
     }
   };

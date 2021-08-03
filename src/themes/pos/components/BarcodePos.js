@@ -3,6 +3,7 @@ import { Modal, Button, message } from "antd";
 import { BarcodeOutlined } from "@ant-design/icons";
 import BarcodeScannerComponent from "react-webcam-barcode-scanner";
 import { CartStoreContext } from "../stores/cart.store";
+import { toast } from "react-toastify";
 
 const BarCodePos = (pros) => {
   const cartStore = React.useContext(CartStoreContext);
@@ -51,7 +52,7 @@ const BarCodePos = (pros) => {
                 setData(result.text);
                 addProduct(result.text);
                 setTimeout(function () {
-                message.info(`Barcode ${result.text}`);
+                toast(`Barcode ${result.text}`);
                   result.text = "Not Found";
                 }, 2000);
                 //setVisible(false);

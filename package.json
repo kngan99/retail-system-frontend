@@ -44,7 +44,7 @@
         "react-router-dom": "^5.2.0",
         "react-scripts": "4.0.3",
         "react-stripe-checkout": "^2.6.3",
-        "react-toastify": "^7.0.3",
+        "react-toastify": "^6.2.0",
         "react-webcam-barcode-scanner": "^0.0.2-rc2",
         "sass": "^1.32.8",
         "serve": "^12.0.0",

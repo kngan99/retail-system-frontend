@@ -10,6 +10,7 @@ import { pageSizeOptions } from '../../../../common/constants/paging.constants';
 import { FilterByDto } from '../../../../common/dto/FilterBy.dto';
 import DeletedAccountGridAdmin from "../../components/DeletedGrid";
 import { message } from 'antd';
+import { toast } from 'react-toastify';
 
 const ManageDeletedAccountAdminPage = () => {
   const accountStore = React.useContext(AccountStoreContext);
@@ -127,7 +128,7 @@ const ManageDeletedAccountAdminPage = () => {
       );
       if (result) {
         setRestoreID(-1);
-        message.success('Restore completed');
+        toast('Restore completed');
         accountStore.getDeletedAccountByAdmin(criteriaDto);
       }
     }

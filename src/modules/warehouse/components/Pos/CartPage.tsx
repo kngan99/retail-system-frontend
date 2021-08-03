@@ -11,6 +11,7 @@ import {
   Col,
   Select,
 } from "antd";
+import { toast } from "react-toastify";
 import {
   PlusOutlined,
   MinusOutlined,
@@ -43,11 +44,11 @@ const CartPage = observer(
     };
     const handleCheckoutClick = async () => {
       if (totalNum === 0) {
-        message.error("Cart is empty");
+        toast("Cart is empty");
         return;
       } 
       if (warehouseId === -1){
-        message.error("Please choose warehouse");
+        toast("Please choose warehouse");
         return;
       }
         await cartStore.setCargoRequest(
@@ -85,10 +86,10 @@ const CartPage = observer(
         );
         const result = await cartStore.sendCargoRequest();
         if (result) { 
-          message.success("Create Cargo Request successfully!");
+          toast("Create Cargo Request successfully!");
         }
         else {
-          message.error("Create Cargo Request fail! Please try again later");
+          toast("Create Cargo Request fail! Please try again later");
         }
         window.location.href = window.location.pathname.replace('new-request-goods-note-cart','request-goods-note-cart/manage')
         return result;

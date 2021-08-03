@@ -39,6 +39,7 @@ import Input from "antd/lib/input";
 import { Avatar, Form, List, message, Pagination, Skeleton, Spin, Table } from "antd";
 import { Link, Redirect, useHistory, useParams } from "react-router-dom";
 import { AuthenticationStoreContext } from "../../../authenticate/authentication.store";
+import { toast } from "react-toastify";
 
 interface Product {
   Id: number;
@@ -167,7 +168,7 @@ const PreCartPageEdit = (props: ComponentProps) => {
   };
   const onPressEnterAdd = async (e: any) => {
     if (!Number.isInteger(Number(e.target.value))) {
-      message.error("Invalid ID!");
+      toast("Invalid ID!");
     } else {
       cartStore.addToCartById(Number(e.target.value));
     }

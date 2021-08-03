@@ -5,6 +5,7 @@ import { AccountStoreContext } from '../../../../modules/account/account.store';
 import OnePage from '../../../../modules/theme/components/OnePage';
 import CustomerForgotForm from '../../../../modules/account/components/CustomerForgotForm';
 import { message } from 'antd';
+import { toast } from 'react-toastify';
 const ForgotCustomerPage = () => {
   const history = useHistory();
   const accountStore = React.useContext(AccountStoreContext);
@@ -15,7 +16,7 @@ const ForgotCustomerPage = () => {
       values.email
     );
     if (result) {
-      message.success('Please check your email');
+      toast('Please check your email');
       history.push(
         '/'
       );

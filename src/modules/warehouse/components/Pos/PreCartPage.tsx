@@ -47,6 +47,7 @@ import {
   Table,
   Badge,
 } from "antd";
+import { toast } from "react-toastify";
 import { Link, Redirect, useHistory } from "react-router-dom";
 import { AuthenticationStoreContext } from "../../../authenticate/authentication.store";
 
@@ -171,7 +172,7 @@ const PreCartPage = () => {
   };
   const onPressEnterAdd = async (e: any) => {
     if (!Number.isInteger(Number(e.target.value))) {
-      message.error("Invalid ID!");
+      toast("Invalid ID!");
     } else {
       cartStore.addToCartById(Number(e.target.value));
     }

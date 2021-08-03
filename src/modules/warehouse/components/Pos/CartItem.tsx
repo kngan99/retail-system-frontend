@@ -3,6 +3,7 @@ import { inject, observer } from 'mobx-react';
 import { Input, Tooltip, Button, message } from 'antd';
 import { PlusOutlined, MinusOutlined, DeleteOutlined } from "@ant-design/icons";
 import { CartStoreContext } from '../../../../themes/pos/stores/cart.store';
+import { toast } from 'react-toastify';
 
 const CartItem = ({ item, isCheckout }) => {
     const cartStore = React.useContext(CartStoreContext);
@@ -17,7 +18,7 @@ const CartItem = ({ item, isCheckout }) => {
     }
     const onChange = async (item, e) => {
         if (!Number.isInteger(Number(e.target.value))) {
-            message.error("Invalid number!");
+            toast("Invalid number!");
         }
         else {
             cartStore.updateQuantity(item, e.target.value);

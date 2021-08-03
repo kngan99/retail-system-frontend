@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Errors } from '../../modules/messages/message.constants';
 import { handleResponseError } from '../utils/apis.util';
 import { removeFromStorage } from '../utils/storage.util';
+import { toast } from "react-toastify";
 
 const axiosInstance = axios.create({
   baseURL: 'https://warehouse-retail.herokuapp.com/api',
@@ -27,7 +28,7 @@ axiosInstance.interceptors.response.use(
   (error) => {
 
     if (!error.response) {
-      message.error('Unknown error happened! Please contact admin for support');
+      toast('Unknown error happened! Please contact admin for support');
       return handleResponseError(error);
     }
 
@@ -58,10 +59,10 @@ axiosInstance.interceptors.response.use(
 
     if (messageCode !== '') {
       const error = Errors.find((error) => error.key === messageCode);
-      if (error) message.error((error.label));
-      else message.error(messageDetail);
+      if (error) toast((error.label));
+      else toast(messageDetail);
     } else {
-      message.error(messageDetail);
+      toast(messageDetail);
     }
 
     if (error.response.status === 400) {

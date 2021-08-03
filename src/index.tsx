@@ -71,7 +71,7 @@ ReactDOM.render(
         hideProgressBar={false}
         transition={Zoom}
         pauseOnHover={true}
-        closeOnClick={true}
+        closeOnClick={false}
         rtl={false}
       />
     </BrowserRouter>

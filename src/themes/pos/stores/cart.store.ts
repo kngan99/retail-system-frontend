@@ -9,6 +9,7 @@ import { message } from 'antd';
 import { removeUnusedProps } from '../../../common/utils/apis.util';
 import { OrderListDto } from '../services/list.dto';
 import { retrieveFromStorage } from '../../../common/utils/storage.util';
+import { toast } from 'react-toastify';
 
 interface CartProduct {
     Id: number;
@@ -123,10 +124,10 @@ class CartStore {
         let found = false;
         await this.productsApriori.map(item => {
             if (item.Discontinued) {
-                message.error("Selected item is out of stock now!");
+                toast("Selected item is out of stock now!");
             }
             if (item.Id === product.Id) {
-                message.error("This product has been added");
+                toast("This product has been added");
                 found = true;
             }
         });
@@ -144,7 +145,7 @@ class CartStore {
             }
             this.productsAprioriId.push(product.Id);
             this.productsAprioriName.push(product.ProductName);
-            message.success("Added product " + product.ProductName);
+            toast("Added product " + product.ProductName);
         } 
     }
 
@@ -194,7 +195,7 @@ class CartStore {
     @action.bound
     addToCart = async (product: Product) => {
         if (product.Discontinued) {
-            message.error("Selected item is out of stock now!");
+            toast("Selected item is out of stock now!");
         }
         else {
             let found = false;
@@ -221,11 +222,11 @@ class CartStore {
                 this.addToCart(res.data);
             }
             else {
-                message.error("Invalid ID!");
+                toast("Invalid ID!");
             }
         });
         promise.catch((err: any) => {
-            message.error(err.response);
+            toast(err.response);
         });
     }
 
@@ -238,11 +239,11 @@ class CartStore {
                 this.addToCart(res.data);
             }
             else {
-                message.error("Invalid ID!");
+                toast("Invalid ID!");
             }
         });
         promise.catch((err: any) => {
-            message.error(err.response);
+            toast(err.response);
         });
     }
 
@@ -384,7 +385,7 @@ class CartStore {
     confirmOrder = async () => {
         const result = await orderService.confirmOrder(this.salescleckId, this.session, this.productsInCart, this.currentCustomer.Id, this.discount);
         if (result) {
-            message.success("Create order successfully!");
+            toast("Create order successfully!");
             console.log(result);
             this.orderId = result.result.Id;
             this.isConfirm = true;
@@ -394,7 +395,7 @@ class CartStore {
     confirmStripeOrder = async (stripe: string) => {
         const result = await orderService.confirmStripeOrder(this.salescleckId, this.session, this.productsInCart, this.currentCustomer.Id, this.discount, stripe);
         if (result) {
-            message.success("Create order successfully!");
+            toast("Create order successfully!");
             this.orderId = result.result.Id;
             this.isConfirm = true;
         }
@@ -403,7 +404,7 @@ class CartStore {
     confirmVnpayOrder = async (vnpay: string) => {
         const result = await orderService.confirmVnpayOrder(this.salescleckId, this.session, this.productsInCart, this.currentCustomer.Id, this.discount, vnpay);
         if (result) {
-            message.success("Create order successfully!");
+            toast("Create order successfully!");
             this.orderId = result.result.Id;
             this.isConfirm = true;
         }

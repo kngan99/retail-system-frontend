@@ -6,6 +6,7 @@ import { message, Row } from "antd";
 import ConfirmModal from "../../../../common/components/ConfirmModal";
 import CartPageEdit from "../../components/PosEdit/CartPageEdit";
 import { Button } from "react-bootstrap";
+import { toast } from "react-toastify";
 import {
   PlusOutlined,
   MinusOutlined,
@@ -59,7 +60,7 @@ const EditOrderAdminPage = () => {
     if (orderID) {
       const result = await orderStore.cancelCargoReq(orderID);
       if (result) {
-        message.success("Cancel successfully");
+        toast("Cancel successfully");
         history.push("/warehouse/request-goods-note-cart/manage");
       }
     }

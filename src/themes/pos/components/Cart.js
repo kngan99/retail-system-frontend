@@ -7,7 +7,7 @@ import { makeAutoObservable, autorun, observable } from "mobx"
 import { Table, Breadcrumb } from 'react-bootstrap';
 import { Input, Tooltip, Button, message } from 'antd';
 import { PlusOutlined, MinusOutlined, DeleteOutlined, CheckOutlined, ArrowLeftOutlined, PrinterOutlined, ShoppingCartOutlined } from "@ant-design/icons";
-
+import { toast } from "react-toastify";
 
 const Cart = observer(({ productsInCart, totalNum, totalAmount, isCheckout }) => {
     const cartStore = React.useContext(CartStoreContext);
@@ -17,7 +17,7 @@ const Cart = observer(({ productsInCart, totalNum, totalAmount, isCheckout }) =>
     }
     const handleCheckoutClick = async () => {
         if (totalNum == 0) {
-            message.error('Cart is empty');
+            toast('Cart is empty');
         }
         else {
             await cartStore.checkoutCart();

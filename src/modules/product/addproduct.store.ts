@@ -4,6 +4,7 @@ import productService from './product.service';
 import storeproductService from './storeproduct.service';
 import { Product } from './product.dto';
 import { message } from 'antd';
+import { toast } from 'react-toastify';
 
 class AddProductStore {
     @observable products: Product[] = [];
@@ -55,7 +56,7 @@ class AddProductStore {
         let data: any = [];
         const result = await storeproductService.addProduct(Id);
         if (result) {
-            message.success("Add product to store successfully!");
+            toast("Add product to store successfully!");
         }
         data = await productService.searchNotAddedProductsPagination(this.pageNum, this.pageSize, this.searchKey);
         this.products = data.items;

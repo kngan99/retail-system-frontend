@@ -10,6 +10,7 @@ import AdminAccountFormModal from "../../components/AdminAccountFormModal";
 import AdminAccountGrid from "../../components/AccountGrid";
 import ActionBar from "../../../theme/components/ActionBar";
 import { message } from "antd";
+import { toast } from "react-toastify";
 import ConfirmModal from "../../../../common/components/ConfirmModal";
 
 const ManageAccountAdminPage = () => {
@@ -55,14 +56,14 @@ const ManageAccountAdminPage = () => {
   const handleOk = async () => {
     const curUser = await adminStore.getAccountById(id);
     if (!adminStore.curUser.Type) {
-      message.error("Please set the Account Role before verifying!");
+      toast("Please set the Account Role before verifying!");
       setShowConfirmPopup(false);
       return;
     }
     setShowConfirmPopup(false);
     const res = await adminStore.adminVerifyAccount(id);
     if (res) {
-      message.info("Verify successfully!");
+      toast("Verify successfully!");
       setId(-1);
     }
     adminStore.getAccounts(criteriaDto.skip, criteriaDto.take, '');
@@ -99,7 +100,7 @@ const ManageAccountAdminPage = () => {
       if (result) {
         adminStore.getAccounts(criteriaDto.skip, criteriaDto.take, '');
         adminStore.resetAdminForm();
-        message.success('Created successfully');
+        toast('Created successfully');
         setShowPopup(false);
       }
     }
@@ -108,12 +109,12 @@ const ManageAccountAdminPage = () => {
       if (result) {
         adminStore.getAccounts(criteriaDto.skip, criteriaDto.take, '');
         adminStore.resetAdminForm();
-        message.success(MESSAGES_UPDATE_SUCCESS);
+        toast(MESSAGES_UPDATE_SUCCESS);
         setShowPopup(false);
       }
     }
     adminStore.getAccounts(criteriaDto.skip, criteriaDto.take,'');
-    //message.success('Created successfully');
+    //toast('Created successfully');
     setShowPopup(false);
   };
 

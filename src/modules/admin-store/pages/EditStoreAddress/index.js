@@ -9,6 +9,7 @@ import Search from "react-leaflet-search";
 import "./style.css";
 import { Button, message, Row } from "antd";
 import { Helmet } from "react-helmet";
+import { toast } from "react-toastify";
 
 const EditStoreAddressPage = () => {
   const storeStore = React.useContext(StoreStoreContext);
@@ -87,7 +88,7 @@ const EditStoreAddressPage = () => {
       Lng
     );
     if (res) {
-      message.success("Change adress successfully");
+      toast("Change adress successfully");
       window.location.href = window.location.pathname.replace(
         `edit-address/${storeID}`,
         "manage"

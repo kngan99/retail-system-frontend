@@ -37,13 +37,13 @@ export default class ExportonClick extends React.Component {
           fileList: [],
           uploading: false,
         });
-        message.success("upload successfully.");
+        toast("upload successfully.");
       },
       error: () => {
         this.setState({
           uploading: false,
         });
-        message.error("upload failed.");
+        toast("upload failed.");
       },
     });
   };

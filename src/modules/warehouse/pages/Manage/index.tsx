@@ -21,6 +21,7 @@ import accountStore from "../../../account/account.store";
 import { StoreStoreContext } from "../../../admin-store/admin.store";
 import { WarehouseStoreContext } from "../../../admin-warehouse/admin.store";
 import AdminWrapper from "../../../admin-account/components/AdminWrapper";
+import { toast } from "react-toastify";
 
 const ManageOrderAdminPage = () => {
   const orderStore = React.useContext(CartStoreContext);
@@ -186,11 +187,11 @@ const ManageOrderAdminPage = () => {
     setCurrentStatus(res[0][0].Status);
     setNextStep(res[0][0].Status);
     if (currentStatus === "Cancelled" || res[0][0].Status === "Cancelled"){
-      message.error("This request has been cancelled!");
+      toast("This request has been cancelled!");
       return;
     }
     if (currentStatus === "Success" || res[0][0].Status === "Success"){
-      message.error("This request has been done!");
+      toast("This request has been done!");
       return;
     }
     setShowConfirmPopup(true);
@@ -202,11 +203,11 @@ const ManageOrderAdminPage = () => {
     setCurrentStatus(res[0][0].Status);
     setNextStep(res[0][0].Status);
     if (currentStatus === "Cancelled" || res[0][0].Status === "Cancelled"){
-      message.error("This request has been cancelled!");
+      toast("This request has been cancelled!");
       return;
     }
     if (currentStatus === "Success" || res[0][0].Status === "Success"){
-      message.error("This request has been done!");
+      toast("This request has been done!");
       return;
     }
     setShowConfirmProgressPopup(true);
@@ -254,7 +255,7 @@ const ManageOrderAdminPage = () => {
       const result = await orderStore.cancelCargoReq(deleteID);
       if (result) {
         setDeleteID(-1);
-        message.success("Cancel successfully");
+        toast("Cancel successfully");
         if (retrieveFromStorage("role") === "WarehouseStaff") {
           orderStore.getOrderListByAdmin({
             ...criteriaDto,
@@ -286,7 +287,7 @@ const ManageOrderAdminPage = () => {
       const result = await orderStore.updateStatusCargoReq(progressID,currentStatus);
       if (result) {
         setProgressID(-1);
-        message.success("Process successfully to the next step!");
+        toast("Process successfully to the next step!");
         if (retrieveFromStorage("role") === "WarehouseStaff") {
           orderStore.getOrderListByAdmin({
             ...criteriaDto,
@@ -305,7 +306,7 @@ const ManageOrderAdminPage = () => {
   };
 
   const handleDetail = (id) => {
-    message.info("Click on Id to see Detail");
+    toast("Click on Id to see Detail");
   }
 
   /*

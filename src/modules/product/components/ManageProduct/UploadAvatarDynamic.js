@@ -4,6 +4,7 @@ import ImgCrop from "antd-img-crop";
 import { UploadOutlined } from "@ant-design/icons";
 import { ProductStoreContext } from "../../product.store";
 import productService from '../../../../modules/product/product.service';
+import { toast } from "react-toastify";
 
 // const token = checkToken();
 
@@ -45,11 +46,11 @@ const UploadAvatarDynamic = (record) => {
         console.log(record.record.Id)
         const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
         if (!isJpgOrPng) {
-            message.error('You can only upload JPG/PNG file!');
+            toast('You can only upload JPG/PNG file!');
         }
         const isLt2M = file.size / 1024 / 1024 < 10;
         if (!isLt2M) {
-            message.error('Image must smaller than 10MB!');
+            toast('Image must smaller than 10MB!');
         }
         return isJpgOrPng && isLt2M;
     }

@@ -7,6 +7,7 @@ import DefaultRegisterForm from '../../../../modules/account/components/DefaultR
 import { DEFAULT_ROUTERS } from '../../../../modules/account/router.enum';
 import { CreateUserDto } from '../../../../modules/account/account.dto';
 import { message } from 'antd';
+import { toast } from 'react-toastify';
 const CreateAccountPage = () => {
   const accountStore = React.useContext(AccountStoreContext);
   const history = useHistory();
@@ -42,7 +43,7 @@ const CreateAccountPage = () => {
     // if (result) {
       accountStore.resetCreateUserForm();
       history.push(DEFAULT_ROUTERS.LOGIN);
-      message.success('Register successfully! Check your email to verified and login');
+      toast('Register successfully! Check your email to verified and login');
     //}
   };
 

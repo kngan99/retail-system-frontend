@@ -6,6 +6,7 @@ import InfiniteScroll from 'react-infinite-scroller';
 import http from "../../../../common/sevices";
 import moment from "moment";
 import './style.css';
+import { toast } from "react-toastify";
 
 /*
  * Props of Component

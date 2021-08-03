@@ -6,6 +6,7 @@ import { CartStoreContext } from "../../stores/cart.store";
 import { Modal, Button, Pagination, Table, Tag, Radio, Space, Tabs, Card, Skeleton, Avatar, List, Spin, Divider, Form, Input, Select, message, Alert, Row, Col} from 'antd';
 import { ExclamationCircleOutlined, AudioOutlined, EditOutlined, EllipsisOutlined, SettingOutlined, DeleteOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import { ColumnsType } from "antd/es/table";
+import { toast } from "react-toastify";
 import UpdateProductModal from "../../../../modules/product/components/ManageProduct/UpdateProductModal";
 import CreateProductModal from "../../../../modules/product/components/ManageProduct/CreateProductModal";
 import { makeAutoObservable, autorun, observable, toJS } from "mobx"
@@ -151,7 +152,7 @@ const PosPage = () => {
   };
   const onPressEnterAdd = async (e: any) => {
     if (!Number.isInteger(Number(e.target.value))) {
-      message.error("Invalid ID!");
+      toast("Invalid ID!");
     }
     else {
       cartStore.addToCartById(Number(e.target.value));
@@ -160,7 +161,7 @@ const PosPage = () => {
 
   const onPressEnterCoupon = async (e: any) => {
     if (!Number.isInteger(Number(e.target.value))) {
-      message.error("Invalid ID!");
+      toast("Invalid ID!");
     }
     else {
       cartStore.getPromotion(Number(e.target.value));

@@ -3,6 +3,7 @@ import { Modal, Button, message } from "antd";
 import { ProductStoreContext } from "../../product.store";
 import { BarcodeOutlined } from "@ant-design/icons";
 import BarcodeScannerComponent from "react-webcam-barcode-scanner";
+import { toast } from "react-toastify";
 
 const BarCode = (pros) => {
   const productStore = React.useContext(ProductStoreContext);
@@ -45,7 +46,7 @@ const BarCode = (pros) => {
                 setFlag(false);
                 setData(result.text);
                 productStore.addBarcode(pros.record.Id, result.text);
-                message.success(`Added Barcode ${result.text}`);
+                toast(`Added Barcode ${result.text}`);
                 setVisible(false);
             }            
           }}

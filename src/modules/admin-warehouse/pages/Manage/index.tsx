@@ -10,6 +10,8 @@ import AdminAccountFormModal from "../../components/AdminAccountFormModal";
 import AdminAccountGrid from "../../components/AccountGrid";
 import ActionBar from "../../../theme/components/ActionBar";
 import { message } from "antd";
+import { toast } from "react-toastify";
+
 
 const ManageAccountAdminPage = () => {
   const history = useHistory();
@@ -74,7 +76,7 @@ const ManageAccountAdminPage = () => {
         adminStore.getAccounts(criteriaDto.skip, criteriaDto.take);
         adminStore.resetAdminForm();
         setShowPopup(false);
-        message.success('Created successfully');
+        toast('Created successfully!', {autoClose: 4000});
       }
     }
     if (mode === "edit") {
@@ -83,7 +85,7 @@ const ManageAccountAdminPage = () => {
         adminStore.getAccounts(criteriaDto.skip, criteriaDto.take);
         adminStore.resetAdminForm();
         setShowPopup(false);
-        message.success(MESSAGES_UPDATE_SUCCESS);
+        toast(MESSAGES_UPDATE_SUCCESS);
       }
     }
     setShowPopup(false);

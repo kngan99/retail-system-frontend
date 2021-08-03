@@ -7,6 +7,7 @@ import {Helmet} from "react-helmet";
 import '../RecommendExcel/style.css';
 import { CartStoreContext } from "../../../../themes/pos/stores/cart.store";
 import { transaction } from 'mobx';
+import { toast } from "react-toastify";
 
 interface ComponentProps {
   className?: string;
@@ -88,7 +89,7 @@ const RecommendExcel = (props: ComponentProps) => {
 
   const handleGetTransactions = async () => {
       if (cartStore.productsAprioriId.length === 0) {
-          message.error("Please choose product");
+          toast("Please choose product");
           return;
       }
       const res = await cartStore.getTransactions();
@@ -227,7 +228,7 @@ const dataSourceOrderApriori = cartStore.transactions.map((transaction, index) =
               }}
               onClick={() => {
                 setIsConfirmed(true);
-                message.success("Confirmed!");
+                toast("Confirmed!");
               }}
             >
               Confirm
@@ -304,7 +305,7 @@ const dataSourceOrderApriori = cartStore.transactions.map((transaction, index) =
                 }}
                 onClick={() => {
                   if (!isConfirmed) {
-                    message.error("Please check the input and press Confirm");
+                    toast("Please check the input and press Confirm");
                     return;
                   }
                   setIsConfirmed(false);

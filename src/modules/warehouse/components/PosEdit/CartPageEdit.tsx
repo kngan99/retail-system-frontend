@@ -2,6 +2,7 @@ import React from "react";
 import { inject, observer } from "mobx-react";
 import { makeAutoObservable, autorun, observable, values } from "mobx";
 import { Input, Tooltip, Button, message, Row, Col } from "antd";
+import { toast } from "react-toastify";
 import {
   PlusOutlined,
   MinusOutlined,
@@ -87,7 +88,7 @@ const CartPageEdit = observer(
     };
     const handleCheckoutClick = async () => {
       if (totalNum == 0) {
-        message.error("Cart is empty");
+        toast("Cart is empty");
       } else {
         await cartStore.setCargoRequest(
           warehouseId,
@@ -126,7 +127,7 @@ const CartPageEdit = observer(
           "Edit"
         );
         const result = await cartStore.updateCargoRequest(orderID);
-        message.success("Update Cargo Request successfully!");
+        toast("Update Cargo Request successfully!");
         return result;
       }
     };
@@ -143,7 +144,7 @@ const CartPageEdit = observer(
     };
     const onChange = async (item, e) => {
       if (!Number.isInteger(Number(e.target.value))) {
-        message.error("Invalid number!");
+        toast("Invalid number!");
       } else {
         cartStore.updateQuantity(item, e.target.value);
         console.log("Change:", e.target.value);
