@@ -9,8 +9,8 @@ interface CashierInfo {
 }
 
 class CartService {
-  sessionPrefix: string = "http://localhost:4000/api/sessions";
-  cargoRequestPrefix: string = "http://localhost:4000/api/cargo-requests"
+  sessionPrefix: string = "http://warehouse-retail.herokuapp.com/api/sessions";
+  cargoRequestPrefix: string = "http://warehouse-retail.herokuapp.com/api/cargo-requests"
 
   public async startNewSession() {
     const result = await http.post(`${this.sessionPrefix}`, {
