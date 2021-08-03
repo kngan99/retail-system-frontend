@@ -170,7 +170,9 @@ const ReportDiagram = (props: ComponentProps) => {
         {productStore.summaryProducts && productStore.noSummaryProducts > 0 && productStore.quantity.length > 0 && productStore.income.length > 0 && (
           <>
             <div className="header">
-              <h1 className="title">Product Quantity and Income Chart</h1>
+              <h4 className="title">Product Quantity and Income Chart</h4>
+              <h6 >{`From ${moment(start).format('LL')} to ${moment(end).format('LL')}`}</h6>
+              <h6 >{`Total ${productStore.totalIncome}`}</h6>
             </div>
             <Bar data={data} options={options} />
           </>

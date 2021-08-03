@@ -4,8 +4,11 @@ import { Container, Row, Col } from "react-bootstrap";
 import ProgressOrder from "../Progress";
 import GoogleMap from "../GoogleMap";
 import { getDistance } from "../../../../common/utils/mapCalculate.ulti";
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
+import { Map, TileLayer, Marker, Popup } from "react-leaflet";
 import { LatLng } from "leaflet";
+import "./style.css";
+// import 'leaflet/dist/leaflet.css';
+// import {Helmet} from "react-helmet";
 
 /*
  * Props of Component
@@ -27,7 +30,14 @@ const TrackingOrder = (props: ComponentProps) => {
   const { style, className, children, title, selectedOrder, markers, id } =
     props;
 
-    const position = new LatLng(51.505, -0.09);
+  const position = new LatLng(10.82302, 106.62965);
+
+  const positionWH = markers[0]
+    ? new LatLng(markers[0].lat, markers[0].lng)
+    : new LatLng(10.82302, 106.62965);
+  const positionStore = markers[1]
+    ? new LatLng(markers[1]?.lat, markers[1]?.lng)
+    : new LatLng(10.82302, 106.62965);
 
   return (
     <>
@@ -38,12 +48,14 @@ const TrackingOrder = (props: ComponentProps) => {
       >
         <Row className="block-tracking" style={style}>
           <Col xs={12} className="block-content">
-            <h3 className="block-title">{title ? title : "Tracking"}</h3>
+            <h3 className="block-title">{title ? title : "Places On Map"}</h3>
             <Row>
-              <Col xs={12} md={4} className="item">
-                <span className="item-label">{"Id"}</span>
-                <span className="item-value">{selectedOrder?.Id ?? ""}</span>
-              </Col>
+              {id && (
+                <Col xs={12} md={4} className="item">
+                  <span className="item-label">{"Id"}</span>
+                  <span className="item-value">{selectedOrder?.Id}</span>
+                </Col>
+              )}
               {/* <Col xs={12} md={4} className="item">
                 <span className="item-label">{"Distance"}</span>
                 <span className="item-value">
@@ -55,16 +67,23 @@ const TrackingOrder = (props: ComponentProps) => {
             </Row>
           </Col>
           <Col xs={12} className="block-map">
-            <MapContainer center={position} zoom={13} scrollWheelZoom={false}>
-              <TileLayer
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              />
-              <Marker position={position}>
-                <Popup>
-                  A pretty CSS3 popup. <br /> Easily customizable.
-                </Popup>
-              </Marker>
-            </MapContainer>
+            <Map center={position} zoom={13} scrollWheelZoom={false}>
+              <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+              {positionWH && (
+                <Marker position={positionWH}>
+                  markers[0] &&
+                  <Popup>
+                    {markers[0]?.addr ? markers[0]?.addr : "Warehouse"}
+                  </Popup>
+                </Marker>
+              )}
+              {positionStore && (
+                <Marker position={positionStore}>
+                  markers[1] &&
+                  <Popup>{markers[1]?.addr ? markers[1]?.addr : "Store"}</Popup>
+                </Marker>
+              )}
+            </Map>
           </Col>
         </Row>
         {/* {selectedOrder?.status === "Cancel" ? (

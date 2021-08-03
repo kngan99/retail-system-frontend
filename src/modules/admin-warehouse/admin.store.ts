@@ -11,6 +11,9 @@ class WarehouseStore {
     @observable currentWarehouse: any;
     @observable warehouseAllDb: any[] = [];
     @observable totalCountwarehouseAllDb: number = 0;
+    @observable chosenAddress: string = '';
+    @observable Lat: number = -1;
+    @observable Lng: number = -1;
   
     @action.bound
     async getAccounts(skip: number, take: number) {
@@ -63,8 +66,20 @@ class WarehouseStore {
     @action.bound
     async deleteAccount(id: number) {
         const result = await adminService.deleteAccount(id);
-        return result.data?.result;
+        return result.data;
     }
+
+    @action.bound
+    async setAddressStr(addr: string) {
+        this.chosenAddress = addr;
+    }
+
+    @action.bound
+    async setAddress(id: number, addr: string, Lat: number, Lng: number) {
+        const result = await adminService.setAddress(id, addr, Lat, Lng);
+        return result.data;
+    }
+
 
     constructor() {
         makeObservable(this);

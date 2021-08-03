@@ -30,6 +30,8 @@ const ManageAccountAdminPage = () => {
 
   const [id, setId] = React.useState<number>(-1);
 
+  const [filtered, setFiltered] = React.useState<boolean>(false);
+
   const [actionsBar] = React.useState<ActionBarDto[]>([
     {
       label: BUTTONS_RESTORE,
@@ -47,9 +49,8 @@ const ManageAccountAdminPage = () => {
     },
   ]);
 
-  const [showConfirmPopup, setShowConfirmPopup] = React.useState<boolean>(
-    false
-  );
+  const [showConfirmPopup, setShowConfirmPopup] =
+    React.useState<boolean>(false);
 
   /*Confirm modal*/
   const handleOk = async () => {
@@ -65,7 +66,7 @@ const ManageAccountAdminPage = () => {
       message.info("Verify successfully!");
       setId(-1);
     }
-    adminStore.getAccounts(criteriaDto.skip, criteriaDto.take);
+    adminStore.getAccounts(criteriaDto.skip, criteriaDto.take, '');
   };
 
   const handleCancel = () => {
@@ -97,7 +98,7 @@ const ManageAccountAdminPage = () => {
     if (mode === "create") {
       const result = await adminStore.addAccount();
       if (result) {
-        adminStore.getAccounts(criteriaDto.skip, criteriaDto.take);
+        adminStore.getAccounts(criteriaDto.skip, criteriaDto.take, '');
         adminStore.resetAdminForm();
         message.success(MESSAGES_CREATED_SUCCESS);
         setShowPopup(false);
@@ -106,13 +107,13 @@ const ManageAccountAdminPage = () => {
     if (mode === "edit") {
       const result = await adminStore.updateAccount(id, adminStore.adminForm);
       if (result) {
-        adminStore.getAccounts(criteriaDto.skip, criteriaDto.take);
+        adminStore.getAccounts(criteriaDto.skip, criteriaDto.take, '');
         adminStore.resetAdminForm();
         message.success(MESSAGES_UPDATE_SUCCESS);
         setShowPopup(false);
       }
     }
-    adminStore.getAccounts(criteriaDto.skip, criteriaDto.take);
+    adminStore.getAccounts(criteriaDto.skip, criteriaDto.take,'');
     //message.success(MESSAGES_CREATED_SUCCESS);
     setShowPopup(false);
   };
@@ -134,7 +135,7 @@ const ManageAccountAdminPage = () => {
   const handleDelete = async (id: number, setShowConfirmPopup: any) => {
     setShowConfirmPopup(true);
     await adminStore.deleteAccount(id);
-    adminStore.getAccounts(criteriaDto.skip, criteriaDto.take);
+    adminStore.getAccounts(criteriaDto.skip, criteriaDto.take, '');
   };
 
   const handleChangePageItem = (page: number) => {
@@ -145,8 +146,28 @@ const ManageAccountAdminPage = () => {
     });
   };
 
+  const handleFilter = (e: any) => {
+    console.log(e);
+    setCriteriaDto({
+      skip: 0,
+      take: +pageSizeOptions[0],
+      searchKeyword: e.target.search.value,
+    });
+    console.log('hi Ngaan');
+    console.log(setCriteriaDto);
+    setFiltered(true);
+  };
+
+  const handleResetFilter = () => {
+    setCriteriaDto({
+      skip: 0,
+      take: +pageSizeOptions[0],
+    });
+    setFiltered(false);
+  };
+
   React.useEffect(() => {
-    adminStore.getAccounts(criteriaDto.skip, criteriaDto.take);
+    adminStore.getAccounts(criteriaDto.skip, criteriaDto.take, '');
   }, [criteriaDto, adminStore]);
 
   return (
@@ -160,6 +181,9 @@ const ManageAccountAdminPage = () => {
           handleDelete={handleDelete}
           currentId={id}
           criteriaDto={criteriaDto}
+          handleFilter={handleFilter}
+          filtered={filtered}
+          handleResetFilter={handleResetFilter}
         />
         <AdminAccountFormModal
           show={showPopup}
@@ -168,11 +192,11 @@ const ManageAccountAdminPage = () => {
           mode={mode}
         />
         <ConfirmModal
-            show={showConfirmPopup}
-            handleCancel={handleCancel}
-            handleOk={handleOk}
-            children={<strong>Do you want to verify this account?</strong>}
-          ></ConfirmModal>
+          show={showConfirmPopup}
+          handleCancel={handleCancel}
+          handleOk={handleOk}
+          children={<strong>Do you want to verify this account?</strong>}
+        ></ConfirmModal>
       </AdminWrapper>
     </>
   );

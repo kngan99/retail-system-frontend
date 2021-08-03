@@ -102,8 +102,8 @@ const ManageAccountAdminPage = () => {
 
   const handleDelete = async (id: number, setShowConfirmPopup: any) => {
     setShowConfirmPopup(true);
-    await adminStore.deleteAccount(id);
-    adminStore.getAccounts(criteriaDto.skip, criteriaDto.take);
+    // await adminStore.deleteAccount(id);
+    // adminStore.getAccounts(criteriaDto.skip, criteriaDto.take);
   };
 
   const handleChangePageItem = (page: number) => {

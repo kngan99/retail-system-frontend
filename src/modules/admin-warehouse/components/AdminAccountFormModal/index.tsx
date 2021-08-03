@@ -176,7 +176,7 @@ const AdminAccountFormModal = (props: ComponentProps) => {
                   {errors.fName}
                 </Form.Control.Feedback>*/}
               </Form.Group>
-              <Form.Group
+              {/* <Form.Group
                 as={Col}
                 md="12"
                 controlId="Address"
@@ -193,10 +193,10 @@ const AdminAccountFormModal = (props: ComponentProps) => {
                   value={values.Address}
                   onChange={handleChange}
                 />
-                {/*<Form.Control.Feedback type="invalid">
+                <Form.Control.Feedback type="invalid">
                   {errors.fName}
-                </Form.Control.Feedback>*/}
-              </Form.Group>
+                </Form.Control.Feedback>
+              </Form.Group> */}
               <Form.Group
                 as={Col}
                 md="12"
@@ -316,12 +316,6 @@ const AdminAccountFormModal = (props: ComponentProps) => {
                   <Button variant="primary" type="submit">
                     <span>{BUTTONS_UPDATE}</span>
                     <i className="ico ico-plus"></i>
-                  </Button>
-                )}
-                {mode === "edit" && (
-                  <Button onClick={handleDelete}>
-                    <span>{BUTTONS_DELETE}</span>
-                    <i className="ico ico-delete"></i>
                   </Button>
                 )}
               </ButtonGroup>

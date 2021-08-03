@@ -11,9 +11,9 @@ class AdminStore {
     @observable curUser: any;
   
     @action
-    async getAccounts(skip: number, take: number) {
+    async getAccounts(skip: number, take: number, searchKeyword: string) {
         let data: any = [];
-        data = await adminService.getAccounts(skip, take);
+        data = await adminService.getAccounts(skip, take, searchKeyword);
         this.accounts = data[0];
         this.totalCount = data[1];
     }

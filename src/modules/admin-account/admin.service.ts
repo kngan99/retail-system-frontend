@@ -3,11 +3,12 @@ import http from "../../common/sevices";
 class AdminService {
   accountPrefix: string = "http://localhost:4000/api/accounts";
 
-  public async getAccounts(skip: number, take: number) {
+  public async getAccounts(skip: number, take: number, searchKeyword: string) {
     const result = await http.get(`${this.accountPrefix}/`, {
       params: {
         skip: skip,
         take: take,
+        searchKeyword: searchKeyword,
       },
     });
     return result.data;

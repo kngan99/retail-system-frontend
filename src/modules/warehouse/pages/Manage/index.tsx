@@ -408,23 +408,24 @@ const ManageOrderAdminPage = () => {
       const isGetStore = await storeStore.getAccountById(parseInt(retrieveFromStorage("storeId")!));
       const isGetWarehouse = await warehouseStore.getAccountById(orderStore.selectedOrder.warehouseId);
       setSelectedOrder(orderStore.selectedOrder);
-      console.log(storeStore.currentStore);
-      console.log(warehouseStore.currentWarehouse);
       if (orderById) {
         let tmpMarkers = [] as any;
         tmpMarkers.push(
           {
-            lat: +warehouseStore.currentWarehouse.AddressCoorLat,
-            lng: +warehouseStore.currentWarehouse.AddressCoorLong,
+            lat: warehouseStore.currentWarehouse.AddressCoorLat,
+            lng: warehouseStore.currentWarehouse.AddressCoorLong,
+            addr: warehouseStore.currentWarehouse.Address,
           },
           {
-            lat: +storeStore.currentStore.AddressCoorLat,
-            lng: +storeStore.currentStore.AddressCoorLong,
-          }
+            lat: storeStore.currentStore.AddressCoorLat,
+            lng: storeStore.currentStore.AddressCoorLong,
+            addr: storeStore.currentStore.Address,
+          },
         );
 
         setMarkers(tmpMarkers);
       }
+      console.log(markers)
     },
     [orderStore]
   );

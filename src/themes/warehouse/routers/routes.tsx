@@ -61,4 +61,16 @@ export const warehouseRoutes = [
     isLayout: false,
     isGuarded: false,
   },
+  {
+    path: '/warehouse/edit-address/:id',
+    name: 'Edit Warehouse Address',
+    title: 'Edit Warehouse Address',
+    exact: true,
+    permission: '',
+    component: React.lazy(
+      () => import('../../../modules/admin-warehouse/pages/EditWarehouseAddress/index')
+    ),
+    isLayout: false,
+    isGuarded: false,
+  },
 ];

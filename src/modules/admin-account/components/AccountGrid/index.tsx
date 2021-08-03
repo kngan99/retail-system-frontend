@@ -6,6 +6,7 @@ import { pageSizeOptions } from "../../../../common/constants/paging.constants";
 import { AccountsActionsDto } from "../../../account/account.dto";
 import { AdminStoreContext } from "../../admin.store";
 import ConfirmModal from "../../../../common/components/ConfirmModal";
+import Filter from "../../../../common/components/Filter";
 
 /*
  * Props of Component
@@ -23,6 +24,9 @@ interface ComponentProps {
   handleDelete?: any;
   currentId: number;
   criteriaDto: any;
+  handleFilter?: any;
+  filtered?: boolean;
+  handleResetFilter?: any;
 }
 
 const AdminAccountGrid = (props: ComponentProps) => {
@@ -42,6 +46,9 @@ const AdminAccountGrid = (props: ComponentProps) => {
     handleDelete,
     currentId,
     criteriaDto,
+    handleFilter,
+    filtered,
+    handleResetFilter,
   } = props;
 
   const [totals, setTotals] = React.useState<number>(0);
@@ -56,11 +63,10 @@ const AdminAccountGrid = (props: ComponentProps) => {
 
   const [currentPage, setCurrentPage] = React.useState<number>(1);
 
-  const [currentPageFrame, setCurrentPageFrame] = React.useState<number>(1);  
+  const [currentPageFrame, setCurrentPageFrame] = React.useState<number>(1);
 
-  const [showConfirmPopup, setShowConfirmPopup] = React.useState<boolean>(
-    false
-  );
+  const [showConfirmPopup, setShowConfirmPopup] =
+    React.useState<boolean>(false);
 
   const maxPage: number = 4;
 
@@ -95,7 +101,7 @@ const AdminAccountGrid = (props: ComponentProps) => {
   const handleOk = async () => {
     setShowConfirmPopup(false);
     await adminStore.deleteAccount(currentId);
-    adminStore.getAccounts(criteriaDto.skip, criteriaDto.take);
+    adminStore.getAccounts(criteriaDto.skip, criteriaDto.take, "");
   };
 
   const handleCancel = () => {
@@ -127,8 +133,16 @@ const AdminAccountGrid = (props: ComponentProps) => {
                 }}
                 className="order-grid"
               >
-                <Table responsive="md" style={{marginLeft: "-16px"}}>
+                <Col xs={12} style={{ margin: "17px auto auto -56px" }}>
+                  <Filter
+                    handleFilter={handleFilter}
+                    filtered={filtered}
+                    handleResetFilter={handleResetFilter}
+                  ></Filter>
+                </Col>
+                <Table responsive="md" style={{ marginLeft: "-16px" }}>
                   <thead>
+                    <tr></tr>
                     <tr>
                       <th>
                         <span>{"Id"}</span>
@@ -179,7 +193,10 @@ const AdminAccountGrid = (props: ComponentProps) => {
                             className="btn-icon"
                             size="lg"
                           >
-                            <i className="ico ico-checked" style={{fontSize:"medium"}}></i>
+                            <i
+                              className="ico ico-checked"
+                              style={{ fontSize: "medium" }}
+                            ></i>
                           </Button>
                           <Button
                             variant="primary"
