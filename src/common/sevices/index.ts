@@ -5,7 +5,7 @@ import { handleResponseError } from '../utils/apis.util';
 import { removeFromStorage } from '../utils/storage.util';
 
 const axiosInstance = axios.create({
-  baseURL: 'http://warehouse-retail.herokuapp.com/api',
+  baseURL: 'https://warehouse-retail.herokuapp.com/api',
   headers: {
     'Content-Type': 'application/json',
     Accept: 'application/json',

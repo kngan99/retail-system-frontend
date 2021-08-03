@@ -307,7 +307,7 @@ const PreCartPage = () => {
                                           size={48}
                                           shape="square"
                                           src={
-                                            "http://warehouse-retail.herokuapp.com/api/products/img/thumbnails-" +
+                                            "https://warehouse-retail.herokuapp.com/api/products/img/thumbnails-" +
                                             String(
                                               product.PhotoURL
                                                 ? product.PhotoURL

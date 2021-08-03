@@ -26,7 +26,7 @@ export default function CheckoutForm() {
         var total = (cartStore.totalAmount * 1.1).toFixed(2) * 100;
         // Create PaymentIntent as soon as the page loads
         window
-            .fetch("http://warehouse-retail.herokuapp.com/api/orders/create-payment-intent/"+String(total), {
+            .fetch("https://warehouse-retail.herokuapp.com/api/orders/create-payment-intent/"+String(total), {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
