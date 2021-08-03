@@ -9,6 +9,7 @@ class StoreStore {
     @observable totalCount: number = 0;
     @observable adminForm: any = newAdminFormInit;
     @observable currentStore: any;
+    @observable chosenAddress: string = '';
   
     @action.bound
     async getAccounts(skip: number, take: number) {
@@ -54,6 +55,17 @@ class StoreStore {
     async deleteAccount(id: number) {
         const result = await adminService.deleteAccount(id);
         return result.data?.result;
+    }
+
+    @action.bound
+    async setAddressStr(addr: string) {
+        this.chosenAddress = addr;
+    }
+
+    @action.bound
+    async setAddress(id: number, addr: string, Lat: number, Lng: number) {
+        const result = await adminService.setAddress(id, addr, Lat, Lng);
+        return result.data;
     }
 
     constructor() {

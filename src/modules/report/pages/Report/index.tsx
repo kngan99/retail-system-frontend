@@ -17,7 +17,6 @@ const ReportPage = () => {
   const {
     ADMIN_MANAGE_PRODUCT,
     BUTTONS_ADD_NEW,
-    MESSAGES_CREATED_SUCCESS,
     MESSAGES_UPDATE_SUCCESS,
     BUTTONS_RESTORE,
   } = I18N;

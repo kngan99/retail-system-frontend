@@ -45,7 +45,6 @@ export enum I18N {
     MESSAGES_DELETE_SUCCESS = 'Deleted successfully',
     MESSAGES_VERIFY_SUCCESS = 'Verified successfully',
     MESSAGES_UPDATE_SUCCESS = 'Updated successfully',
-    MESSAGES_CREATED_SUCCESS = 'Created successfully',
     MESSAGES_CONFIRM_RESTORE = 'Are you sure to restore this account?',
     ADMIN_MENU_LOG_OUT = 'Log out',
     TOPMENU_WELCOME = 'Welcome',

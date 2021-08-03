@@ -122,25 +122,6 @@ const AdminAccountFormModal = (props: ComponentProps) => {
               style={style}
             >
               {children}
-              {mode == 'create' &&
-                <Form.Group
-                as={Col}
-                md="12"
-                controlId="Email"
-                className="form-group-name"
-              >
-                <Form.Label className="form-label-required">
-                  {"Email"} <span>*</span>
-                </Form.Label>
-                <Form.Control
-                  type="text"
-                  value={values.Email}
-                  onChange={handleChange}
-                />
-                {/*<Form.Control.Feedback type="invalid">
-                  {errors.fName}
-                </Form.Control.Feedback>*/}
-              </Form.Group>}
               <Form.Group
                 as={Col}
                 md="12"
@@ -195,7 +176,7 @@ const AdminAccountFormModal = (props: ComponentProps) => {
                   {errors.fName}
                 </Form.Control.Feedback>*/}
               </Form.Group>
-              <Form.Group
+              {/* <Form.Group
                 as={Col}
                 md="12"
                 controlId="Address"
@@ -206,19 +187,16 @@ const AdminAccountFormModal = (props: ComponentProps) => {
                 </Form.Label>
                 <GoogleMapAutocomplete
                   handleChangePlace={handleChangePlace}
-                  field="Warehouse"
+                  field="Store"
                   setFieldValue={setFieldValue}
                   componentId="Address"
                   value={values.Address}
-                  onChange={(e) => {
-                    console.log("ghdfjkl");
-                    handleChange(e.target.value);
-                  }}
+                  onChange={handleChange}
                 />
-                {/*<Form.Control.Feedback type="invalid">
+                <Form.Control.Feedback type="invalid">
                   {errors.fName}
-                </Form.Control.Feedback>*/}
-              </Form.Group>
+                </Form.Control.Feedback>
+              </Form.Group> */}
               <Form.Group
                 as={Col}
                 md="12"
@@ -309,7 +287,6 @@ const AdminAccountFormModal = (props: ComponentProps) => {
                   {errors.fName}
                 </Form.Control.Feedback>*/}
               </Form.Group>
-              
               <ButtonGroup className="form-actions">
                 {mode === "create" && (
                   <Button variant="primary" type="submit">
@@ -321,12 +298,6 @@ const AdminAccountFormModal = (props: ComponentProps) => {
                   <Button variant="primary" type="submit">
                     <span>{BUTTONS_UPDATE}</span>
                     <i className="ico ico-plus"></i>
-                  </Button>
-                )}
-                {mode === "edit" && (
-                  <Button onClick={handleDelete}>
-                    <span>{BUTTONS_DELETE}</span>
-                    <i className="ico ico-delete"></i>
                   </Button>
                 )}
               </ButtonGroup>

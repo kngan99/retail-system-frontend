@@ -17,7 +17,6 @@ const ManageAccountAdminPage = () => {
   const {
     ADMIN_MANAGE_ACCOUNT,
     BUTTONS_ADD_NEW,
-    MESSAGES_CREATED_SUCCESS,
     MESSAGES_UPDATE_SUCCESS,
     BUTTONS_RESTORE,
   } = I18N;
@@ -100,7 +99,7 @@ const ManageAccountAdminPage = () => {
       if (result) {
         adminStore.getAccounts(criteriaDto.skip, criteriaDto.take, '');
         adminStore.resetAdminForm();
-        message.success(MESSAGES_CREATED_SUCCESS);
+        message.success('Created successfully');
         setShowPopup(false);
       }
     }
@@ -114,7 +113,7 @@ const ManageAccountAdminPage = () => {
       }
     }
     adminStore.getAccounts(criteriaDto.skip, criteriaDto.take,'');
-    //message.success(MESSAGES_CREATED_SUCCESS);
+    //message.success('Created successfully');
     setShowPopup(false);
   };
 

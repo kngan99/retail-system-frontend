@@ -20,7 +20,6 @@ const ManagePromotionAdminPage = () => {
   const {
     ADMIN_MANAGE_ORDER_PROMOTION,
     BUTTONS_ADD_NEW,
-    MESSAGES_CREATED_SUCCESS,
     MESSAGES_UPDATE_SUCCESS,
     BUTTONS_RESTORE,
   } = I18N;
@@ -76,7 +75,7 @@ const ManagePromotionAdminPage = () => {
         adminStore.getAccounts(criteriaDto.skip, criteriaDto.take);
         adminStore.resetAdminForm();
         toast.dismiss();
-        toast.success((MESSAGES_CREATED_SUCCESS));
+        toast.success(('Created successfully'));
         setShowPopup(false);
       }
     }

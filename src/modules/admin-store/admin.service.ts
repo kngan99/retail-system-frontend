@@ -30,6 +30,14 @@ class AdminService {
   public async deleteAccount(id: number) {
     return await http.delete(`${this.accountPrefix}/${id}`);
   }
+
+  public async setAddress(id: number, addr: string, Lat: number, Lng: number) {
+    return await http.put(`${this.accountPrefix}/${id}`, {
+      Address: addr,
+      AddressCoorLat: '' + Lat,
+      AddressCoorLong: '' + Lng,
+    });
+  }
 }
 
 export default new AdminService();

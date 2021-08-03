@@ -1,6 +1,6 @@
 import React from "react";
 import { observer } from "mobx-react-lite";
-import { Container, Row, Col, Table, Form, Button } from "react-bootstrap";
+import { Container, Row, Col, Table, Form, Button, Tooltip, OverlayTrigger } from "react-bootstrap";
 import Paging from "../../../../common/components/Paging";
 import { pageSizeOptions } from "../../../../common/constants/paging.constants";
 import { AccountsActionsDto } from "../../../account/account.dto";
@@ -23,6 +23,12 @@ interface ComponentProps {
   currentId: number;
   criteriaDto: any;
 }
+
+const renderTooltip = (props) => (
+  <Tooltip id="button-tooltip" {...props}>
+    Edit Address
+  </Tooltip>
+);
 
 const AdminAccountGrid = (props: ComponentProps) => {
   const adminStore = React.useContext(StoreStoreContext);
@@ -54,13 +60,18 @@ const AdminAccountGrid = (props: ComponentProps) => {
 
   const [currentPage, setCurrentPage] = React.useState<number>(1);
 
-  const [currentPageFrame, setCurrentPageFrame] = React.useState<number>(1);  
+  const [currentPageFrame, setCurrentPageFrame] = React.useState<number>(1);
 
-  const [showConfirmPopup, setShowConfirmPopup] = React.useState<boolean>(
-    false
-  );
+  const [currentIdState, setCurrentIdState] = React.useState<number>(-1);
+
+  const [showConfirmPopup, setShowConfirmPopup] =
+    React.useState<boolean>(false);
 
   const maxPage: number = 4;
+
+  const [popoverOpen, setPopoverOpen] = React.useState(false);
+
+  const toggle = () => setPopoverOpen(!popoverOpen);
 
   const handleChangeSize = (event: any) => {
     setPagingSize(+event.target.value);
@@ -71,6 +82,20 @@ const AdminAccountGrid = (props: ComponentProps) => {
     setCurrentPage(page);
     setCurrentPageFrame(Math.ceil(page / maxPage));
     handleChangePageItem(page);
+  };
+
+  const handleEditAddress = (id: number) => {
+    window.location.href = window.location.pathname.replace(
+      "manage",
+      `edit-address/${id}`
+    );
+  };
+
+  const handleDeleteWithConfirm = async (id: number, setShowConfirmPopup: any) => {
+    setShowConfirmPopup(true);
+    setCurrentIdState(id);
+    // await adminStore.deleteAccount(id);
+    // adminStore.getAccounts(criteriaDto.skip, criteriaDto.take);
   };
 
   // React.useEffect(() => {
@@ -92,7 +117,7 @@ const AdminAccountGrid = (props: ComponentProps) => {
   /*Confirm modal*/
   const handleOk = async () => {
     setShowConfirmPopup(false);
-    await adminStore.deleteAccount(currentId);
+    await adminStore.deleteAccount(currentIdState);
     adminStore.getAccounts(criteriaDto.skip, criteriaDto.take);
   };
 
@@ -113,7 +138,7 @@ const AdminAccountGrid = (props: ComponentProps) => {
             {title && (
               <Col xs={12}>
                 <h3 className="block-title">
-                  {title ? title : "Manage Warehouses"}
+                  {title ? title : "Manage Stores"}
                 </h3>
               </Col>
             )}
@@ -134,11 +159,10 @@ const AdminAccountGrid = (props: ComponentProps) => {
                       <th>Short Name</th>
                       <th>Email</th>
                       <th>Phone</th>
-                      <th>Fax</th>
                       <th>Address</th>
                       <th>City</th>
                       <th>Size</th>
-                      <th>Postal Code</th>
+                      <th>Space Available</th>
                       <th className="col-actions"></th>
                     </tr>
                   </thead>
@@ -146,16 +170,13 @@ const AdminAccountGrid = (props: ComponentProps) => {
                     {items.map((item: any, index: number) => (
                       <tr key={item.Id}>
                         <td>{item.Id}</td>
-                        <td>
-                          {item.ShortName}
-                        </td>
+                        <td>{item.ShortName}</td>
                         <td>{item.Email}</td>
                         <td>{item.Phone}</td>
-                        <td>{item.Fax}</td>
                         <td>{item.Address}</td>
                         <td>{item.City}</td>
                         <td>{item.Size}</td>
-                        <td>{item.PostalCode}</td>
+                        <td>{item.SpaceAvailable}</td>
                         <td className="col-actions">
                           <Button
                             variant="primary"
@@ -168,13 +189,31 @@ const AdminAccountGrid = (props: ComponentProps) => {
                           <Button
                             variant="primary"
                             onClick={() => {
-                              handleDelete(item.Id, setShowConfirmPopup);
+                              handleDeleteWithConfirm(item.Id, setShowConfirmPopup);
                             }}
                             className="btn-icon"
                             size="lg"
                           >
                             <i className="ico ico-delete"></i>
                           </Button>
+                          <OverlayTrigger
+                            placement="top"
+                            delay={{ show: 250, hide: 400 }}
+                            overlay={renderTooltip}
+                          >
+                            <Button
+                              variant="primary"
+                              onClick={() => {
+                                handleEditAddress(item.Id);
+                              }}
+                              className="btn-icon"
+                              size="lg"
+                              id="Popover1"
+                            >
+                              <i className="ico ico-job"></i>
+                            </Button>
+                          </OverlayTrigger>
+                          ,
                         </td>
                       </tr>
                     ))}
