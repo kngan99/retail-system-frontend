@@ -90,7 +90,7 @@ const CollectionCreateForm = ({ visible, onCreate, onCancel, record, categories 
                     UnitPrice: record.UnitPrice,
                     Discount: record.Discount,
                     UnitsInStock: record.UnitsInStock,
-                    Quantity: record.StoreProducts[0].Quantity,
+                    Quantity: record.StoreProducts ? record.StoreProducts[0].Quantity : 0,
                     ReorderLevel: record.ReorderLevel,
                     Discontinued: record.Discontinued,
                     prefix: "86",

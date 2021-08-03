@@ -178,7 +178,7 @@ const HomePage = () => {
       title: "Quantity",
       dataIndex: "StoreProducts",
       sorter: false,
-      render: (record) => (record[0].Quantity)
+      render: (record) => (record? record[0].Quantity:0)
     },
     {
       title: "ReorderLevel",
@@ -314,7 +314,7 @@ const HomePage = () => {
             <Spin spinning={productStore.loading}>
               {localStorage.getItem('role') == 'StoresManager' &&
                 <Table<Product> columns={admincolumns} dataSource={productStore.products} rowKey={(record) => record.Id} pagination={false} />}
-              {localStorage.getItem('role') != 'StoresManager' &&
+              {localStorage.getItem('role') != 'StoresManager' && productStore.products && productStore.products[0] && productStore.products[0].StoreProducts &&
                 <Table<Product> columns={columns} dataSource={productStore.products} rowKey={(record) => record.Id} pagination={false} />}
               <br />
               <Row>

@@ -10,4 +10,5 @@ export interface Product {
   PhotoURL: string;
   Category: any;
   Discount: number;
+  StoreProducts: any;
 }

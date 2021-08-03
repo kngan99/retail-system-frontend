@@ -44,7 +44,7 @@ export default class AuthenticationStore {
         url = "/product/manage";
       }
       else if (data.Type === "StoresManager") {
-        url = "/product/manage";
+        url = "/account/manage";
       }
       else if (data.Type === "StoreWarehouseManager") {
         url = "/warehouse/new-request-goods-note";
