@@ -5,6 +5,8 @@ export const newAdminFormInit: NewAccountDto = {
     fName: '',
     lName: '',
     homePhone: '',
+    storeId: null,
+    warehouseId: null,
     type: '',
 };
 

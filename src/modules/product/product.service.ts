@@ -4,7 +4,7 @@ import { message } from 'antd';
 import moment from "moment";
 
 class ProductService {
-  productPrefix: string = "https://warehouse-retail.herokuapp.com/api/products";
+  productPrefix: string = "http://localhost:4000/api/products";
 
   public async getOneProduct(id: number) {
     await console.log("is before sending");

@@ -1,6 +1,6 @@
 import React from "react";
 import { observer } from "mobx-react-lite";
-import { Form, Button } from "react-bootstrap";
+import { Form, Button, InputGroup, FormControl } from "react-bootstrap";
 
 /*
  * Props of Component
@@ -31,46 +31,30 @@ const Filter = (props: ComponentProps) => {
     handleResetFilter,
   } = props;
 
-  const [searchKeyword, setSearchKeyword]= React.useState<string>('');
+  const [searchKeyword, setSearchKeyword] = React.useState<string>("");
+  const onSubmit = async() => {
+    handleFilter(searchKeyword);
+  }
 
   return (
     <>
-      {({ handleSubmit, handleChange, values, errors }) => (
-        <Form
-          onSubmit={(values) => {
-            console.log("alo");
-            handleFilter(values);
-          }}
-        >
-          <Form.Group
-            className={`block-filter ${filtered ? "filtered" : ""} ${
-              className ? className : ""
-            }`}
-            style={style}
-            controlId="search"
-          >
-            <div className="group">
-              <Form.Control
-                size="lg"
-                type="text"
-                placeholder={`Search...`}
-                name="search"
-                value={values.search}
-                onChange={handleChange}
-              />
-              <Button type="submit">
-                <i className="ico ico-o-next"></i>
-              </Button>
-              {filtered && (
-                <Button onClick={handleResetFilter}>
-                  <i className="ico ico-reset"></i>
-                </Button>
-              )}
-            </div>
-          </Form.Group>
-          {children}
-        </Form>
-      )}
+      <Form.Group>
+      <InputGroup className="mb-3">
+        <InputGroup.Text id="basic-addon1">#</InputGroup.Text>
+        <Form.Control
+          placeholder="Search..."
+          aria-label="Search"
+          aria-describedby="basic-addon1"
+          value={searchKeyword}
+          onChange={e => setSearchKeyword(e.target.value)}
+        />
+        
+        <Button onClick={onSubmit} style={{marginLeft: "10px"}}>
+          Search
+          <i className="ico ico-o-next"></i>
+        </Button>
+        </InputGroup>
+      </Form.Group>
     </>
   );
 };

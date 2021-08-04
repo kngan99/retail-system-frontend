@@ -81,6 +81,8 @@ export interface NewAccountDto {
   fName: string;
   lName: string;
   homePhone: string;
+  storeId: number | null;
+  warehouseId: number | null;
   type: any;
 }
 

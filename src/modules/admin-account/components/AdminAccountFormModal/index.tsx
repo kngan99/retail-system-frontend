@@ -1,14 +1,14 @@
-import React from 'react';
-import { observer } from 'mobx-react-lite';
-import { Modal, Form, Col, Button, ButtonGroup } from 'react-bootstrap';
-import { Formik } from 'formik';
-import * as yup from 'yup';
-import { PHONE_REGEXP} from '../../../../common/constants/rules.constants';
-import bsCustomFileInput from 'bs-custom-file-input';
-import { NewAccountDto } from '../../../account/account.dto';
-import { AdminStoreContext } from '../../admin.store';
-import { AccountType, newAdminFormInit } from '../../admin.constants';
-import { I18N } from '../../../../i18n.enum';
+import React from "react";
+import { observer } from "mobx-react-lite";
+import { Modal, Form, Col, Button, ButtonGroup } from "react-bootstrap";
+import { Formik } from "formik";
+import * as yup from "yup";
+import { PHONE_REGEXP } from "../../../../common/constants/rules.constants";
+import bsCustomFileInput from "bs-custom-file-input";
+import { NewAccountDto } from "../../../account/account.dto";
+import { AdminStoreContext } from "../../admin.store";
+import { AccountType, newAdminFormInit } from "../../admin.constants";
+import { I18N } from "../../../../i18n.enum";
 
 interface ComponentProps {
   style?: React.CSSProperties;
@@ -56,9 +56,7 @@ const AdminAccountFormModal = (props: ComponentProps) => {
     BUTTONS_UPDATE,
   } = I18N;
 
-  const [initialValues, setInitValues] = React.useState<any>(
-    newAdminFormInit
-  );
+  const [initialValues, setInitValues] = React.useState<any>(newAdminFormInit);
   /*
    * Validation
    */
@@ -67,6 +65,8 @@ const AdminAccountFormModal = (props: ComponentProps) => {
     lName: yup.string(),
     email: yup.string().email(VALIDATE_EMAIL),
     homePhone: yup.string(),
+    storeId: yup.number(),
+    warehouseId: yup.number(),
     type: yup.string().required(VALIDATE_REQUIRED),
   });
 
@@ -80,7 +80,10 @@ const AdminAccountFormModal = (props: ComponentProps) => {
       fName: adminStore.adminForm.FName,
       lName: adminStore.adminForm.LName,
       homePhone: adminStore.adminForm.Homephone,
+      storeId: adminStore.adminForm.StoreId ? adminStore.adminForm.StoreId : null,
+      warehouseId: adminStore.adminForm.WarehouseId ? adminStore.adminForm.WarehouseId : null,
     });
+    console.log(initialValues);
   }, [adminStore.adminForm]);
 
   return (
@@ -89,13 +92,11 @@ const AdminAccountFormModal = (props: ComponentProps) => {
       onHide={() => handleClose()}
       aria-labelledby="contained-modal-title-vcenter"
       centered
-      className={`modal-custom modal-employee ${className ? className : ''}`}
+      className={`modal-custom modal-employee ${className ? className : ""}`}
       style={style}
     >
       <Modal.Header>
-        {mode === 'create'
-          ? (ADMIN_NEW_ACCOUNT)
-          : (ADMIN_EDIT_ACCOUNT)}
+        {mode === "create" ? ADMIN_NEW_ACCOUNT : ADMIN_EDIT_ACCOUNT}
       </Modal.Header>
       <Modal.Body>
         <Formik
@@ -104,7 +105,7 @@ const AdminAccountFormModal = (props: ComponentProps) => {
             handleSubmit(values);
           }}
           initialValues={initialValues}
-        >          
+        >
           {({ handleSubmit, handleChange, handleBlur, values, errors }) => (
             <Form
               noValidate
@@ -112,10 +113,9 @@ const AdminAccountFormModal = (props: ComponentProps) => {
                 e.preventDefault();
                 handleSubmit();
               }}
-              className={`form form-employee ${className ? className : ''}`}
+              className={`form form-employee ${className ? className : ""}`}
               style={style}
             >
-              {children}
               <Form.Group
                 as={Col}
                 md="12"
@@ -123,7 +123,7 @@ const AdminAccountFormModal = (props: ComponentProps) => {
                 className="form-group-name"
               >
                 <Form.Label className="form-label-required">
-                  {(ACCOUNT_FNAME)} 
+                  {ACCOUNT_FNAME}
                 </Form.Label>
                 <Form.Control
                   type="text"
@@ -142,7 +142,7 @@ const AdminAccountFormModal = (props: ComponentProps) => {
                 className="form-group-name"
               >
                 <Form.Label className="form-label-required">
-                  {(ACCOUNT_LNAME)} 
+                  {ACCOUNT_LNAME}
                 </Form.Label>
                 <Form.Control
                   type="text"
@@ -161,7 +161,7 @@ const AdminAccountFormModal = (props: ComponentProps) => {
                 className="form-group-email"
               >
                 <Form.Label className="form-label-required">
-                  {(ACCOUNT_EMAIL)} 
+                  {ACCOUNT_EMAIL}
                 </Form.Label>
                 <Form.Control
                   type="text"
@@ -180,7 +180,7 @@ const AdminAccountFormModal = (props: ComponentProps) => {
                 className="form-group-homePhone"
               >
                 <Form.Label className="form-label-required">
-                  {(ACCOUNT_PHONE)} 
+                  {ACCOUNT_PHONE}
                 </Form.Label>
                 <Form.Control
                   type="text"
@@ -192,6 +192,47 @@ const AdminAccountFormModal = (props: ComponentProps) => {
                   {errors.homePhone}
                 </Form.Control.Feedback>
               </Form.Group>
+              {values.type !== "WarehouseStaff" ? (
+                <Form.Group
+                  as={Col}
+                  md="12"
+                  controlId="storeId"
+                  className="form-group-storeId"
+                >
+                  <Form.Label className="form-label-required">
+                    Store Id
+                  </Form.Label>
+                  <Form.Control
+                    type="text"
+                    value={values.storeId}
+                    onChange={handleChange}
+                    isInvalid={!!errors.storeId}
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    {errors.storeId}
+                  </Form.Control.Feedback>
+                </Form.Group>
+              ) : (
+                <Form.Group
+                  as={Col}
+                  md="12"
+                  controlId="warehouseId"
+                  className="form-group-warehouseId"
+                >
+                  <Form.Label className="form-label-required">
+                    Warehouse Id
+                  </Form.Label>
+                  <Form.Control
+                    type="text"
+                    value={values.warehouseId}
+                    onChange={handleChange}
+                    isInvalid={!!errors.warehouseId}
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    {errors.warehouseId}
+                  </Form.Control.Feedback>
+                </Form.Group>
+              )}
               <Form.Group
                 as={Col}
                 md="12"
@@ -199,7 +240,7 @@ const AdminAccountFormModal = (props: ComponentProps) => {
                 className="form-group-type"
               >
                 <Form.Label className="form-label-required">
-                  {(ACCOUNT_ROLE_LABEL)} 
+                  {ACCOUNT_ROLE_LABEL}
                 </Form.Label>
                 <Form.Control
                   as="select"
@@ -211,7 +252,7 @@ const AdminAccountFormModal = (props: ComponentProps) => {
                   {AccountType.map((value, index) => {
                     return (
                       <option key={`account-type-${index}`} value={value.key}>
-                        {(value.label)}
+                        {value.label}
                       </option>
                     );
                   })}
@@ -221,21 +262,21 @@ const AdminAccountFormModal = (props: ComponentProps) => {
                 </Form.Control.Feedback>
               </Form.Group>
               <ButtonGroup className="form-actions">
-                {mode === 'create' && (
+                {mode === "create" && (
                   <Button variant="primary" type="submit">
-                    <span>{(BUTTONS_CREATE)}</span>
+                    <span>{BUTTONS_CREATE}</span>
                     <i className="ico ico-plus"></i>
                   </Button>
                 )}
-                {mode === 'edit' && (
+                {mode === "edit" && (
                   <Button variant="primary" type="submit">
-                    <span>{(BUTTONS_UPDATE)}</span>
+                    <span>{BUTTONS_UPDATE}</span>
                     <i className="ico ico-plus"></i>
                   </Button>
                 )}
-                {mode === 'edit' && (
+                {mode === "edit" && (
                   <Button onClick={handleDelete}>
-                    <span>{(BUTTONS_DELETE)}</span>
+                    <span>{BUTTONS_DELETE}</span>
                     <i className="ico ico-delete"></i>
                   </Button>
                 )}

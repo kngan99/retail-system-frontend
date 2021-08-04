@@ -1,7 +1,7 @@
 import http from "../../common/sevices";
 
 class AdminService {
-  accountPrefix: string = "https://warehouse-retail.herokuapp.com/api/accounts";
+  accountPrefix: string = "http://localhost:4000/api/accounts";
 
   public async getAccounts(skip: number, take: number, searchKeyword: string) {
     const result = await http.get(`${this.accountPrefix}/`, {
@@ -37,6 +37,8 @@ class AdminService {
       FName: model.fName,
       LName: model.lName,
       Homephone: model.homePhone,
+      StoreId: model.storeId,
+      WarehouseId: model.warehouseId,
       Type: model.type,
     }
     return await http.put(`${this.accountPrefix}/${id}`, data);

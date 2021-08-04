@@ -115,12 +115,12 @@ const ManageOrderAdminPage = () => {
    * @param: FilterByDto filterType
    * @return: void
    */
-  const handleFilter = (e: any, filterType: FilterByDto) => {
+  const handleFilter = (searchKey: string) => {
     setCriteriaDto({
       skip: 0,
       take: +pageSizeOptions[0],
-      searchBy: filterType.key,
-      searchKeyword: e.target.search.value,
+      searchBy: '',
+      searchKeyword: searchKey,
     });
     setFiltered(true);
   };
