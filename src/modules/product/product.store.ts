@@ -3,6 +3,7 @@ import { observable, action, makeObservable, autorun } from 'mobx';
 import productService from './product.service';
 import { Product } from './product.dto';
 import ProductSummary from '../warehouse/components/ProductSummary/index';
+import { toast } from 'react-toastify';
 
 class ProductStore {
     @observable products: Product[] = [];
@@ -53,7 +54,13 @@ class ProductStore {
     @action.bound
     async createProducts(product: Product) {
         this.loading = true;
-        await productService.createProduct(product);
+        const valid = await productService.createProduct(product);
+        if (valid) {
+            toast("Created Successfully!");
+        }
+        else {
+            toast("Error on creating new product!")
+        }
         let data: any = [];
         data = await productService.searchProductsPagination(this.pageNum, this.pageSize, this.searchKey);
         this.products = data.items;
@@ -64,7 +71,13 @@ class ProductStore {
     @action.bound
     async updateProducts(id: number, product: Product) {
         this.loading = true;
-        await productService.updateProduct(id, product);
+        const valid = await productService.updateProduct(id, product);
+        if (valid) {
+            toast("Updated Successfully!");
+        }
+        else {
+            toast("Error on updating product!")
+        }
         let data: any = [];
         data = await productService.searchProductsPagination(this.pageNum, this.pageSize, this.searchKey);
         this.products = data.items;
@@ -101,7 +114,13 @@ class ProductStore {
     async deleteProduct(Id: number) {
         this.loading = true;
         let data: any = [];
-        await productService.deleteProducts(Id);
+        const valid = await productService.deleteProducts(Id);
+        if (valid) {
+            toast("Updated Successfully!");
+        }
+        else {
+            toast("Error on updating product!")
+        }
         data = await productService.searchProductsPagination(this.pageNum, this.pageSize, this.searchKey);
         this.products = data.items;
         this.totalCount = data.meta.totalItems;
