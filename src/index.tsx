@@ -16,6 +16,7 @@ import StoreLayout from "./themes/store/layout";
 import OperationLayout from "./themes/operation/layout";
 import { WaveLoading } from 'react-loadingg';
 import ReportLayout from "./themes/report/layout";
+import 'antd/dist/antd.css';
 
 const Zoom = cssTransition({
   enter: 'zoomIn',
