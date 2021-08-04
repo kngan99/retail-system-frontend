@@ -233,12 +233,6 @@ const AdminAccountFormModal = (props: ComponentProps) => {
                     <i className="ico ico-plus"></i>
                   </Button>
                 )}
-                {mode === 'edit' && (
-                  <Button onClick={handleDelete}>
-                    <span>{(BUTTONS_DELETE)}</span>
-                    <i className="ico ico-delete"></i>
-                  </Button>
-                )}
               </ButtonGroup>
             </Form>
           )}

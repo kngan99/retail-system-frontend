@@ -32,6 +32,8 @@ const ManageAccountAdminPage = () => {
 
   const [filtered, setFiltered] = React.useState<boolean>(false);
 
+  const [searchKeywordCurPage, setSearchKeywordCurPage] = React.useState<string>("");
+
   const [actionsBar] = React.useState<ActionBarDto[]>([
     {
       label: BUTTONS_RESTORE,
@@ -143,18 +145,18 @@ const ManageAccountAdminPage = () => {
       skip: page > 1 ? (page - 1) * +pageSizeOptions[0] : 0,
       take: +pageSizeOptions[0],
       orderDirection: "DESC",
+      searchKeyword: searchKeywordCurPage,
     });
   };
 
-  const handleFilter = (e: any) => {
-    console.log(e);
+  const handleFilter = (searchKey: string) => {
     setCriteriaDto({
       skip: 0,
       take: +pageSizeOptions[0],
-      searchKeyword: e.target.search.value,
+      searchBy: '',
+      searchKeyword: searchKey,
     });
-    console.log('hi Ngaan');
-    console.log(setCriteriaDto);
+    setSearchKeywordCurPage(searchKey);
     setFiltered(true);
   };
 
@@ -167,7 +169,7 @@ const ManageAccountAdminPage = () => {
   };
 
   React.useEffect(() => {
-    adminStore.getAccounts(criteriaDto.skip, criteriaDto.take, '');
+    adminStore.getAccounts(criteriaDto.skip, criteriaDto.take, criteriaDto.searchKeyword);
   }, [criteriaDto, adminStore]);
 
   return (
@@ -190,6 +192,7 @@ const ManageAccountAdminPage = () => {
           handleClose={handleClose}
           handleSubmit={handleSubmit}
           mode={mode}
+          handleDelete={handleDelete}
         />
         <ConfirmModal
           show={showConfirmPopup}
