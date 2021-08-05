@@ -65,6 +65,11 @@ const ManageAccountAdminPage = () => {
       setShowConfirmPopup(false);
       return;
     }
+    if (!(adminStore.curUser.StoreId || adminStore.curUser.WarehouseId)) {
+      toast("Please set the Account Workplace before verifying!");
+      setShowConfirmPopup(false);
+      return;
+    }
     setShowConfirmPopup(false);
     const res = await adminStore.adminVerifyAccount(id);
     if (res) {
