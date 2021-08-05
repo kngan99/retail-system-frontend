@@ -45,6 +45,20 @@ class AdminService {
   public async deleteAccount(id: number) {
     return await http.delete(`${this.accountPrefix}/${id}`);
   }
+
+  public async assignStore(id: number, storeId: number) {
+    return await http.put(`${this.accountPrefix}/${id}`, {
+      StoreId: storeId,
+      WarehouseId: null,
+    });
+  }  
+
+  public async assignWarehouse(id: number, warehouseId: number) {
+    return await http.put(`${this.accountPrefix}/${id}`, {
+      WarehouseId: warehouseId,
+      StoreId: null,
+    });
+  }  
 }
 
 export default new AdminService();

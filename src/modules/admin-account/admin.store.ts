@@ -62,6 +62,18 @@ class AdminStore {
         return result.data?.result;
     }
 
+    @action
+    async assignStore(id: number, storeId: number) {
+        const result = await adminService.assignStore(id, storeId);
+        return result.data;
+    }
+
+    @action
+    async assignWarehouse(id: number, warehouseId: number) {
+        const result = await adminService.assignWarehouse(id, warehouseId);
+        return result.data;
+    }
+
     constructor() {
         makeObservable(this);
     }

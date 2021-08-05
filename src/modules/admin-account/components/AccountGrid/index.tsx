@@ -22,6 +22,7 @@ interface ComponentProps {
   handleAdminVerify?: any;
   handleEdit?: any;
   handleDelete?: any;
+  handleAssign?: any;
   currentId: number;
   criteriaDto: any;
   handleFilter?: any;
@@ -44,6 +45,7 @@ const AdminAccountGrid = (props: ComponentProps) => {
     handleAdminVerify,
     handleEdit,
     handleDelete,
+    handleAssign,
     currentId,
     criteriaDto,
     handleFilter,
@@ -66,6 +68,9 @@ const AdminAccountGrid = (props: ComponentProps) => {
   const [currentPageFrame, setCurrentPageFrame] = React.useState<number>(1);
 
   const [showConfirmPopup, setShowConfirmPopup] =
+    React.useState<boolean>(false);
+
+  const [showConfirmAssignPopup, setShowConfirmAssignPopup] =
     React.useState<boolean>(false);
 
   const maxPage: number = 4;
@@ -151,6 +156,7 @@ const AdminAccountGrid = (props: ComponentProps) => {
                       <th>Email</th>
                       <th>Phone</th>
                       <th>Role</th>
+                      <th>Place Id</th>
                       <th>Email Verified </th>
                       <th>Admin Verified </th>
                       <th className="col-actions">Actions</th>
@@ -166,6 +172,13 @@ const AdminAccountGrid = (props: ComponentProps) => {
                         <td>{item.Email}</td>
                         <td>{item.Homephone}</td>
                         <td>{item.Type}</td>
+                        <td>
+                          {item.StoreId | item.WarehouseId
+                            ? item.StoreId
+                              ? item.StoreId
+                              : item.WarehouseId
+                            : "-"}
+                        </td>
                         <td
                           className={
                             item.EmailVerified
@@ -205,6 +218,16 @@ const AdminAccountGrid = (props: ComponentProps) => {
                             size="lg"
                           >
                             <i className="ico ico-edit"></i>
+                          </Button>
+                          <Button
+                            variant="primary"
+                            onClick={() => {
+                              handleAssign(item.Id, setShowConfirmAssignPopup);
+                            }}
+                            className="btn-icon"
+                            size="lg"
+                          >
+                            <i className="ico ico-assign"></i>
                           </Button>
                           <Button
                             variant="primary"

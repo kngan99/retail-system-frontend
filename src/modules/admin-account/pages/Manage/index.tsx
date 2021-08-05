@@ -12,6 +12,7 @@ import ActionBar from "../../../theme/components/ActionBar";
 import { message } from "antd";
 import { toast } from "react-toastify";
 import ConfirmModal from "../../../../common/components/ConfirmModal";
+import StoreWarehouseAssignModal from "../../components/StoreWarehouseAssignModal";
 
 const ManageAccountAdminPage = () => {
   const history = useHistory();
@@ -25,6 +26,8 @@ const ManageAccountAdminPage = () => {
   const adminStore = React.useContext(AdminStoreContext);
 
   const [showPopup, setShowPopup] = React.useState<boolean>(false);
+
+  const [showAssignPopup, setShowAssignPopup] = React.useState<boolean>(false);
 
   const [mode, setMode] = React.useState<string>("create");
 
@@ -95,6 +98,10 @@ const ManageAccountAdminPage = () => {
     setShowPopup(false);
   };
 
+  const handleAssignClose = () => {
+    setShowAssignPopup(false);
+  };
+
   const handleSubmit = async (values: any) => {
     adminStore.setAdminForm(values);
     if (mode === "create") {
@@ -120,6 +127,35 @@ const ManageAccountAdminPage = () => {
     setShowPopup(false);
   };
 
+  const handleAssignSubmit = async (inputedId: string) => {
+    const admin = await adminStore.getAccountById(id);
+    if (admin) {
+      setId(id);
+      let res;
+      if (adminStore.curUser.Type === 'WarehouseStaff') {
+        res = await adminStore.assignWarehouse(id,parseInt(inputedId));
+      }
+      else {
+        res = await adminStore.assignStore(id, parseInt(inputedId));
+      }
+      if (res) {
+        adminStore.getAccounts(criteriaDto.skip, criteriaDto.take,'');
+        toast('Assign workplace successfully');
+      }
+      else {
+        adminStore.getAccounts(criteriaDto.skip, criteriaDto.take,'');
+        toast('Error, please try again later');
+      }
+      setShowAssignPopup(false);
+    }
+    else {
+      toast('Error, please try again later');
+      setShowAssignPopup(false);
+    }
+  };
+
+
+
   const handleAdminVerify = async (id: number) => {
     setShowConfirmPopup(true);
     setId(id);
@@ -131,6 +167,18 @@ const ManageAccountAdminPage = () => {
       setMode("edit");
       setId(id);
       setShowPopup(true);
+    }
+  };
+
+  const handleAssign = async (id: number) => {
+    const admin = await adminStore.getAccountById(id);
+    if (!adminStore.curUser.Type) {
+      toast('Please assign role first!');
+      return;
+    }
+    if (admin) {
+      setId(id);
+      setShowAssignPopup(true);
     }
   };
 
@@ -181,6 +229,7 @@ const ManageAccountAdminPage = () => {
           handleAdminVerify={handleAdminVerify}
           handleEdit={handleEdit}
           handleDelete={handleDelete}
+          handleAssign={handleAssign}
           currentId={id}
           criteriaDto={criteriaDto}
           handleFilter={handleFilter}
@@ -194,6 +243,13 @@ const ManageAccountAdminPage = () => {
           mode={mode}
           handleDelete={handleDelete}
         />
+        <StoreWarehouseAssignModal
+          show={showAssignPopup}
+          handleClose={handleAssignClose}
+          handleSubmit={handleAssignSubmit}
+          mode={mode}
+        />
+
         <ConfirmModal
           show={showConfirmPopup}
           handleCancel={handleCancel}

@@ -16,6 +16,7 @@ import { pageSizeOptions } from "../../../../common/constants/paging.constants";
 import { toTimeFormat } from "../../../../common/utils/time.util";
 import Paging from "../../../../common/components/Paging";
 import { Tag } from "antd";
+import moment from "moment";
 
 // Paging
 
@@ -289,12 +290,10 @@ const OrderGrid = (props: ComponentProps) => {
                       <td>{`${item.CreatedByAccount.FName} ${item.CreatedByAccount.LName}`}</td>
                       <td>
                         {item.CreatedAt
-                          ? toTimeFormat(
-                              item.CreatedAt.toLocaleString(),
-                              commonStore.dateTimeFormat
-                            )
+                          ? moment(new Date(item.CreatedAt)).format('LLL')
                           : "-"}
                       </td>
+                      {console.log(item.CreatedAt)}
                       {/* <td>{item.UpdatedBy}</td>
                       <td>
                         {item.UpdatedAt
