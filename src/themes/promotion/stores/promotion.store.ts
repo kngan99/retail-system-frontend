@@ -1,6 +1,7 @@
 import React from 'react';
 import { observable, action, makeObservable, autorun } from 'mobx';
 import orderService from '../services/promotion.service';
+import { toast } from 'react-toastify';
 
 class PromotionStore {
     @observable promotions: any[] = [];
@@ -34,7 +35,13 @@ class PromotionStore {
     @action.bound
     async createPromotion(promotion: any) {
         this.loading = true;
-        await orderService.createPromotion(promotion);
+        const valid = await orderService.createPromotion(promotion);
+        if (valid) {
+            toast("Created Successfully!");
+        }
+        else {
+            toast("Error on creating new promotion!")
+        }
         await this.getPromotions();
         this.loading = false;
     }
@@ -42,7 +49,13 @@ class PromotionStore {
     @action.bound
     async updatePromotion(id: number, promotion: any) {
         this.loading = true;
-        await orderService.updatePromotion(id, promotion);
+        const valid = await orderService.updatePromotion(id, promotion);
+        if (valid) {
+            toast("Updated Successfully!");
+        }
+        else {
+            toast("Error on updating promotion!")
+        }
         await this.getPromotions();
         this.loading = false;
     }
