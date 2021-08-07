@@ -1,16 +1,8 @@
 import React from "react";
 import { inject, observer } from "mobx-react";
 import { makeAutoObservable, autorun, observable } from "mobx";
-import { Table, Breadcrumb } from "react-bootstrap";
-import {
-  Input,
-  Tooltip,
-  Button,
-  message,
-  Row,
-  Col,
-  Select,
-} from "antd";
+import { Table, Breadcrumb, ButtonGroup, ToggleButton } from "react-bootstrap";
+import { Input, Tooltip, Button, message, Row, Col, Select } from "antd";
 import { toast } from "react-toastify";
 import {
   PlusOutlined,
@@ -31,14 +23,25 @@ import { Link } from "react-router-dom";
 import { AuthenticationStoreContext } from "../../../authenticate/authentication.store";
 import { retrieveFromStorage } from "../../../../common/utils/storage.util";
 import { WarehouseStoreContext } from "../../../admin-warehouse/admin.store";
+import { StoreStoreContext } from "../../../admin-store/admin.store";
 
 const CartPage = observer(
   ({ productsInCart, totalNum, totalAmount, isCheckout }) => {
     const cartStore = React.useContext(CartStoreContext);
     const authStore = React.useContext(AuthenticationStoreContext);
     const warehouseStore = React.useContext(WarehouseStoreContext);
-    const [warehouseId, setWarehouseId] = React.useState<number>(1);
+    const storeStore = React.useContext(StoreStoreContext);
+    const [warehouseId, setWarehouseId] = React.useState<number>(-1);
+    const [toStoreId, setToStoreId] = React.useState<number>(-1);
     const { Option } = Select;
+
+    const [radioValue, setRadioValue] = React.useState("1");
+
+    const radios = [
+      { name: "To Warehouse", value: "1" },
+      { name: "To Store", value: "2" },
+    ];
+
     const handleEmptyClick = async () => {
       await cartStore.emptyCart();
     };
@@ -46,21 +49,37 @@ const CartPage = observer(
       if (totalNum === 0) {
         toast("Cart is empty");
         return;
-      } 
-      if (warehouseId === -1){
-        toast("Please choose warehouse");
+      }
+      if (warehouseId === -1 && toStoreId === -1) {
+        toast("Please choose warehouse or store");
         return;
       }
-        await cartStore.setCargoRequest(
+      if (toStoreId === parseInt(retrieveFromStorage("storeId")!)) {
+        toast("Can not choose your store");
+        return;
+      }
+      if (warehouseId > 0) {
+        await cartStore.setCargoRequestToStore(
           warehouseId,
           parseInt(retrieveFromStorage("storeId")!),
           "Create"
         );
-        await cartStore.checkoutCart();
+      } else if (toStoreId > 0) {
+        await cartStore.setCargoRequestToStore(
+          toStoreId,
+          parseInt(retrieveFromStorage("storeId")!),
+          "Create"
+        );
+      } else {
+        toast("Error. Please try again later");
+      }
+      await cartStore.checkoutCart();
     };
+
     const handleModifyClick = async () => {
       await cartStore.returnToCart();
     };
+
     const handleNewOrderClick = async () => {
       await cartStore.newOrder();
     };
@@ -75,36 +94,57 @@ const CartPage = observer(
       window.print();
     };
     const handleSendCargoRequest = async () => {
-      if (warehouseId === -1) {
-        message.warning("Please choose Warehouse!");
+      if (warehouseId === -1 && toStoreId === -1) {
+        message.warning("Please choose Warehouse or Store");
         return;
       } else {
-        cartStore.setCargoRequest(
-          warehouseId,
-          parseInt(retrieveFromStorage("storeId")!),
-          "Create"
-        );
-        const result = await cartStore.sendCargoRequest();
-        if (result) { 
-          toast("Create Cargo Request successfully!");
+        if (warehouseId > 0) {
+          cartStore.setCargoRequest(
+            warehouseId,
+            parseInt(retrieveFromStorage("storeId")!),
+            "Create"
+          );
+        } else if (toStoreId > 0) {
+          cartStore.setCargoRequestToStore(
+            toStoreId,
+            parseInt(retrieveFromStorage("storeId")!),
+            "Create"
+          );
         }
         else {
+          toast("Error. Please try again later");
+          return
+        }
+        const result = await cartStore.sendCargoRequest();
+        if (result) {
+          toast("Create Cargo Request successfully!");
+        } else {
           toast("Create Cargo Request fail! Please try again later");
         }
-        window.location.href = window.location.pathname.replace('new-request-goods-note-cart','request-goods-note-cart/manage')
+        window.location.href = window.location.pathname.replace(
+          "new-request-goods-note-cart",
+          "request-goods-note-cart/manage"
+        );
         return result;
       }
     };
 
     React.useEffect(() => {
-      const getAllWarehouse = async() => {
+      const getAllWarehouse = async () => {
         const res = await warehouseStore.getWarehousesAllDb();
         return res;
-      }
+      };
+
+      const getAllStore = async () => {
+        const res = await storeStore.getStoresAllDb();
+        return res;
+      };
 
       getAllWarehouse();
+      getAllStore();
       setWarehouseId(-1);
-    }, [warehouseStore]);
+      setToStoreId(-1);
+    }, [storeStore, warehouseStore]);
 
     return (
       <div className="mr-2">
@@ -139,44 +179,145 @@ const CartPage = observer(
             )}
           </Row>
           <Row>
-            {/* <Input
-              placeholder="Enter Warehouse Id"
-              prefix={<HomeOutlined className="site-form-item-icon" />}
-              suffix={
-                <Tooltip title="Extra information">
-                  <InfoCircleOutlined style={{ color: "rgba(0,0,0,.45)" }} />
-                </Tooltip>
-              }
-              style={{ marginBottom: "20px" }}
-              onChange={(e) => {
-                setWarehouseId(parseInt(e.target.value));
-              }}
-            /> */}
-            <p>Choose warehouse</p>
-            <Select
-              showSearch
-              style={{ width: "100%", marginBottom: "20px" }}
-              placeholder="Select a warehouse"
-              optionFilterProp="value"
-              onChange={(value) => {
-                //console.log(value);
-                setWarehouseId(parseInt(value.split(' - ')[0]));
-              }}
-              defaultValue={`Select warehouse`}
-              filterOption={(input, option) =>
-                option?.value.indexOf(input.toLowerCase()) >= 0
-              }
-            >
-              {warehouseStore.warehouseAllDb.map((warehouse) => (
-                <Option key={warehouse.Id} value={`${warehouse.Id} - ${warehouse.ShortName}`}>
-                  <p>
-                    {warehouse.Id} - {warehouse.ShortName}
-                    <br />
-                    {warehouse.Address}
-                  </p>
-                </Option>
+            <ButtonGroup>
+              {radios.map((radio, idx) => (
+                <ToggleButton
+                  key={idx}
+                  id={`radio-${idx}`}
+                  type="radio"
+                  variant={"outline-secondary"}
+                  name="radio"
+                  value={radio.value}
+                  checked={radioValue === radio.value}
+                  onChange={(e) => setRadioValue(e.currentTarget.value)}
+                  style={{ color: "black" }}
+                >
+                  {radio.name}
+                </ToggleButton>
               ))}
-            </Select>
+            </ButtonGroup>
+          </Row>
+          <Row>
+            <p>To warehouse</p>
+            {radioValue === "1" ? (
+              <Select
+                showSearch
+                style={{ width: "100%", marginBottom: "20px" }}
+                placeholder="Select a warehouse"
+                optionFilterProp="value"
+                onChange={(value) => {
+                  //console.log(value);
+                  setWarehouseId(parseInt(value.split(" - ")[0]));
+                }}
+                defaultValue={`Select warehouse`}
+                filterOption={(input, option) =>
+                  option?.value.indexOf(input.toLowerCase()) >= 0
+                }
+              >
+                {warehouseStore.warehouseAllDb.map((warehouse) => (
+                  <Option
+                    key={warehouse.Id}
+                    value={`${warehouse.Id} - ${warehouse.ShortName}`}
+                  >
+                    <p>
+                      {warehouse.Id} - {warehouse.ShortName}
+                      <br />
+                      {warehouse.Address}
+                    </p>
+                  </Option>
+                ))}
+              </Select>
+            ) : (
+              <Select
+                showSearch
+                style={{ width: "100%", marginBottom: "20px" }}
+                placeholder="Select a warehouse"
+                optionFilterProp="value"
+                onChange={(value) => {
+                  //console.log(value);
+                  setWarehouseId(parseInt(value.split(" - ")[0]));
+                }}
+                defaultValue={`Select warehouse`}
+                filterOption={(input, option) =>
+                  option?.value.indexOf(input.toLowerCase()) >= 0
+                }
+                disabled
+              >
+                {warehouseStore.warehouseAllDb.map((warehouse) => (
+                  <Option
+                    key={warehouse.Id}
+                    value={`${warehouse.Id} - ${warehouse.ShortName}`}
+                  >
+                    <p>
+                      {warehouse.Id} - {warehouse.ShortName}
+                      <br />
+                      {warehouse.Address}
+                    </p>
+                  </Option>
+                ))}
+              </Select>
+            )}
+          </Row>
+          <Row>
+            <p>To store</p>
+            {radioValue === "2" ? (
+              <Select
+                showSearch
+                style={{ width: "100%", marginBottom: "20px" }}
+                placeholder="Select a store"
+                optionFilterProp="value"
+                onChange={(value) => {
+                  //console.log(value);
+                  setToStoreId(parseInt(value.split(" - ")[0]));
+                }}
+                defaultValue={`Select store`}
+                filterOption={(input, option) =>
+                  option?.value.indexOf(input.toLowerCase()) >= 0
+                }
+              >
+                {storeStore.storeAllDb.map((store) => (
+                  <Option
+                    key={store.Id}
+                    value={`${store.Id} - ${store.ShortName}`}
+                  >
+                    <p>
+                      {store.Id} - {store.ShortName}
+                      <br />
+                      {store.Address}
+                    </p>
+                  </Option>
+                ))}
+              </Select>
+            ) : (
+              <Select
+                showSearch
+                style={{ width: "100%", marginBottom: "20px" }}
+                placeholder="Select a store"
+                optionFilterProp="value"
+                onChange={(value) => {
+                  //console.log(value);
+                  setToStoreId(parseInt(value.split(" - ")[0]));
+                }}
+                defaultValue={`Select store`}
+                filterOption={(input, option) =>
+                  option?.value.indexOf(input.toLowerCase()) >= 0
+                }
+                disabled
+              >
+                {storeStore.storeAllDb.map((store) => (
+                  <Option
+                    key={store.Id}
+                    value={`${store.Id} - ${store.ShortName}`}
+                  >
+                    <p>
+                      {store.Id} - {store.ShortName}
+                      <br />
+                      {store.Address}
+                    </p>
+                  </Option>
+                ))}
+              </Select>
+            )}
           </Row>
         </div>
         {!isCheckout && (

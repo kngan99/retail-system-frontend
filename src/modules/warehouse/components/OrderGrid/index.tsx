@@ -17,6 +17,8 @@ import { toTimeFormat } from "../../../../common/utils/time.util";
 import Paging from "../../../../common/components/Paging";
 import { Tag } from "antd";
 import moment from "moment";
+import { retrieveFromStorage } from "../../../../common/utils/storage.util";
+import {ArrowUpOutlined, ArrowDownOutlined } from "@ant-design/icons";
 
 // Paging
 
@@ -266,6 +268,12 @@ const OrderGrid = (props: ComponentProps) => {
                     {/* <th>{"Warehouse"}</th> */}
                     <th>{"Created By"}</th>
                     <th>{"Created At"}</th>
+                    {retrieveFromStorage("role") !== "WarehouseStaff" && (
+                      <th>{"Destination"}</th>
+                    )}
+                    {retrieveFromStorage("role") !== "WarehouseStaff" && (
+                      <th>{"Type"}</th>
+                    )}
                     {/* <th>{"Updated By"}</th>
                     <th>{"Updated At"}</th> */}
                     <th>{"Status"}</th>
@@ -290,10 +298,9 @@ const OrderGrid = (props: ComponentProps) => {
                       <td>{`${item.CreatedByAccount.FName} ${item.CreatedByAccount.LName}`}</td>
                       <td>
                         {item.CreatedAt
-                          ? moment(new Date(item.CreatedAt)).format('LLL')
+                          ? moment(new Date(item.CreatedAt)).format("LLL")
                           : "-"}
                       </td>
-                      {console.log(item.CreatedAt)}
                       {/* <td>{item.UpdatedBy}</td>
                       <td>
                         {item.UpdatedAt
@@ -303,6 +310,33 @@ const OrderGrid = (props: ComponentProps) => {
                             )
                           : '-'}
                       </td> */}
+                      {retrieveFromStorage("role") !== "WarehouseStaff" && (
+                        <td>
+                          {item.Warehouse ? (
+                            <Tag color="#2db7f5">Warehouse</Tag>
+                          ) : item.ToStoreId ? (
+                            <Tag color="#87d068">Another Store</Tag>
+                          ) : (
+                            "-"
+                          )}
+                        </td>
+                      )}
+                      {retrieveFromStorage("role") !== "WarehouseStaff" && (
+                        <td>
+                          {item.Warehouse ? (
+                            <span><ArrowUpOutlined /> Sent</span>
+                          ) : item.ToStoreId ? (
+                            parseInt(retrieveFromStorage("storeId")!) ===
+                            item.ToStoreId ? (
+                              <span style={{color: 'red'}}><ArrowDownOutlined /> Received</span>
+                            ) : (
+                              <span><ArrowUpOutlined /> Sent</span>
+                            )
+                          ) : (
+                            "-"
+                          )}
+                        </td>
+                      )}
                       <td
                         data-th={`${item.Status}: `}
                         className="col-order-status"

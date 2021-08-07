@@ -3,7 +3,7 @@ import { observer } from "mobx-react-lite";
 import { Row, Col, Table } from "react-bootstrap";
 import { CommonStoreContext } from "../../../../common/common.store";
 import ProductSummary from "../ProductSummary";
-import { EMAIL_RULE } from '../../../../common/constants/rules.constants';
+import { EMAIL_RULE } from "../../../../common/constants/rules.constants";
 
 /*
  * Props of Component
@@ -14,6 +14,7 @@ interface ComponentProps {
   createdByData?: any;
   notes?: any;
   storeInfo?: any;
+  toStoreData?: any;
 }
 
 const SummaryOrderSection = (props: ComponentProps) => {
@@ -22,7 +23,14 @@ const SummaryOrderSection = (props: ComponentProps) => {
   /*
    * Props of Component
    */
-  const { orderData, createdByTitle, createdByData, notes, storeInfo } = props;
+  const {
+    orderData,
+    createdByTitle,
+    createdByData,
+    notes,
+    storeInfo,
+    toStoreData,
+  } = props;
 
   return (
     <>
@@ -32,18 +40,42 @@ const SummaryOrderSection = (props: ComponentProps) => {
             <span className="block-label">{"Id"}</span>
             <span className="block-value">{orderData.Id}</span>
           </Col>
-          <Col xs={12} xl={12} className="block-item">
-            <span className="block-label">To Warehouse </span>
-            <span className="block-value">{`${orderData.Warehouse.ShortName} -  ${orderData.Warehouse.Phone}`}</span>
-          </Col>
-          <Col xs={12} xl={12} className="block-item">
-            <span className="block-label">Warehouse address</span>
-            <span className="block-value">{orderData.Warehouse.Address}</span>
-          </Col>
-          <Col xs={12} xl={12} className="block-item">
-            <span className="block-label">Warehouse email</span>
-            <span className="block-value">{orderData.Warehouse.Email}</span>
-          </Col>
+          {orderData.Warehouse && (
+            <>
+              <Col xs={12} xl={12} className="block-item">
+                <span className="block-label">To Warehouse </span>
+                <span className="block-value">{`${orderData.Warehouse.ShortName} -  ${orderData.Warehouse.Phone}`}</span>
+              </Col>
+              <Col xs={12} xl={12} className="block-item">
+                <span className="block-label">Warehouse address</span>
+                <span className="block-value">
+                  {orderData.Warehouse.Address}
+                </span>
+              </Col>
+              <Col xs={12} xl={12} className="block-item">
+                <span className="block-label">Warehouse email</span>
+                <span className="block-value">{orderData.Warehouse.Email}</span>
+              </Col>
+            </>
+          )}
+          {toStoreData && (
+            <>
+              <Col xs={12} xl={12} className="block-item">
+                <span className="block-label">To Store </span>
+                <span className="block-value">{`${toStoreData.ShortName} -  ${toStoreData.Phone}`}</span>
+              </Col>
+              <Col xs={12} xl={12} className="block-item">
+                <span className="block-label">To Store address</span>
+                <span className="block-value">
+                  {toStoreData.Address}
+                </span>
+              </Col>
+              {toStoreData && (<Col xs={12} xl={12} className="block-item">
+                <span className="block-label">To Store email</span>
+                <span className="block-value">{toStoreData.Email}</span>
+              </Col>)}
+            </>
+          )}
           <Col xs={12} className="block-item">
             <span className="block-label">{"From Store"}</span>
             <span className="block-value">{`${orderData.Store.ShortName} -  ${orderData.Store.Phone}`}</span>

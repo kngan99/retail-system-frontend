@@ -18,6 +18,7 @@ interface ComponentProps {
   id?: string;
   notes?: any;
   storeInfo?: any;
+  toStoreData?: any;
 }
 
 const SummaryOrder = (props: ComponentProps) => {
@@ -32,6 +33,7 @@ const SummaryOrder = (props: ComponentProps) => {
     createdByTitle,
     handleClose,
     orderItem,
+    toStoreData,
     createdByData,
     id,
     notes,
@@ -70,6 +72,7 @@ const SummaryOrder = (props: ComponentProps) => {
                   createdByTitle={createdByTitle}
                   createdByData={createdByData}
                   notes={notes}
+                  toStoreData={toStoreData}
                 />
               </Row>
               {children}

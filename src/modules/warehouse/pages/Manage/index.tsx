@@ -2,11 +2,12 @@ import React from "react";
 import { observer } from "mobx-react";
 import { useHistory } from "react-router-dom";
 
-
 import { AdminStoreContext } from "../../../../modules/admin-account/admin.store";
-import cartStore, { CartStoreContext } from "../../../../themes/pos/stores/cart.store";
-import { pageSizeOptions } from '../../../../common/constants/paging.constants';
-import { message } from 'antd';
+import cartStore, {
+  CartStoreContext,
+} from "../../../../themes/pos/stores/cart.store";
+import { pageSizeOptions } from "../../../../common/constants/paging.constants";
+import { message } from "antd";
 import OrderGrid from "../../components/OrderGrid";
 import { scrollToElement } from "../../../../common/utils/normalize.ulti";
 import SummaryOrder from "../../components/SumaryOrder";
@@ -16,7 +17,10 @@ import { ActionBarDto } from "../../../theme/theme.dto";
 import { FilterByDto } from "../../../../common/dto/FilterBy.dto";
 import ActionBar from "../../../theme/components/ActionBar";
 import { AuthenticationStoreContext } from "../../../authenticate/authentication.store";
-import { retrieveFromStorage, saveToStorage } from "../../../../common/utils/storage.util";
+import {
+  retrieveFromStorage,
+  saveToStorage,
+} from "../../../../common/utils/storage.util";
 import accountStore from "../../../account/account.store";
 import { StoreStoreContext } from "../../../admin-store/admin.store";
 import { WarehouseStoreContext } from "../../../admin-warehouse/admin.store";
@@ -46,7 +50,7 @@ const ManageOrderAdminPage = () => {
   ]);
 
   const handleCreate = () => {
-    history.push('/warehouse/new-request-goods-note');
+    history.push("/warehouse/new-request-goods-note");
   };
 
   /*
@@ -119,7 +123,7 @@ const ManageOrderAdminPage = () => {
     setCriteriaDto({
       skip: 0,
       take: +pageSizeOptions[0],
-      searchBy: '',
+      searchBy: "",
       searchKeyword: searchKey,
     });
     setFiltered(true);
@@ -135,17 +139,15 @@ const ManageOrderAdminPage = () => {
 
   const setNextStep = (currentStep: string) => {
     let nextStatus = currentStep;
-        if (currentStep === "Created") {
-            nextStatus = "Confirmed";
-        }
-        else if (currentStep === "Confirmed") {
-            nextStatus = "Delivering";
-        }
-        else if (currentStep === "Delivering") {
-            nextStatus = "Success";
-        }
-        setNextStatus(nextStatus);
-  }
+    if (currentStep === "Created") {
+      nextStatus = "Confirmed";
+    } else if (currentStep === "Confirmed") {
+      nextStatus = "Delivering";
+    } else if (currentStep === "Delivering") {
+      nextStatus = "Success";
+    }
+    setNextStatus(nextStatus);
+  };
   // -----------------------------
   // Grid Process
   // -----------------------------
@@ -160,19 +162,20 @@ const ManageOrderAdminPage = () => {
   /*
    * show hide new/edit driver popup
    */
-  const [showConfirmPopup, setShowConfirmPopup] = React.useState<boolean>(
-    false
-  );
+  const [showConfirmPopup, setShowConfirmPopup] =
+    React.useState<boolean>(false);
 
-  const [showConfirmProgressPopup, setShowConfirmProgressPopup] = React.useState<boolean>(
-    false
-  );
+  const [showConfirmProgressPopup, setShowConfirmProgressPopup] =
+    React.useState<boolean>(false);
 
   const [isSelectedAll, setIsSelectedAll] = React.useState<boolean>(false);
 
   const handleEdit = (id: string) => {
     orderStore.resetCargoRequest();
-    const editUrl = '/warehouse/request-goods-note/edit/:orderID'.replace(":orderID", id);
+    const editUrl = "/warehouse/request-goods-note/edit/:orderID".replace(
+      ":orderID",
+      id
+    );
     history.push(editUrl);
   };
 
@@ -186,11 +189,11 @@ const ManageOrderAdminPage = () => {
     const res = await cartStore.getCargoReqStatus(id);
     setCurrentStatus(res[0][0].Status);
     setNextStep(res[0][0].Status);
-    if (currentStatus === "Cancelled" || res[0][0].Status === "Cancelled"){
+    if (currentStatus === "Cancelled" || res[0][0].Status === "Cancelled") {
       toast("This request has been cancelled!");
       return;
     }
-    if (currentStatus === "Success" || res[0][0].Status === "Success"){
+    if (currentStatus === "Success" || res[0][0].Status === "Success") {
       toast("This request has been done!");
       return;
     }
@@ -202,17 +205,28 @@ const ManageOrderAdminPage = () => {
     const res = await cartStore.getCargoReqStatus(id);
     setCurrentStatus(res[0][0].Status);
     setNextStep(res[0][0].Status);
-    if (currentStatus === "Cancelled" || res[0][0].Status === "Cancelled"){
+    if (currentStatus === "Cancelled" || res[0][0].Status === "Cancelled") {
       toast("This request has been cancelled!");
       return;
     }
-    if (currentStatus === "Success" || res[0][0].Status === "Success"){
+    if (currentStatus === "Success" || res[0][0].Status === "Success") {
       toast("This request has been done!");
       return;
     }
+    const order = await orderStore.getOrderById(id);
+    setSelectedOrder(order);
     setShowConfirmProgressPopup(true);
     setProgressID(id);
   };
+
+  const waitForSelectedOrder = (func:any, value: any) => {
+    if(typeof selectedOrder !== "undefined"){
+        func(value);
+    }
+    else{
+        setTimeout(waitForSelectedOrder, 250);
+    }
+}
 
   /*
    * Action of selecting all items
@@ -274,27 +288,70 @@ const ManageOrderAdminPage = () => {
   };
 
   const handleOkProgress = async () => {
-    if (currentStatus === "Delivering" && retrieveFromStorage('role')==='WarehouseStaff') {
+    if (retrieveFromStorage("role")! === "WarehouseStaff") {
+      if (
+        currentStatus === "Delivering" &&
+        retrieveFromStorage("role") === "WarehouseStaff"
+      ) {
+        setShowConfirmProgressPopup(false);
+        return;
+      } else if (
+        retrieveFromStorage("role") !== "WarehouseStaff" &&
+        (currentStatus === "Created" || currentStatus === "Confirmed")
+      ) {
+        setShowConfirmProgressPopup(false);
+        return;
+      }
       setShowConfirmProgressPopup(false);
-      return;
+      if (progressID !== -1) {
+        const result = await orderStore.updateStatusCargoReq(
+          progressID,
+          currentStatus
+        );
+        if (result) {
+          setProgressID(-1);
+          toast("Process successfully to the next step!");
+          if (retrieveFromStorage("role") === "WarehouseStaff") {
+            orderStore.getOrderListByAdmin({
+              ...criteriaDto,
+              ...{ userId: retrieveFromStorage("loggedId") },
+              ...{ warehouseId: retrieveFromStorage("warehouseId") },
+            });
+          } else {
+            orderStore.getOrderListByAdmin({
+              ...criteriaDto,
+              ...{ userId: retrieveFromStorage("loggedId") },
+              ...{ storeId: retrieveFromStorage("storeId") },
+            });
+          }
+        }
+      }
     }
-    else if (retrieveFromStorage('role') !=='WarehouseStaff' &&(currentStatus === "Created" || currentStatus === "Confirmed")) {
+    //TO STORE
+    else {
+      if (
+        currentStatus === "Delivering" &&
+        parseInt(retrieveFromStorage("storeId")!) === selectedOrder?.ToStoreId
+      ) {
+        setShowConfirmProgressPopup(false);
+        return;
+      } else if (
+        parseInt(retrieveFromStorage("storeId")!) !==
+          selectedOrder?.ToStoreId &&
+        (currentStatus === "Created" || currentStatus === "Confirmed")
+      ) {
+        setShowConfirmProgressPopup(false);
+        return;
+      }
       setShowConfirmProgressPopup(false);
-      return;
-    }
-    setShowConfirmProgressPopup(false);
-    if (progressID !== -1) {
-      const result = await orderStore.updateStatusCargoReq(progressID,currentStatus);
-      if (result) {
-        setProgressID(-1);
-        toast("Process successfully to the next step!");
-        if (retrieveFromStorage("role") === "WarehouseStaff") {
-          orderStore.getOrderListByAdmin({
-            ...criteriaDto,
-            ...{ userId: retrieveFromStorage("loggedId") },
-            ...{ warehouseId: retrieveFromStorage("warehouseId") },
-          });
-        } else {
+      if (progressID !== -1) {
+        const result = await orderStore.updateStatusCargoReq(
+          progressID,
+          currentStatus
+        );
+        if (result) {
+          setProgressID(-1);
+          toast("Process successfully to the next step!");
           orderStore.getOrderListByAdmin({
             ...criteriaDto,
             ...{ userId: retrieveFromStorage("loggedId") },
@@ -307,19 +364,20 @@ const ManageOrderAdminPage = () => {
 
   const handleDetail = (id) => {
     toast("Click on Id to see Detail");
-  }
+  };
 
   /*
    * Selected tracking order
    */
   const [selectedOrder, setSelectedOrder] = React.useState<any>();
 
+  const [toStoreData, setToStoreData] = React.useState<any>();
+
   const [currentStore, setCurrentStore] = React.useState<any>();
 
   const [currentStatus, setCurrentStatus] = React.useState<any>();
 
   const [nextStatus, setNextStatus] = React.useState<any>();
-
 
   /*
    * Setting actions in grid
@@ -373,7 +431,6 @@ const ManageOrderAdminPage = () => {
       },
     },
   ];
-  
 
   const handleCancel = () => {
     setShowConfirmPopup(false);
@@ -390,6 +447,13 @@ const ManageOrderAdminPage = () => {
       setCreatedBy(order.CreatedByAccount);
     }
     setSelectedOrder(order);
+    if (order.Warehouse) {
+      setToStoreData(null);
+    }
+    if (order.ToStoreId) {
+      const toStore = await storeStore.getAccountById(order.ToStoreId);
+      setToStoreData(storeStore.currentStore);
+    }
     setShowSummary(true);
     scrollToElement("summary-popup");
   };
@@ -406,29 +470,59 @@ const ManageOrderAdminPage = () => {
   const handleTracking = React.useCallback(
     async (id: number) => {
       let orderById = await orderStore.getOrderById(id);
-      const isGetStore = await storeStore.getAccountById(parseInt(retrieveFromStorage("storeId")!));
-      const isGetWarehouse = await warehouseStore.getAccountById(orderStore.selectedOrder.warehouseId);
+      let isGetWarehouse, isGetToStore;
+      const isGetStore = await storeStore.getAccountById(
+        parseInt(retrieveFromStorage("storeId")!)
+      );
+      if (orderStore.selectedOrder?.warehouseId) {
+        isGetWarehouse = await warehouseStore.getAccountById(
+          orderStore.selectedOrder?.warehouseId
+        );
+        isGetToStore = null;
+      } else {
+        isGetToStore = await storeStore.getToStoreById(
+          orderStore.selectedOrder?.ToStoreId
+        );
+        isGetWarehouse = null;
+      }
       setSelectedOrder(orderStore.selectedOrder);
       if (orderById) {
         let tmpMarkers = [] as any;
-        tmpMarkers.push(
-          {
-            lat: warehouseStore.currentWarehouse.AddressCoorLat,
-            lng: warehouseStore.currentWarehouse.AddressCoorLong,
-            addr: warehouseStore.currentWarehouse.Address,
-          },
-          {
-            lat: storeStore.currentStore.AddressCoorLat,
-            lng: storeStore.currentStore.AddressCoorLong,
-            addr: storeStore.currentStore.Address,
-          },
-        );
+        if (orderById) {
+          if (isGetWarehouse) {
+            tmpMarkers.push(
+              {
+                lat: warehouseStore.currentWarehouse.AddressCoorLat,
+                lng: warehouseStore.currentWarehouse.AddressCoorLong,
+                addr: warehouseStore.currentWarehouse.Address,
+              },
+              {
+                lat: storeStore.currentStore.AddressCoorLat,
+                lng: storeStore.currentStore.AddressCoorLong,
+                addr: storeStore.currentStore.Address,
+              }
+            );
+          } else if (isGetToStore) {
+            tmpMarkers.push(
+              {
+                lat: storeStore.currentToStore.AddressCoorLat,
+                lng: storeStore.currentToStore.AddressCoorLong,
+                addr: storeStore.currentToStore.Address,
+              },
+              {
+                lat: storeStore.currentStore.AddressCoorLat,
+                lng: storeStore.currentStore.AddressCoorLong,
+                addr: storeStore.currentStore.Address,
+              }
+            );
+          }
+        }
 
         setMarkers(tmpMarkers);
       }
-      console.log(markers)
+      console.log(markers);
     },
-    [orderStore]
+    [markers, orderStore, storeStore, warehouseStore]
   );
 
   React.useEffect(() => {
@@ -452,10 +546,7 @@ const ManageOrderAdminPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [orderStore, criteriaDto]);
 
-  React.useEffect(() => {}, [
-    authStore.loggedUser,
-  ]);
-
+  React.useEffect(() => {}, [authStore.loggedUser]);
 
   return (
     <>
@@ -484,6 +575,7 @@ const ManageOrderAdminPage = () => {
               createdByTitle={"Created By"}
               id="summary-popup"
               notes={notes}
+              toStoreData={toStoreData}
             />
           </>
         )}
@@ -512,17 +604,27 @@ const ManageOrderAdminPage = () => {
           handleCancel={handleCancelProgress}
           handleOk={handleOkProgress}
         >
-          {(retrieveFromStorage("role") === "WarehouseStaff") ? (
+          {retrieveFromStorage("role") === "WarehouseStaff" ||
+          (retrieveFromStorage("role") !== "WarehouseStaff" &&
+            parseInt(retrieveFromStorage("storeId")!) ===
+              selectedOrder?.ToStoreId) ? (
             !(currentStatus === "Created" || currentStatus === "Confirmed") ? (
-              <p>{"Only Store Manager and Store Warehouse Manager can process on this step. Please contact the Store (You can find the contact in request detail)"}</p>
+              <p>
+                {
+                  "Only Store Manager and Store Warehouse Manager of Store created can process on this step. Please contact the Store (You can find the contact in request detail)"
+                }
+              </p>
             ) : (
               <p>{`Are you sure want to process this request to step ${nextStatus}?`}</p>
             )
+          ) : !(currentStatus === "Delivering") ? (
+            <p>
+              {
+                "Only Manager of the destination can process on this step. Please contact the destination (You can find the contact in request detail)"
+              }
+            </p>
           ) : (
-            !(currentStatus === "Delivering") ? (
-              <p>{"Only Branch Warehouse Staff can process on this step. Please contact the Warehouse (You can find the contact in request detail)"}</p>            ) : (
-              <p>{`Are you sure want to process this request to step ${nextStatus}?`}</p>
-            )
+            <p>{`Are you sure want to process this request to step ${nextStatus}?`}</p>
           )}
         </ConfirmModal>
       </AdminWrapper>

@@ -9,8 +9,11 @@ class StoreStore {
     @observable totalCount: number = 0;
     @observable adminForm: any = newAdminFormInit;
     @observable currentStore: any;
+    @observable currentToStore: any;
     @observable chosenAddress: string = '';
-  
+    @observable storeAllDb: any[] = [];
+    @observable totalCountstoreAllDb: number = 0;
+
     @action.bound
     async getAccounts(skip: number, take: number) {
         let data: any = [];
@@ -25,6 +28,16 @@ class StoreStore {
         if (result) {
             this.setAdminForm(result);
             this.currentStore = result;
+        }
+        return result;
+    }
+
+    @action.bound
+    async getToStoreById(id: number) {
+        const result = await adminService.getAccountById(id);
+        if (result) {
+            this.setAdminForm(result);
+            this.currentToStore = result;
         }
         return result;
     }
@@ -66,6 +79,14 @@ class StoreStore {
     async setAddress(id: number, addr: string, Lat: number, Lng: number) {
         const result = await adminService.setAddress(id, addr, Lat, Lng);
         return result.data;
+    }
+
+    @action.bound
+    async getStoresAllDb() {
+        let data: any = [];
+        data = await adminService.getStoresAllDb();
+        this.storeAllDb = data[0];
+        this.totalCountstoreAllDb = data[1];
     }
 
     constructor() {

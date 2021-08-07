@@ -48,10 +48,11 @@ interface Session {
 interface CargoRequest {
     ProductId : number[];
     Quantity: number[];
-    warehouseId: number;
+    warehouseId?: number;
     StoreId: number;
     Status?: string | null;
     Notes?: string | null;
+    ToStoreId?: number;
 }
 
 class CartStore {
@@ -89,6 +90,7 @@ class CartStore {
         Quantity: [],
         warehouseId: -1,
         StoreId: -1,
+        ToStoreId: -1,
     };
     @observable firstApriori: boolean = true;
 
@@ -193,8 +195,8 @@ class CartStore {
     }
 
     @action.bound
-    addToCart = async (product: Product) => {
-        if (product.Discontinued) {
+    addToCart = async (product: Product, isImport: boolean = false) => {
+        if (product.Discontinued && !isImport) {
             toast("Selected item is out of stock now!");
         }
         else {
@@ -215,11 +217,11 @@ class CartStore {
         }
     }
     @action.bound
-    addToCartById = async (id: number) => {
+    addToCartById = async (id: number, isImport: boolean = false) => {
         const promise = productService.getOne(id);
         promise.then((res: any) => {
             if (res.data != "") {
-                this.addToCart(res.data);
+                this.addToCart(res.data, isImport);
             }
             else {
                 toast("Invalid ID!");
@@ -435,6 +437,34 @@ class CartStore {
                 ProductId: prodId,
                 Quantity: quan,
                 warehouseId: warehouseId,
+                StoreId: storeId,
+                Status: status,
+                Notes: notes,
+            }
+        }
+    }
+
+    @action.bound
+    setCargoRequestToStore = (toStoreId: number, storeId: number, action: string, status?: string | null, notes?: string | null) => {
+        let prodId : number[] = [];
+        let quan : number[] = [];
+        for (let product of this.productsInCart) {
+            prodId.push(product.Id);
+            quan.push(product.Quantity);
+        }
+        if (action === 'Create') {
+            this.cargoRequest = {
+                ProductId: prodId,
+                Quantity: quan,
+                ToStoreId: toStoreId,
+                StoreId: storeId,
+            }
+        }
+        else {
+            this.cargoRequest = {
+                ProductId: prodId,
+                Quantity: quan,
+                ToStoreId: toStoreId,
                 StoreId: storeId,
                 Status: status,
                 Notes: notes,

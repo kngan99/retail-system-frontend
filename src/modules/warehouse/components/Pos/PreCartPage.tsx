@@ -103,7 +103,7 @@ const PreCartPage = () => {
   };
 
   const handleClick = (e: any) => {
-    cartStore.addToCart(e);
+    cartStore.addToCart(e, true);
   };
 
   const columns: ColumnsType<Product> = [
@@ -174,7 +174,7 @@ const PreCartPage = () => {
     if (!Number.isInteger(Number(e.target.value))) {
       toast("Invalid ID!");
     } else {
-      cartStore.addToCartById(Number(e.target.value));
+      cartStore.addToCartById(Number(e.target.value), true);
     }
   };
 
@@ -308,7 +308,7 @@ const PreCartPage = () => {
                                           size={48}
                                           shape="square"
                                           src={
-                                            "https://warehouse-retail.herokuapp.com/api/products/img/thumbnails-" +
+                                            "http://localhost:4000/api/products/img/thumbnails-" +
                                             String(
                                               product.PhotoURL
                                                 ? product.PhotoURL

@@ -11,7 +11,7 @@ const CartItem = ({ item, isCheckout }) => {
         await cartStore.removeFromCart(e);
     }
     const handleIncreaseClick = async (e) => {
-        await cartStore.addToCart(e);
+        await cartStore.addToCart(e, true);
     }
     const handleDecreaseClick = async (e) => {
         await cartStore.decreaseToCart(e);
