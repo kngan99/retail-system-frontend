@@ -60,13 +60,13 @@ const HistoryPage = (props) => {
                                     <Descriptions.Item label="Saleslerk">{orderStore.order.Account.FName + " " + orderStore.order.Account.LName}</Descriptions.Item>
                                     <Descriptions.Item label="Current time"><Clock format={commonStore.hourMinusFormat} ticking={true} /></Descriptions.Item>
                                     <Descriptions.Item label="Store">
-                                        {orderStore.order.Account.Store.ShortName}
+                                        {orderStore.order.Session.Store.ShortName}
                                     </Descriptions.Item>
                                     <Descriptions.Item label="Store's Address">
-                                        {orderStore.order.Account.Store.Address + ", " + orderStore.order.Account.Store.City + ", " + orderStore.order.Account.Store.Region + ", " + orderStore.order.Account.Store.Country}
+                                        {orderStore.order.Session.Store.Address + ", " + orderStore.order.Session.Store.City + ", " + orderStore.order.Session.Store.Region + ", " + orderStore.order.Session.Store.Country}
                                     </Descriptions.Item>
                                     <Descriptions.Item label="Store's Phone">
-                                        {orderStore.order.Account.Store.Phone}
+                                        {orderStore.order.Session.Store.Phone}
                                     </Descriptions.Item>
                                 </Descriptions>
                             </Panel>

@@ -30,11 +30,21 @@ class CartService {
     return result.data;
   }
 
-  public async getPastSessions(skip: number, take: number) {
+  public async getPastSessions(skip: number, take: number, id: number) {
     const result = await http.get(`${this.sessionPrefix}/past`, {
       params: {
         page: skip,
         limit: take,
+        id: id,
+      },
+    });
+    return result.data;
+  }
+
+  public async getPastStores(id: number) {
+    const result = await http.get(`${this.sessionPrefix}/multistores`, {
+      params: {
+        id: id,
       },
     });
     return result.data;
@@ -45,7 +55,7 @@ class CartService {
     });
     return result.data;
   }
-  
+
   public async createCargoRequest(model: any) {
     const result = await http.post(`${this.cargoRequestPrefix}/`, model);
     return result;
@@ -84,6 +94,11 @@ class CartService {
 
   async getOrderByID(id: number) {
     const result = await http.get(`${this.cargoRequestPrefix}/${id}`);
+    return result.data;
+  }
+
+  public async getAllCashiers() {
+    const result = await http.get(`${this.sessionPrefix}/allCashiers`);
     return result.data;
   }
 
