@@ -1,6 +1,6 @@
 import React from "react";
 import { observer } from "mobx-react-lite";
-import { Row, Col, Table } from "react-bootstrap";
+import { Row, Col, Table, Button } from "react-bootstrap";
 import { CommonStoreContext } from "../../../../common/common.store";
 import ProductSummary from "../ProductSummary";
 import { EMAIL_RULE } from "../../../../common/constants/rules.constants";
@@ -66,14 +66,14 @@ const SummaryOrderSection = (props: ComponentProps) => {
               </Col>
               <Col xs={12} xl={12} className="block-item">
                 <span className="block-label">To Store address</span>
-                <span className="block-value">
-                  {toStoreData.Address}
-                </span>
+                <span className="block-value">{toStoreData.Address}</span>
               </Col>
-              {toStoreData && (<Col xs={12} xl={12} className="block-item">
-                <span className="block-label">To Store email</span>
-                <span className="block-value">{toStoreData.Email}</span>
-              </Col>)}
+              {toStoreData && (
+                <Col xs={12} xl={12} className="block-item">
+                  <span className="block-label">To Store email</span>
+                  <span className="block-value">{toStoreData.Email}</span>
+                </Col>
+              )}
             </>
           )}
           <Col xs={12} className="block-item">
@@ -132,6 +132,21 @@ const SummaryOrderSection = (props: ComponentProps) => {
                 <Col xs={12} className="block-item">
                   <span className="block-label">{"Homephone"}</span>
                   <span className="block-value">{createdByData.Homephone}</span>
+                </Col>
+              )}
+              {orderData.Status === "Success" && orderData.Warehouse && (
+                <Col xs={12} className="block-item">
+                  <Button
+                    style={{ float: "right" }}
+                    onClick={() => {
+                      window.location.href = window.location.pathname.replace(
+                        "request-goods-note-cart/manage",
+                        `return-goods/${orderData.Id}`
+                      );
+                    }}
+                  >
+                    Return products
+                  </Button>
                 </Col>
               )}
             </>

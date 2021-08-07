@@ -73,4 +73,16 @@ export const warehouseRoutes = [
     isLayout: false,
     isGuarded: false,
   },
+  {
+    path: '/warehouse/return-goods/:id',
+    name: 'Return products',
+    title: 'Return products',
+    exact: true,
+    permission: '',
+    component: React.lazy(
+      () => import('../../../modules/warehouse/pages/ReturnProducts')
+    ),
+    isLayout: false,
+    isGuarded: false,
+  },
 ];
