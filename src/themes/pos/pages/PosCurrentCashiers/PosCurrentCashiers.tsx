@@ -52,7 +52,7 @@ const PosCurrentCashiersPage = () => {
   return (
     <>
       {historyStore.cashiers &&
-        <Spin spinning={historyStore.loading || orderStore.loading}>
+        <Spin spinning={historyStore.loading}>
         {historyStore.cashiers.length && <Tabs tabPosition="left" defaultActiveKey="0" onChange={callback} style={{ height: 992 }}>
           <TabPane tab="Default" key="0">
           Click on the staff name tab to view detail

@@ -41,6 +41,15 @@ class CartService {
     return result.data;
   }
 
+  public async getPastStores(id: number) {
+    const result = await http.get(`${this.sessionPrefix}/multistores`, {
+      params: {
+        id: id,
+      },
+    });
+    return result.data;
+  }
+
   public async getSessionDetail(id: string) {
     const result = await http.get(`${this.sessionPrefix}/${id}`, {
     });

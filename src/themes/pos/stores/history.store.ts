@@ -8,6 +8,7 @@ class HistoryStore {
     @observable currentCashierId: number = 1;
     @observable sessions: any[] = [];
     @observable orders: any[] = [];
+    @observable pastStores: any[] = [];
     @observable currentDetailSession: any;
     @observable totalCount: number = 0;
     @observable pageNum: number = 1;
@@ -53,6 +54,27 @@ class HistoryStore {
         this.orders = ordersdata.items;
         this.sessions = data.items;
         this.totalCount = data.meta.totalItems;
+        this.loading = false;
+    }
+
+    @action.bound
+    async getPastStores(id: number) {
+        this.loading = true;
+        let datas: any = [];
+        if (id) {
+            await this.setCurrentCashier(id);
+            datas = await cartService.getPastStores(id);
+        }
+        else {
+            await this.setCurrentCashier(id);
+            datas = await cartService.getPastStores(this.currentCashierId);
+        }
+        for (let data of datas) {
+            this.pastStores.push({ 'StoreId': String(data.StoreId), 'FinalTotal': Number(data.FinalTotal)});
+        }
+        // this.pastStores = data;
+        console.log("-------------------------");
+        console.log(datas);
         this.loading = false;
     }
 

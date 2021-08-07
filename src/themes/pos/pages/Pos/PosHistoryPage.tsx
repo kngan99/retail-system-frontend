@@ -16,6 +16,7 @@ import { CommonStoreContext } from '../../../../common/common.store';
 import { HistoryStoreContext } from "../../stores/history.store";
 import { OrderStoreContext } from "../../stores/order.store";
 import { useHistory } from 'react-router-dom';
+import { Column } from "@ant-design/charts";
 const { confirm } = Modal;
 
 
@@ -28,9 +29,21 @@ const PosHistoryPage = (cashierId) => {
   React.useEffect(() => {
     historyStore.setCurrentCashier(cashierId.cashierId);
     historyStore.getPastSessions(cashierId.cashierId);
+    historyStore.getPastStores(cashierId.cashierId)
     orderStore.setCurrentCashier(cashierId.cashierId);
     orderStore.getPastOrders(cashierId.cashierId);
   }, []);
+
+  const config = {
+    data: historyStore.pastStores,
+    height: 400,
+    xField: 'StoreId',
+    yField: 'FinalTotal',
+    point: {
+      size: 1,
+      shape: 'diamond',
+    },
+  };
 
   // React.useEffect(() => {
   //   historyStore.setCurrentCashier(cashierId.cashierId);
@@ -214,6 +227,11 @@ const PosHistoryPage = (cashierId) => {
               defaultPageSize={10}
               onChange={onChangeOrder}
             />
+        </TabPane>
+        <TabPane tab="Past Stores" key="3">
+          {historyStore.pastStores.length > 0 && !historyStore.loading &&
+            <Column {...config}/>
+          }
         </TabPane>
         </Tabs>
       {/* </Spin> */}
