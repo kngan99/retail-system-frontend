@@ -20,8 +20,6 @@ class HistoryStore {
     async getAllCashiers() {
         this.loading = true;
         const result = await cartService.getAllCashiers();
-        console.log("-------------------");
-        console.log(result);
         this.cashiers = result;
         this.loading = false;
     }
@@ -69,12 +67,13 @@ class HistoryStore {
             await this.setCurrentCashier(id);
             datas = await cartService.getPastStores(this.currentCashierId);
         }
+        let temp = [{ 'StoreId': '1', 'FinalTotal': 0 }];
+        temp = [];
         for (let data of datas) {
-            this.pastStores.push({ 'StoreId': String(data.StoreId), 'FinalTotal': Number(data.FinalTotal)});
+            temp.push({ 'StoreId': String(data.StoreId), 'FinalTotal': Number(data.FinalTotal)});
         }
-        // this.pastStores = data;
-        console.log("-------------------------");
-        console.log(datas);
+        this.pastStores = temp;
+        await new Promise(f => setTimeout(f, 500));
         this.loading = false;
     }
 
