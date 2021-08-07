@@ -6,7 +6,7 @@ import { removeFromStorage } from '../utils/storage.util';
 import { toast } from "react-toastify";
 
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:4000/api',
+  baseURL: 'https://warehouse-retail.herokuapp.com/api',
   headers: {
     'Content-Type': 'application/json',
     Accept: 'application/json',
