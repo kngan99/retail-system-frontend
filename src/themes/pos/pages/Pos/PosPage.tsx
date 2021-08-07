@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import App from "./App";
 import { ProductStoreContext } from "../../../../modules/product/product.store";
 import { CartStoreContext } from "../../stores/cart.store";
-import { Modal, Button, Pagination, Table, Tag, Radio, Space, Tabs, Card, Skeleton, Avatar, List, Spin, Divider, Form, Input, Select, message, Alert, Row, Col} from 'antd';
+import { Modal, Button, Pagination, Table, Tag, Radio, Space, Tabs, Card, Skeleton, Avatar, List, Spin, Divider, Form, Input, Select, message, Alert, Row, Col } from 'antd';
 import { ExclamationCircleOutlined, AudioOutlined, EditOutlined, EllipsisOutlined, SettingOutlined, DeleteOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import { ColumnsType } from "antd/es/table";
 import { toast } from "react-toastify";
@@ -11,7 +11,7 @@ import UpdateProductModal from "../../../../modules/product/components/ManagePro
 import CreateProductModal from "../../../../modules/product/components/ManageProduct/CreateProductModal";
 import { makeAutoObservable, autorun, observable, toJS } from "mobx"
 import Cart from "../../components/Cart";
-import { Jumbotron, Container, Breadcrumb, Navbar, Nav,  } from 'react-bootstrap';
+import { Jumbotron, Container, Breadcrumb, Navbar, Nav, } from 'react-bootstrap';
 import '../../../../modules/product/components/ManageProduct/style.css';
 import Clock from 'react-live-clock';
 import { CommonStoreContext } from '../../../../common/common.store';
@@ -175,7 +175,7 @@ const PosPage = () => {
   const { Search } = Input;
 
   const onSearch = (val: string) => {
-      cartStore.getCustomers(val);
+    cartStore.getCustomers(val);
   }
 
 
@@ -218,39 +218,39 @@ const PosPage = () => {
         margin: "auto", padding: "10px",
       }}>
         <Row>
-          <Col className="printable" xs={{ span: 22, offset: 1 }} sm={{ span: 22, offset: 1 }} xl={{ span: 22, offset: 1 }} xxl={{ span: 10, offset: 0 }}><Cart productsInCart={cartStore.productsInCart} totalNum={cartStore.totalNum} totalAmount={cartStore.subtotalAmount} isCheckout={cartStore.isCheckout}/>
+          <Col className="printable" xs={{ span: 22, offset: 1 }} sm={{ span: 22, offset: 1 }} xl={{ span: 22, offset: 1 }} xxl={{ span: 10, offset: 0 }}><Cart productsInCart={cartStore.productsInCart} totalNum={cartStore.totalNum} totalAmount={cartStore.subtotalAmount} isCheckout={cartStore.isCheckout} />
             {/* {cartStore.discount !== 0 && <Alert message={"Order Discount: -" + cartStore.discount} type="error" />}
             {(cartStore.isCheckout) && <Alert message={"Tax(10%): " + (cartStore.totalAmount * 0.1).toFixed(2)} type="warning" />}
             {(cartStore.isCheckout) && <Alert message={"Total: " + (cartStore.totalAmount * 1.1).toFixed(2)} type="success" />} */}
-            <br/>
+            <br />
             {(cartStore.isCheckout) && <Alert message="Order's summary: " type="info" />}
             {(cartStore.isCheckout) &&
               <BootstrapTable striped bordered hover>
-              <thead>
-                {cartStore.discount !== 0 && <tr>
-                  <th>Order Discount</th>
-                  <th>{"-" + cartStore.discount}</th>
-                </tr>}
-              </thead>
-              <tbody>
-                <tr>
-                  <td>
-                    Tax(10%)
+                <thead>
+                  {cartStore.discount !== 0 && <tr>
+                    <th>Order Discount</th>
+                    <th>{"-" + cartStore.discount}</th>
+                  </tr>}
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      Tax(10%)
                   </td>
-                  <td>
-                    {(cartStore.totalAmount * 0.1).toFixed(2)}
+                    <td>
+                      {(cartStore.totalAmount * 0.1).toFixed(2)}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      Total
                   </td>
-                </tr>
-               <tr>
-                  <td>
-                    Total
-                  </td>
-                  <td>
-                    {(cartStore.totalAmount * 1.1).toFixed(2)}
-                  </td>
-                </tr>
-              </tbody>
-            </BootstrapTable>}
+                    <td>
+                      {(cartStore.totalAmount * 1.1).toFixed(2)}
+                    </td>
+                  </tr>
+                </tbody>
+              </BootstrapTable>}
           </Col>
           {(!cartStore.isCheckout) && <Col xs={{ span: 22, offset: 1 }} sm={{ span: 22, offset: 1 }} xl={{ span: 22, offset: 1 }} xxl={{ span: 11, offset: 2 }}>
             <Breadcrumb style={{ backgroundColor: '#ffe58f' }} className="mb-0 pb-0">
@@ -400,7 +400,7 @@ const PosPage = () => {
                     <Input onChange={async (e) => await onChangePay(e, Number((cartStore.totalAmount * 1.1).toFixed(2)))} />
                   </Form.Item>
                   <Form.Item label="Return">
-                    <Input disabled={cartStore.isCheckout} value={Dinero({ amount: parseInt(""+(returnCash * 100)) }).toFormat('$0,0.00')} />
+                    <Input disabled={cartStore.isCheckout} value={Dinero({ amount: parseInt("" + (returnCash * 100)) }).toFormat('$0,0.00')} />
                   </Form.Item>
                   {!cartStore.isConfirm && <Form.Item style={{ textAlign: 'right' }}>
                     <Button loading={cartStore.loading} onClick={async () => await handleConfirmOrderClick()} type="primary" htmlType="submit">
@@ -424,9 +424,9 @@ const PosPage = () => {
                 {!cartStore.isConfirm && <Form.Item style={{ textAlign: 'center' }}>
                   <Alert message="This payment method is currently supported VND currency only!" type="warning" />
                   <br />
-                  <a id="vnpaylink" href={"https://retailvnpay.herokuapp.com/order/create_payment_url/" + String(parseInt(String((Number((cartStore.totalAmount * 1.1).toFixed(1))*23100))))} target="_blank">Go to payment page!</a>
+                  <a id="vnpaylink" href={"https://retailvnpay.herokuapp.com/order/create_payment_url/" + String(parseInt(String((Number((cartStore.totalAmount * 1.1).toFixed(1)) * 23100))))} target="_blank">Go to payment page!</a>
                   <br />
-                  <br/>
+                  <br />
                   <Alert message="Please remember to create payment before confirming the order!" type="warning" />
                   <br />
                   <Form
@@ -436,7 +436,7 @@ const PosPage = () => {
                     onFinish={onFinish}
                   >
                     <Form.Item label="OrderId" name="orderId" rules={[{ required: true, message: 'Please input the order Id created by VNPay!' }]}>
-                      <Input placeholder="Order ID"/>
+                      <Input placeholder="Order ID" />
                     </Form.Item>
                     <Form.Item style={{ textAlign: 'right' }}>
                       <Button loading={cartStore.loading} type="primary" htmlType="submit">

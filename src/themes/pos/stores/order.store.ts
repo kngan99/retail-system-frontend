@@ -5,6 +5,7 @@ import cartService from '../services/cart.service';
 
 class OrderStore {
     @observable orders: any[] = [];
+    @observable currentCashierId: number = 1;
     @observable currentDetailOrder: any;
     @observable order: any;
     @observable products: any[] = [];
@@ -15,13 +16,25 @@ class OrderStore {
     @observable loading: boolean = true;
 
     @action.bound
-    async getPastOrders() {
+    async setCurrentCashier(id: number) {
+        this.loading = true;
+        this.currentCashierId = id;
+        this.loading = false;
+    }
+
+    @action.bound
+    async getPastOrders(id: number) {
         this.loading = true;
         let data: any = [];
         this.pageNum = 1;
         this.pageSize = 10;
         this.totalCount = 0;
-        data = await orderService.getPastOrders(this.pageNum, this.pageSize);
+        if (id) {
+            data = await orderService.getPastOrders(this.pageNum, this.pageSize, id);
+        }
+        else {
+            data = await orderService.getPastOrders(this.pageNum, this.pageSize, this.currentCashierId);
+        }
         this.orders = data.items;
         this.totalCount = data.meta.totalItems;
         this.loading = false;
@@ -33,7 +46,7 @@ class OrderStore {
         let data: any = [];
         this.pageNum = page;
         this.pageSize = pageSize
-        data = await orderService.getPastOrders(this.pageNum, this.pageSize);
+        data = await orderService.getPastOrders(this.pageNum, this.pageSize, this.currentCashierId);
         this.orders = data.items;
         this.totalCount = data.meta.totalItems;
         this.loading = false;

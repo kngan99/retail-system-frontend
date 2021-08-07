@@ -20,15 +20,24 @@ const { confirm } = Modal;
 
 
 
-const PosHistoryPage = () => {
+const PosHistoryPage = (cashierId) => {
   const history = useHistory();
   const commonStore = React.useContext(CommonStoreContext);
   const historyStore = React.useContext(HistoryStoreContext);
   const orderStore = React.useContext(OrderStoreContext);
   React.useEffect(() => {
-    historyStore.getPastSessions();
-    orderStore.getPastOrders();
+    historyStore.setCurrentCashier(cashierId.cashierId);
+    historyStore.getPastSessions(cashierId.cashierId);
+    orderStore.setCurrentCashier(cashierId.cashierId);
+    orderStore.getPastOrders(cashierId.cashierId);
   }, []);
+
+  // React.useEffect(() => {
+  //   historyStore.setCurrentCashier(cashierId.cashierId);
+  //   historyStore.getPastSessions(cashierId.cashierId);
+  //   orderStore.setCurrentCashier(cashierId.cashierId);
+  //   orderStore.getPastOrders(cashierId.cashierId);
+  // }, [historyStore.currentCashierId]);
 
   const showTotal = (total: number) => {
     return `Total ${total} items`;
@@ -80,6 +89,11 @@ const PosHistoryPage = () => {
       render: (text, row, index) => {
         return <span>{new Date(text).toLocaleString()}</span>
       }
+    },
+    {
+      title: "StoreId",
+      dataIndex: "StoreId",
+      sorter: false,
     },
     {
       title: "Action",
@@ -177,9 +191,9 @@ const PosHistoryPage = () => {
 
   return (
     <>
+      {/* <Spin spinning={historyStore.loading || orderStore.loading}> */}
       <Tabs defaultActiveKey="1">
         <TabPane tab="Past Sessions" key="1">
-          <Spin spinning={historyStore.loading}>
             <Table columns={columns} dataSource={historyStore.sessions} rowKey={(record) => record.SessionId} pagination={false} /><br /><br />
             <Pagination
               showQuickJumper
@@ -189,10 +203,8 @@ const PosHistoryPage = () => {
               defaultPageSize={10}
               onChange={onChange}
             />
-          </Spin>
         </TabPane>
         <TabPane tab="Past Orders" key="2">
-          <Spin spinning={orderStore.loading}>
             <Table columns={orderColumns} dataSource={orderStore.orders} rowKey={(record) => record.Id} pagination={false} /><br /><br />
             <Pagination
               showQuickJumper
@@ -202,9 +214,9 @@ const PosHistoryPage = () => {
               defaultPageSize={10}
               onChange={onChangeOrder}
             />
-          </Spin>
         </TabPane>
-      </Tabs>
+        </Tabs>
+      {/* </Spin> */}
       <br />
     </>
   );

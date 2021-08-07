@@ -79,11 +79,12 @@ class OrderService {
         return result.data;
     }
 
-    public async getPastOrders(skip: number, take: number) {
+    public async getPastOrders(skip: number, take: number, id: number) {
         const result = await http.get(`${this.orderPrefix}/paginateOrders`, {
             params: {
                 page: skip,
                 limit: take,
+                id: id,
             },
         });
         return result.data;
