@@ -24,6 +24,7 @@ interface CartProduct {
     Discount: number;
     Total: number;
     RawTotal: number;
+    NewDiscount: number;
 }
 interface Product {
     Id: number;
@@ -35,6 +36,7 @@ interface Product {
     ReorderLevel: number;
     Discontinued: boolean;
     Discount: number;
+    NewDiscount: number;
 }
 
 interface Session {
@@ -203,14 +205,14 @@ class CartStore {
                 if (item.Id === product.Id) {
                     item.Quantity += 1;
                     item.RawTotal = Number((item.UnitPrice * item.Quantity).toFixed(2));
-                    item.Total = Number((item.UnitPrice * item.Quantity * (100 - item.Discount) / 100).toFixed(2));
+                    item.Total = Number((item.UnitPrice * item.Quantity * (100 - item.NewDiscount) / 100).toFixed(2));
                     found = true;
                     const index = this.productsInCart.findIndex(({ Id }) => Id === product.Id);
                     this.productsInCart.splice(index, 1, item);
                 }
             });
             if (!found) {
-                await this.productsInCart.push({ ...product, Quantity: 1, RawTotal: product.UnitPrice, Total: Number((product.UnitPrice * (100 - product.Discount) / 100).toFixed(2)) });
+                await this.productsInCart.push({ ...product, Quantity: 1, RawTotal: product.UnitPrice, Total: Number((product.UnitPrice * (100 - product.NewDiscount) / 100).toFixed(2)) });
             }
         }
     }
@@ -253,7 +255,7 @@ class CartStore {
             if (item.Id === product.Id) {
                 item.Quantity = Number(quantity);
                 item.RawTotal = Number((item.UnitPrice * item.Quantity).toFixed(2));
-                item.Total = Number((item.UnitPrice * item.Quantity * (100 - item.Discount) / 100).toFixed(2));
+                item.Total = Number((item.UnitPrice * item.Quantity * (100 - item.NewDiscount) / 100).toFixed(2));
                 const index = this.productsInCart.findIndex(({ Id }) => Id === product.Id);
                 this.productsInCart.splice(index, 1, item);
             }
@@ -266,7 +268,7 @@ class CartStore {
                 if (item.Quantity > 1) {
                     item.Quantity -= 1;
                     item.RawTotal = Number((item.UnitPrice * item.Quantity).toFixed(2));
-                    item.Total = Number((item.UnitPrice * item.Quantity * (100 - item.Discount) / 100).toFixed(2));
+                    item.Total = Number((item.UnitPrice * item.Quantity * (100 - item.NewDiscount) / 100).toFixed(2));
                     const index = this.productsInCart.findIndex(({ Id }) => Id === product.Id);
                     this.productsInCart.splice(index, 1, item);
                 }

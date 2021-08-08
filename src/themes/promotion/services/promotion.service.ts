@@ -19,10 +19,14 @@ interface CartProduct {
     Quantity: number;
     Discount: number
     Total: number;
+    NewDiscount: number
 }
 
 class PromotionService {
     orderdiscountPrefix: string = "https://warehouse-retail.herokuapp.com/api/orderdiscounts";
+    productdiscountPrefix: string = "https://warehouse-retail.herokuapp.com/api/productdiscounts";
+    productPrefix: string = "https://warehouse-retail.herokuapp.com/api/products";
+
 
     // public async confirmOrder(SalescleckId: number, SessionId: string, cartproducts: CartProduct[], CustomerId: number, Discount: number) {
     //     const result = await http.post(`${this.orderPrefix}`, {
@@ -61,6 +65,39 @@ class PromotionService {
         console.log("Value before sending")
         console.log(promotion);
         const result = await http.put(`${this.orderdiscountPrefix}/${id}`, {
+            ...promotion,
+        });
+        return result.data;
+    }
+
+    public async getProdSelect() {
+        const result = await http.get(`${this.productPrefix}`);
+        return result.data;
+    }
+
+    public async getProdPromotion(skip: number, take: number) {
+        const result = await http.get(`${this.productdiscountPrefix}`, {
+            params: {
+                page: skip,
+                limit: take,
+            },
+        });
+        return result.data;
+    }
+
+    public async createProdPromotion(promotion: any) {
+        console.log("Value before sending")
+        console.log(promotion);
+        const result = await http.post(`${this.productdiscountPrefix}/`, {
+            ...promotion,
+        });
+        return result.data;
+    }
+
+    public async updateProdPromotion(id: number, promotion: any) {
+        console.log("Value before sending")
+        console.log(promotion);
+        const result = await http.put(`${this.productdiscountPrefix}/${id}`, {
             ...promotion,
         });
         return result.data;

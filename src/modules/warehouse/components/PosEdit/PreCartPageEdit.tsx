@@ -56,22 +56,22 @@ interface Product {
 const { confirm } = Modal;
 
 interface ComponentProps {
-  children? : any
+  children?: any
 }
 
 const PreCartPageEdit = (props: ComponentProps) => {
-  const {children} = props;
+  const { children } = props;
   const { orderID } = useParams() as any;
   const commonStore = React.useContext(CommonStoreContext);
   const productStore = React.useContext(ProductStoreContext);
   const cartStore = React.useContext(CartStoreContext);
   const [total, setTotal] = React.useState<number>();
   const [returnCash, setReturnCash] = React.useState<number>(0);
-  React.useEffect(() => {}, [returnCash, cartStore.loading]);
+  React.useEffect(() => { }, [returnCash, cartStore.loading]);
   React.useEffect(() => {
     productStore.startSearch();
   }, []);
-  
+
   const showTotal = (total: number) => {
     return `Total ${total} items`;
   };
@@ -94,7 +94,7 @@ const PreCartPageEdit = (props: ComponentProps) => {
       async onOk() {
         await productStore.deleteProduct(row.Id);
       },
-      onCancel() {},
+      onCancel() { },
     });
   };
 
@@ -140,7 +140,7 @@ const PreCartPageEdit = (props: ComponentProps) => {
       render: (_, record) => (
         <Space size="middle">
           <Button
-            style={{color: 'rgb(24, 144, 255)'}}
+            style={{ color: 'rgb(24, 144, 255)' }}
             icon={<PlusCircleTwoTone />}
             className=""
             onClick={() => handleClick(record)}
@@ -213,7 +213,7 @@ const PreCartPageEdit = (props: ComponentProps) => {
                   </Col>
                   <Col xs={{ span: 4 }} sm={{ span: 4 }} xl={{ span: 4 }}></Col>
                   <Col xs={{ span: 4 }} sm={{ span: 4 }} xl={{ span: 4 }}>
-                  <Search
+                    <Search
                       placeholder="input id or name"
                       onSearch={(value: any) => search(value)}
                       enterButton
@@ -224,11 +224,11 @@ const PreCartPageEdit = (props: ComponentProps) => {
                   </Col>
                 </Row>
                 <Row>
-                <Col xs={{ span: 2 }} sm={{ span: 2 }} xl={{ span: 2 }} 
-                      style={{margin: '15px 0'}}>
+                  <Col xs={{ span: 2 }} sm={{ span: 2 }} xl={{ span: 2 }}
+                    style={{ margin: '15px 0' }}>
                     <Button
                       type="primary" shape='round' icon={<ShoppingCartOutlined />} size='large'>
-                      <Link to={`warehouse/request-goods-note/edit/${orderID}`}  style={{color: 'white', marginTop: '5px', marginLeft: '5px'}}>Go to cart</Link>
+                      <Link to={`warehouse/request-goods-note/edit/${orderID}`} style={{ color: 'white', marginTop: '5px', marginLeft: '5px' }}>Go to cart</Link>
                     </Button>
                   </Col>
                 </Row>
@@ -240,15 +240,15 @@ const PreCartPageEdit = (props: ComponentProps) => {
                   >
                     <Tabs defaultActiveKey="1" onChange={callback}>
                       <TabPane tab="Table" key="1">
-                            <Spin spinning={productStore.loading}>
-                              <Table<Product>
-                                columns={columns}
-                                dataSource={productStore.products}
-                                rowKey={(record) => record.Id}
-                                pagination={false}
-                                style={{width: '100%'}}
-                              />
-                            </Spin>
+                        <Spin spinning={productStore.loading}>
+                          <Table<Product>
+                            columns={columns}
+                            dataSource={productStore.products}
+                            rowKey={(record) => record.Id}
+                            pagination={false}
+                            style={{ width: '100%' }}
+                          />
+                        </Spin>
                       </TabPane>
                       <TabPane tab="Cards" key="2">
                         <Spin spinning={productStore.loading}>
@@ -269,7 +269,7 @@ const PreCartPageEdit = (props: ComponentProps) => {
                                   size="small"
                                   style={{ marginTop: 7 }}
                                   actions={[
-                                    <PlusOutlined 
+                                    <PlusOutlined
                                       onClick={() => handleClick(product)}
                                     />,
                                   ]}

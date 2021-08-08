@@ -5,6 +5,20 @@ import { Product } from './product.dto';
 import ProductSummary from '../warehouse/components/ProductSummary/index';
 import { toast } from 'react-toastify';
 
+const parseDiscount = async (discounts: any) => {
+    var discount = undefined;
+    var d = new Date();
+    if (discounts.length > 0) {
+        for (let item of discounts) {
+            if (item.Promotion && new Date(item.Promotion.StartTime) <= d && new Date(item.Promotion.EndTime) >= d) {
+                console.log("----------------------------get there-------------------------------");
+                discount = item.Promotion.PercentOff;
+            }
+        }
+    }
+    return discount ? discount : 0;
+}
+
 class ProductStore {
     @observable products: Product[] = [];
     @observable categories: any[] = [];
@@ -63,7 +77,20 @@ class ProductStore {
         }
         let data: any = [];
         data = await productService.searchProductsPagination(this.pageNum, this.pageSize, this.searchKey);
-        this.products = data.items;
+        if (localStorage.getItem('role') === 'StoresManager') {
+            this.products = data.items;
+        }
+        else {
+            this.products = [];
+            for (let item of data.items) {
+                var newDiscount = 0;
+                if (item.ProductDiscounts) {
+                    newDiscount = await parseDiscount(item.ProductDiscounts)
+                }
+                this.products.push({ ...item, 'NewDiscount': newDiscount })
+            }
+            await new Promise(f => setTimeout(f, 1000));
+        }
         this.totalCount = data.meta.totalItems;
         this.loading = false;
     }
@@ -80,7 +107,20 @@ class ProductStore {
         }
         let data: any = [];
         data = await productService.searchProductsPagination(this.pageNum, this.pageSize, this.searchKey);
-        this.products = data.items;
+        if (localStorage.getItem('role') === 'StoresManager') {
+            this.products = data.items;
+        }
+        else {
+            this.products = [];
+            for (let item of data.items) {
+                var newDiscount = 0;
+                if (item.ProductDiscounts) {
+                    newDiscount = await parseDiscount(item.ProductDiscounts)
+                }
+                this.products.push({ ...item, 'NewDiscount': newDiscount })
+            }
+            await new Promise(f => setTimeout(f, 1000));
+        }
         this.totalCount = data.meta.totalItems;
         this.loading = false;
     }
@@ -92,7 +132,20 @@ class ProductStore {
         this.pageNum = page;
         this.pageSize = pageSize
         data = await productService.searchProductsPagination(page, this.pageSize, this.searchKey);
-        this.products = data.items;
+        if (localStorage.getItem('role') === 'StoresManager') {
+            this.products = data.items;
+        }
+        else {
+            this.products = [];
+            for (let item of data.items) {
+                var newDiscount = 0;
+                if (item.ProductDiscounts) {
+                    newDiscount = await parseDiscount(item.ProductDiscounts)
+                }
+                this.products.push({ ...item, 'NewDiscount': newDiscount })
+            }
+            await new Promise(f => setTimeout(f, 1000));
+        }
         this.totalCount = data.meta.totalItems;
         this.loading = false;
     }
@@ -105,7 +158,20 @@ class ProductStore {
         this.pageSize = 10;
         this.searchKey = key.trim();
         data = await productService.searchProductsPagination(1, 10, key);
-        this.products = data.items;
+        if (localStorage.getItem('role') === 'StoresManager') {
+            this.products = data.items;
+        }
+        else {
+            this.products = [];
+            for (let item of data.items) {
+                var newDiscount = 0;
+                if (item.ProductDiscounts) {
+                    newDiscount = await parseDiscount(item.ProductDiscounts)
+                }
+                this.products.push({ ...item, 'NewDiscount': newDiscount })
+            }
+            await new Promise(f => setTimeout(f, 1000));
+        }
         this.totalCount = data.meta.totalItems;
         this.loading = false;
     }
@@ -122,7 +188,20 @@ class ProductStore {
             toast("Error on updating product!")
         }
         data = await productService.searchProductsPagination(this.pageNum, this.pageSize, this.searchKey);
-        this.products = data.items;
+        if (localStorage.getItem('role') === 'StoresManager') {
+            this.products = data.items;
+        }
+        else {
+            this.products = [];
+            for (let item of data.items) {
+                var newDiscount = 0;
+                if (item.ProductDiscounts) {
+                    newDiscount = await parseDiscount(item.ProductDiscounts)
+                }
+                this.products.push({ ...item, 'NewDiscount': newDiscount })
+            }
+            await new Promise(f => setTimeout(f, 1000));
+        }
         this.totalCount = data.meta.totalItems;
         this.pageNum = data.meta.currentPage;
         this.pageSize = data.meta.itemCount;
@@ -135,8 +214,21 @@ class ProductStore {
         let data: any = [];
         data = await productService.searchProductsPagination(this.pageNum, this.pageSize, this.searchKey.trim());
         this.categories = await productService.getAllCategories();
-        console.log(this.categories);
-        this.products = data.items;
+        if (localStorage.getItem('role') === 'StoresManager') {
+            this.products = data.items;
+        }
+        else {
+            this.products = [];
+            for (let item of data.items) {
+                var newDiscount = 0;
+                if (item.ProductDiscounts) {
+                    newDiscount = await parseDiscount(item.ProductDiscounts)
+                }
+                this.products.push({ ...item, 'NewDiscount': newDiscount })
+            }
+            await new Promise(f => setTimeout(f, 1000));
+        }
+        // this.products = data.items;
         this.totalCount = data.meta.totalItems;
         this.loading = false;
     }
