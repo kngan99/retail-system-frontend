@@ -382,6 +382,7 @@ const ManageOrderAdminPage = () => {
   /*
    * Setting actions in grid
    */
+
   const actions: any[] = [
     // {
     //   label: "Edit",
@@ -428,6 +429,21 @@ const ManageOrderAdminPage = () => {
       action: (id: number) => {
         handleTracking(id);
         scrollToElement("order-tracking");
+      },
+    },
+    {
+      label: "View Returns",
+      status: "",
+      action: async (id: number) => {
+        const status = await cartStore.getCargoReqStatus(id);
+        if (status[0][0].Status !== 'Success') {
+          toast('Only Success Request have Returns');
+          return;
+        }
+        window.location.href = window.location.pathname.replace(
+          "request-goods-note-cart/manage",
+          `return-goods/${id}`
+        );
       },
     },
   ];

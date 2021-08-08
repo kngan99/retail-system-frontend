@@ -22,6 +22,16 @@ export const warehouseRoutes = [
     isGuarded: false,
   },
   {
+    path: '/warehouse/new-return-goods-note/:orderID',
+    name: 'home',
+    title: 'New Request',
+    exact: true,
+    permission: '',
+    component: React.lazy(() => import('../../../modules/warehouse/pages/CreateReturnedRequestGoodsNote')),
+    isLayout: false,
+    isGuarded: false,
+  },
+  {
     path: '/warehouse/request-goods-note-cart/manage',
     name: 'home',
     title: 'Manage Request',

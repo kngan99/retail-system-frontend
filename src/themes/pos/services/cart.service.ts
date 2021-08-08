@@ -61,6 +61,11 @@ class CartService {
     return result;
   }
 
+  public async createReturnCargoRequest(model: any) {
+    const result = await http.post(`${this.cargoRequestPrefix}/returned`, model);
+    return result;
+  }
+
   public async updateCargoRequest(id: number, model: any) {
     const result = await http.put(`${this.cargoRequestPrefix}/${id}`, model);
     return result;
@@ -80,9 +85,19 @@ class CartService {
     const result = await http.put(`${this.cargoRequestPrefix}/${id}/${status}`);
     return result;
   }
+  
+  public async updateStatusReturnedCargoReq(id: number, status: string) {
+    const result = await http.put(`${this.cargoRequestPrefix}/returned/${id}/${status}`);
+    return result;
+  }
 
   public async getCargoReqStatus(id: number) {
     const result = await http.get(`${this.cargoRequestPrefix}/${id}/status`);
+    return result;
+  }
+  
+  public async getReturnedCargoReqStatus(id: number) {
+    const result = await http.get(`${this.cargoRequestPrefix}/returned/${id}/status`);
     return result;
   }
 
@@ -94,6 +109,16 @@ class CartService {
 
   async getOrderByID(id: number) {
     const result = await http.get(`${this.cargoRequestPrefix}/${id}`);
+    return result.data;
+  }
+
+  async getReturnedOrderById(id: number) {
+    const result = await http.get(`${this.cargoRequestPrefix}/${id}`);
+    return result.data;
+  }
+
+  async getReturnedOrdersByOrderId(id: number) {
+    const result = await http.get(`${this.cargoRequestPrefix}/returned-all/${id}`);
     return result.data;
   }
 

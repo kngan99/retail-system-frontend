@@ -109,6 +109,7 @@ const SummaryOrderSection = (props: ComponentProps) => {
             <ProductSummary
               productsData={orderData.products}
               quantities={orderData.quantities}
+              returned={orderData.returned}
             ></ProductSummary>
           </Col>
           {createdByTitle === "Created By" && createdByData && (

@@ -12,7 +12,7 @@ interface ComponentProps {
   returned: any[];
 }
 
-const ProductSummary = (props: ComponentProps) => {
+const ReturnedProductSummary = (props: ComponentProps) => {
   const {style, className, children, productsData, quantities, returned} = props;
   
   return (
@@ -24,10 +24,6 @@ const ProductSummary = (props: ComponentProps) => {
                 <th>Image</th>
                 <th>Name</th>
                 <th style={{ textAlign: 'center' }}>Quantity</th>
-                <th style={{ textAlign: 'center' }}>Price Per Unit</th>
-                <th style={{ textAlign: 'center' }}>Units In Stock</th>
-                {returned.every(x => x != null) &&  <th style={{ textAlign: 'center' }}>Returned</th>}
-                <th className="text-right pr-5">Total</th>
               </tr>
             </thead>
             <tbody>
@@ -43,18 +39,6 @@ const ProductSummary = (props: ComponentProps) => {
                     <td style={{textAlign: 'center'}}>
                         {quantities[idx]}
                     </td>
-                    <td style={{textAlign: 'center'}}>
-                        {item.UnitPrice}
-                    </td>
-                    <td style={{textAlign: 'center'}}>
-                        {item.UnitsInStock}
-                    </td>
-                    {returned.every(x => x != null) &&  <td style={{textAlign: 'center'}}>
-                        {returned[idx] ? returned[idx] : 0}
-                    </td>}
-                    <td className="text-right pr-5">
-                      {item.UnitPrice  * quantities[idx]}
-                    </td>
                   </tr>
                 );
               })}
@@ -66,5 +50,5 @@ const ProductSummary = (props: ComponentProps) => {
     );
 
 }
-export default ProductSummary;
+export default ReturnedProductSummary;
 
