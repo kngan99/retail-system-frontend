@@ -34,10 +34,9 @@ const PosCurrentCashiersPage = () => {
   const callback = async (key) => {
     console.log(key);
     await historyStore.setCurrentCashier(Number(key));
+    await historyStore.getPastStores(Number(key));
     await orderStore.setCurrentCashier(Number(key));
-    await historyStore.setCurrentCashier(Number(key));
     await historyStore.getPastSessions(Number(key));
-    await orderStore.setCurrentCashier(Number(key));
     await orderStore.getPastOrders(Number(key));
   }
 

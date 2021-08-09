@@ -68,7 +68,7 @@ const AssignQuantityModal = (props: ComponentProps) => {
           <InputGroup className="mb-3">
             <InputGroup.Text id="basic-addon1">#</InputGroup.Text>
             <Form.Control
-              placeholder="Enter Store/Warehouse Id"
+              placeholder="Enter disposal quantity"
               aria-label="Search"
               aria-describedby="basic-addon1"
               value={quantity}

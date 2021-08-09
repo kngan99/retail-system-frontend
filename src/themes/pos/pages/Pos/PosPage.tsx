@@ -30,7 +30,6 @@ interface Product {
   UnitsInStock: number;
   ReorderLevel: number;
   Discontinued: boolean;
-  PhotoURL: string;
 }
 
 const { confirm } = Modal;
@@ -276,7 +275,7 @@ const PosPage = () => {
             <Tabs defaultActiveKey="1" onChange={callback}>
               <TabPane tab="Table" key="1">
                 <Spin spinning={productStore.loading}>
-                  <Table<Product> size="small" columns={columns} dataSource={productStore.products} rowKey={(record) => record.Id} pagination={false} />
+                  {productStore.products && productStore.products[0] && productStore.products[0].StoreProducts && <Table<Product> size="small" columns={columns} dataSource={productStore.products} rowKey={(record) => record.Id} pagination={false} />}
                 </Spin>
               </TabPane>
               <TabPane tab="Cards" key="2">

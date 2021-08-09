@@ -268,13 +268,13 @@ const PreCartPage = () => {
                     <Tabs defaultActiveKey="1" onChange={callback}>
                       <TabPane tab="Table" key="1">
                         <Spin spinning={productStore.loading}>
-                          <Table<Product>
+                          {productStore.products && productStore.products[0] && productStore.products[0].StoreProducts && <Table<Product>
                             columns={columns}
                             dataSource={productStore.products}
                             rowKey={(record) => record.Id}
                             pagination={false}
                             style={{ width: "100%" }}
-                          />
+                          />}
                         </Spin>
                       </TabPane>
                       <TabPane tab="Cards" key="2">

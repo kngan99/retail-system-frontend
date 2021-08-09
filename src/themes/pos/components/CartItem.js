@@ -41,7 +41,7 @@ const CartItem = ({ item, isCheckout }) => {
                 {item.UnitPrice}
             </td>
             <td>
-                <Badge count={'-' + item.Discount + '%'} />
+                <Badge count={'-' + item.NewDiscount + '%'} />
             </td>
             <td class="text-right pr-5">
                 {item.Total}

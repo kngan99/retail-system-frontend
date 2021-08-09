@@ -364,7 +364,8 @@ const ListProductToRemove = (props: ComponentProps) => {
                   pagination={false}
                 />
               )}
-              {localStorage.getItem("role") != "StoresManager" && (
+              {localStorage.getItem("role") != "StoresManager" && 
+                productStore.products && productStore.products[0] && productStore.products[0].StoreProducts &&(
                 <Table<Product>
                   columns={columns}
                   dataSource={productStore.products}
