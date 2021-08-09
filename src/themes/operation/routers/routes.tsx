@@ -21,4 +21,14 @@ export const operationRoutes = [
     isLayout: false,
     isGuarded: false,
   },
+  {
+    path: '/operation/remove-broken-products',
+    name: 'remove-broken-products',
+    title: 'Remove Broken Products',
+    exact: true,
+    permission: '',
+    component: React.lazy(() => import('../../../modules/operation/pages/ThrowAway')),
+    isLayout: false,
+    isGuarded: false,
+  },
 ];

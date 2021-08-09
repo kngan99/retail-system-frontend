@@ -82,7 +82,7 @@ const AdminMenu = (props: ComponentProps) => {
 
   React.useEffect(() => {
     if (localStorage.getItem('role') === 'StoreManager') {
-      setIsDisplayIconArray([false, false, true, true, true, true, false, false, true]);
+      setIsDisplayIconArray([false, false, true, true, true, true, false, false, true, true]);
     }
     else if (localStorage.getItem('role') === 'StoreStaff') {
       setIsDisplayIconArray([false, false, true, false, false, false, false, false,false]);

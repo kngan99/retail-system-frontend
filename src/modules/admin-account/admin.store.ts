@@ -9,6 +9,11 @@ class AdminStore {
     @observable totalCount: number = 0;
     @observable adminForm: any = newAdminFormInit;
     @observable curUser: any;
+    @observable curIdForThrowaway: number = -1;
+    @observable isExceed: boolean = false;
+    @observable totalCountThrowAway: number = 0;
+    @observable progressId: number = -1;
+    @observable throwAwayData: any[] = [];
   
     @action
     async getAccounts(skip: number, take: number, searchKeyword: string) {
@@ -19,13 +24,35 @@ class AdminStore {
     }
 
     @action
-    async getAccountById(id: number) {
-        const result = await adminService.getAccountById(id);
-        this.curUser = result;
-        if (result) {
-        this.setAdminForm(result);
-        }
-        return true;
+    async getThrowAwayData(skip: number, take: number, searchKeyword: string = '') {
+        let data: any = [];
+        data = await adminService.getThrowAwayData(skip, take, searchKeyword);
+        this.throwAwayData = data[0];
+        this.totalCountThrowAway = data[1];
+    }
+
+    @action.bound
+    async getThrowAwayStatus(id: number) {
+        const res = await adminService.getThrowAwayStatus(id);
+        return res.data;
+    }
+
+    @action.bound
+    async updateStatusThrowAway(id: number, curStatus: string) {
+        let nextStatus = curStatus;
+        if (curStatus === "Pending") {
+        nextStatus = "Approved";
+        } else if (curStatus === "Approved") {
+        nextStatus = "Thrown";
+        } 
+        const data = await adminService.updateStatusThrowAway(id, nextStatus);
+        return data;
+    }
+
+    @action
+    async assignRemoveProduct(inputedQuan: number, id: number) {
+        const result = await adminService.assignRemoveProduct(inputedQuan,id);
+        return result;
     }
 
     @action
@@ -72,6 +99,16 @@ class AdminStore {
     async assignWarehouse(id: number, warehouseId: number) {
         const result = await adminService.assignWarehouse(id, warehouseId);
         return result.data;
+    }
+
+    @action
+    async getAccountById(id: number) {
+        const result = await adminService.getAccountById(id);
+        this.curUser = result;
+        if (result) {
+        this.setAdminForm(result);
+        }
+        return true;
     }
 
     constructor() {

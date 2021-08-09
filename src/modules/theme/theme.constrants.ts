@@ -56,9 +56,15 @@ export const adminMenu: AdminMenuDto[] = [
     isShow: true,
   },
   {
-    url: '/',
-    label: 'Setting',
-    icon: 'ico ico-noti',
+    url: '/operation/remove-broken-products',
+    label: 'Manage Disposal',
+    icon: 'ico ico-map-note',
+    isShow: false,
+  },
+  {
+    url: '/operation/recommend-products-position',
+    label: 'Position Recommend',
+    icon: 'ico ico-orders',
     isShow: false,
   },
 ];
