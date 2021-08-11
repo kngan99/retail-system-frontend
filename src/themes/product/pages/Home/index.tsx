@@ -147,6 +147,20 @@ const HomePage = () => {
     },
   ];
 
+  // const parseDiscount = async (discounts: any) => {
+  //   var discount = undefined;
+  //   var d = new Date();
+  //   debugger;
+  //   if (discounts.length > 0) {
+  //     for (let item of discounts) {
+  //       if (item.Promotion && new Date(item.Promotion.StartTime) <= d && new Date(item.Promotion.EndTime) >= d) {
+  //         discount = item.Promotion.PercentOff;
+  //       }
+  //     }
+  //   }
+  //   return discount ? discount : 0;
+  // }
+
   const columns: ColumnsType<Product> = [
     {
       title: "ProductName",
@@ -187,8 +201,9 @@ const HomePage = () => {
     },
     {
       title: "Discount",
-      dataIndex: "Discount",
+      dataIndex: "NewDiscount",
       sorter: false,
+      // render: (record) => (record ? record : 0)
     },
     {
       title: "Discontinued",

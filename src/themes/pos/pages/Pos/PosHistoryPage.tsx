@@ -34,17 +34,6 @@ const PosHistoryPage = (cashierId) => {
     orderStore.getPastOrders(cashierId.cashierId);
   }, []);
 
-  const config = {
-    data: historyStore.pastStores,
-    height: 400,
-    xField: 'StoreId',
-    yField: 'FinalTotal',
-    point: {
-      size: 1,
-      shape: 'diamond',
-    },
-  };
-
   // React.useEffect(() => {
   //   historyStore.setCurrentCashier(cashierId.cashierId);
   //   historyStore.getPastSessions(cashierId.cashierId);
@@ -230,7 +219,11 @@ const PosHistoryPage = (cashierId) => {
         </TabPane>
         <TabPane tab="Past Stores" key="3">
           {historyStore.pastStores.length > 0 && !historyStore.loading &&
-            <Column {...config}/>
+            <Column data={historyStore.pastStores}
+              height={400}
+              xField={'StoreId'}
+              yField={'FinalTotal'}
+              />
           }
         </TabPane>
         </Tabs>

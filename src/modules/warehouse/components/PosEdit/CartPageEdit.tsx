@@ -73,6 +73,7 @@ interface CartProduct {
   Discount: number;
   Total: number;
   RawTotal: number;
+  NewDiscount: number;
 }
 
 const CartPageEdit = observer(
@@ -174,6 +175,7 @@ const CartPageEdit = observer(
           Discount: 0,
           Total: 0,
           RawTotal: 0,
+          NewDiscount: 0,
         });
       })
       await cartStore.setProductInCart(productsInCart);

@@ -1,6 +1,7 @@
 import { observer } from "mobx-react";
 import React from "react";
 import { PromotionStoreContext } from "../../stores/promotion.store";
+import { ProdPromotionStoreContext } from "../../stores/prodpromotion.store";
 import { Row, Modal, Col, Button, Pagination, Table, Tag, Radio, Space, Tabs, Card, Skeleton, Avatar, List, Spin } from 'antd';
 import { ExclamationCircleOutlined, AudioOutlined, EditOutlined, EllipsisOutlined, SettingOutlined, DeleteOutlined } from "@ant-design/icons";
 import { ColumnsType } from "antd/es/table";
@@ -8,14 +9,26 @@ import "antd/dist/antd.css";
 import UpdateProductModal from "../../../../modules/product/components/ManageProduct/UpdateProductModal";
 import CreateProductModal from "../../../../modules/product/components/ManageProduct/CreateProductModal";
 import CreatePromotionModal from "../../components/CreatePromotionModal";
+import CreateProdPromotionModal from "../../components/CreateProdPromotionModal";
 import { makeAutoObservable, autorun, observable } from "mobx"
 import App from "../../../../modules/product/components/ManageProduct/SalesAnalysis";
 import UpdatePromotionModal from "../../components/UpdatePromotionModal";
+import UpdateProdPromotionModal from "../../components/UpdateProdPromotionModal";
 
 interface Promotion {
   orderdiscounts_Coupon: number;
   orderdiscounts_MinBill: number;
   orderdiscounts_MaxDiscount: number;
+  promotion_Coupon: number;
+  promotion_StartTime: Date;
+  promotion_EndTime: Date;
+  promotion_Description: string;
+  promotion_PercentOff: number;
+}
+
+interface ProductDiscount {
+  productdiscounts_Coupon: number;
+  productdiscounts_ProductId: number;
   promotion_Coupon: number;
   promotion_StartTime: Date;
   promotion_EndTime: Date;
@@ -29,8 +42,13 @@ const { confirm } = Modal;
 
 const HomePage = () => {
   const promotionStore = React.useContext(PromotionStoreContext);
+  const prodpromotionStore = React.useContext(ProdPromotionStoreContext);
+
   React.useEffect(() => {
     promotionStore.getPromotions();
+    if (localStorage.getItem('role') === 'StoreManager') {
+      prodpromotionStore.getPromotions();
+    }
   }, []);
 
 
@@ -40,8 +58,13 @@ const HomePage = () => {
   }
 
   const onChange = async (pageNumber: number, pageSize: any) => {
-    if (pageNumber == 0 || pageSize != promotionStore.pageSize) pageNumber = 1;
+    if (pageNumber === 0 || pageSize !== promotionStore.pageSize) pageNumber = 1;
     await promotionStore.changePage(pageNumber, pageSize);
+  }
+
+  const onChangeProdDiscount = async (pageNumber: number, pageSize: any) => {
+    if (pageNumber === 0 || pageSize !== prodpromotionStore.pageSize) pageNumber = 1;
+    await prodpromotionStore.changePage(pageNumber, pageSize);
   }
 
   // const showPromiseConfirm = async (row: any) => {
@@ -109,6 +132,54 @@ const HomePage = () => {
     },
   ];
 
+  const prodiscountcolumns: ColumnsType<ProductDiscount> = [
+    {
+      title: "Coupon",
+      dataIndex: "productdiscounts_Coupon",
+      sorter: false,
+    },
+    {
+      title: "Product",
+      dataIndex: "products_ProductName",
+      sorter: false,
+    },
+    {
+      title: "StartTime",
+      dataIndex: "promotions_StartTime",
+      sorter: false,
+      render: (text, row, index) => {
+        return <span>{new Date(text).toLocaleString()}</span>
+      }
+    },
+    {
+      title: "EndTime",
+      dataIndex: "promotions_EndTime",
+      sorter: false,
+      render: (text, row, index) => {
+        return <span>{new Date(text).toLocaleString()}</span>
+      }
+    },
+    {
+      title: "Discription",
+      dataIndex: "promotions_Description",
+      sorter: false,
+    },
+    {
+      title: "PercentOff",
+      dataIndex: "promotions_PercentOff",
+      sorter: false,
+    },
+    {
+      title: "Action",
+      key: "action",
+      render: (_, record) => (
+        <Space size="middle">
+          {localStorage.getItem('role') === 'StoreManager' && <UpdateProdPromotionModal record={record} />}
+        </Space>
+      ),
+    },
+  ];
+
   const callback = (key: any) => {
     console.log(key);
   }
@@ -124,25 +195,52 @@ const HomePage = () => {
   return (
     <>
       <div style={{ background: "white" }}>
-        {localStorage.getItem('role') === 'StoresManager' && <br />}
-        {localStorage.getItem('role') === 'StoresManager' && <CreatePromotionModal />}
-        {localStorage.getItem('role') === 'StoresManager' && <br />}
-        <Spin spinning={promotionStore.loading}>
-          <Table<Promotion> columns={columns} dataSource={promotionStore.promotions} rowKey={(record) => record.orderdiscounts_Coupon} pagination={false} />
-        </Spin>
-        <br />
-        <Row>
-          <Col span={18} offset={6}>
-            <Pagination
-              showQuickJumper
-              defaultCurrent={1}
-              total={promotionStore.totalCount}
-              showTotal={showTotal}
-              defaultPageSize={10}
-              onChange={onChange}
-            />
-          </Col>
-        </Row>
+        <Tabs defaultActiveKey="1">
+          <TabPane tab="Order Discount" key="1">
+            {localStorage.getItem('role') === 'StoresManager' && <br />}
+            {localStorage.getItem('role') === 'StoresManager' && <CreatePromotionModal />}
+            {localStorage.getItem('role') === 'StoresManager' && <br />}
+            <Spin spinning={promotionStore.loading}>
+              <Table<Promotion> columns={columns} dataSource={promotionStore.promotions} rowKey={(record) => record.orderdiscounts_Coupon} pagination={false} />
+            </Spin>
+            <br />
+            <Row>
+              <Col span={18} offset={6}>
+                <Pagination
+                  showQuickJumper
+                  defaultCurrent={1}
+                  total={promotionStore.totalCount}
+                  showTotal={showTotal}
+                  defaultPageSize={10}
+                  onChange={onChange}
+                />
+              </Col>
+                </Row>
+          </TabPane>
+          {localStorage.getItem('role') === 'StoreManager' &&
+          <TabPane tab="Product Discount" key="2">
+            {localStorage.getItem('role') === 'StoreManager' && <br />}
+            {localStorage.getItem('role') === 'StoreManager' && <CreateProdPromotionModal />}
+            {localStorage.getItem('role') === 'StoreManager' && <br />}
+            <Spin spinning={prodpromotionStore.loading}>
+              <Table<ProductDiscount> columns={prodiscountcolumns} dataSource={prodpromotionStore.promotions} rowKey={(record) => record.productdiscounts_Coupon} pagination={false} />
+            </Spin>
+            <br />
+            <Row>
+              <Col span={18} offset={6}>
+                <Pagination
+                  showQuickJumper
+                  defaultCurrent={1}
+                  total={prodpromotionStore.totalCount}
+                  showTotal={showTotal}
+                  defaultPageSize={10}
+                  onChange={onChangeProdDiscount}
+                />
+              </Col>
+            </Row>
+          </TabPane>
+          }
+        </Tabs>
       </div>
     </>
   );
