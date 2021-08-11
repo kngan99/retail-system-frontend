@@ -37,14 +37,14 @@ const CreateAccountPage = () => {
     };
 
     accountStore.setCreateUserForm(createUserData);
-    await accountStore.register();
+    const result = await accountStore.register();
     //const result = await accountStore.register();
     // console.log(result);
-    // if (result) {
+    if (result) {
       accountStore.resetCreateUserForm();
       history.push(DEFAULT_ROUTERS.LOGIN);
       toast('Register successfully! Check your email to verified and login');
-    //}
+    }
   };
 
   return (
