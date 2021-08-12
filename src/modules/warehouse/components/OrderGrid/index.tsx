@@ -295,7 +295,7 @@ const OrderGrid = (props: ComponentProps) => {
                         </span>
                       </td>
                       {/* <td>{item.Warehouse && item.Warehouse.Shortname ? item.Warehouse.Shortname : '-' }</td> */}
-                      <td>{`${item.CreatedByAccount.FName} ${item.CreatedByAccount.LName}`}</td>
+                      <td>{item.CreatedByAccount ? `${item.CreatedByAccount.FName} ${item.CreatedByAccount.LName}` : item.createdByAccountId === 1 ? `Constantino Costan` : `Corby Arntzen`}</td>
                       <td>
                         {item.CreatedAt
                           ? moment(new Date(item.CreatedAt)).format("LLL")

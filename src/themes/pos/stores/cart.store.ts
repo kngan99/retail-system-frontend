@@ -141,10 +141,11 @@ class CartStore {
     @action.bound
     addApriori = async (product: Product) => {
         let found = false;
+        if (product.Discontinued) {
+            toast("Selected item is out of stock now!");
+            return;
+        }
         await this.productsApriori.map(item => {
-            if (item.Discontinued) {
-                toast("Selected item is out of stock now!");
-            }
             if (item.Id === product.Id) {
                 toast("This product has been added");
                 found = true;
@@ -213,7 +214,7 @@ class CartStore {
 
     @action.bound
     addToCart = async (product: Product, isImport: boolean = false) => {
-        if (product.Discontinued&& !isImport) {
+        if (product?.Discontinued&& !isImport) {
             toast("Selected item is out of stock now!");
         }
         else {
@@ -229,7 +230,7 @@ class CartStore {
                 }
             });
             if (!found) {
-                await this.productsInCart.push({ ...product, Quantity: 1, RawTotal: product.UnitPrice, Total: Number((product.UnitPrice * (100 - (product.NewDiscount ? product.NewDiscount: 0)) / 100).toFixed(2)) });
+                await this.productsInCart.push({ ...product, Quantity: 1, RawTotal: product?.UnitPrice, Total: Number((product.UnitPrice * (100 - (product.NewDiscount ? product.NewDiscount: 0)) / 100).toFixed(2)) });
             }
         }
     }

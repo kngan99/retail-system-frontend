@@ -53,6 +53,13 @@ const ThrowAwayPage = () => {
         handleProgress(id);
       },
     },
+    {
+      label: "Cancel",
+      status: "",
+      action: (id: number) => {
+        handleCancel(id);
+      },
+    },
   ];
 
   const [currentStatus, setCurrentStatus] = React.useState<any>();
@@ -73,6 +80,30 @@ const ThrowAwayPage = () => {
 
   const [progressID, setProgressID] = React.useState<number>(-1);
 
+  const handleCancel = async (id: number) => {
+    const res = await adminStore.getThrowAwayStatus(id);
+    setCurrentStatus(res[0][0].status);
+    setNextStep(res[0][0].status);
+    if (currentStatus === "Thrown" || res[0][0].status === "Thrown") {
+      toast("This request has been done!");
+      return;
+    }
+    const result = await adminStore.updateStatusThrowAway(
+      id,
+      "Cancelled"
+    );
+    if (result) {
+      setProgressID(-1);
+      adminStore.progressId = -1;
+      toast("Cancel successfully!");
+      await adminStore.getThrowAwayData(
+        criteriaDto.skip,
+        criteriaDto.take,
+        ""
+      );
+    }
+  };
+
   const handleProgress = async (id: number) => {
     const res = await adminStore.getThrowAwayStatus(id);
     setCurrentStatus(res[0][0].status);
@@ -81,6 +112,12 @@ const ThrowAwayPage = () => {
       toast("This request has been done!");
       return;
     }
+
+    if (currentStatus === "Cancelled" || res[0][0].status === "Cancelled") {
+      toast("This request has been cancelled!");
+      return;
+    }
+
     adminStore.getThrowAwayData(criteriaDto.skip, criteriaDto.take, "");
     // setSelectedOrder(order);
     setShowConfirmProgressPopup(true);
